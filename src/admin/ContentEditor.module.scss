@@ -1,0 +1,98 @@
+@use "../styles/tokens" as t;
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.card {
+	background: t.$card;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-lg;
+	box-shadow: t.$shadow-sm;
+	overflow: hidden;
+}
+
+.head {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 18px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+}
+
+.headTitle {
+	font-weight: 800;
+	font-size: 0.95rem;
+	color: t.$navy;
+}
+
+.headHint {
+	display: block;
+	font-size: 0.74rem;
+	color: t.$text-mute;
+	font-weight: 400;
+	margin-top: 2px;
+}
+
+.body {
+	padding: 0 18px 18px;
+}
+
+.textarea {
+	width: 100%;
+	min-height: 220px;
+	font-family: "Courier New", monospace;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-sm;
+	padding: 12px;
+	resize: vertical;
+	color: t.$text;
+
+	&:focus {
+		outline: 2px solid t.$teal;
+		outline-offset: 1px;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.saveBtn {
+	background: t.$navy;
+	color: #fff;
+	border: none;
+	border-radius: 999px;
+	padding: 9px 18px;
+	font-weight: 700;
+	font-size: 0.82rem;
+	cursor: pointer;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: default;
+	}
+}
+
+.error {
+	font-size: 0.78rem;
+	color: t.$coral;
+	margin: 0;
+}
+
+.success {
+	font-size: 0.78rem;
+	color: t.$teal-dark;
+	margin: 0;
+}

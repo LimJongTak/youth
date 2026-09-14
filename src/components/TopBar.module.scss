@@ -1,0 +1,61 @@
+@use "../styles/tokens" as t;
+
+.topbar {
+	position: sticky;
+	top: 28px;
+	z-index: 30;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 11px 14px;
+	background: t.$navy;
+	color: #fff;
+	box-shadow: 0 6px 18px rgba(10, 12, 22, 0.22);
+}
+
+.iconBtn {
+	width: 34px;
+	height: 34px;
+	min-width: 34px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.08);
+	border: none;
+	color: #fff;
+	font-size: 0.92rem;
+	cursor: pointer;
+	transition: background 0.15s ease;
+
+	&:active {
+		background: rgba(255, 255, 255, 0.16);
+	}
+}
+
+.kakaoBtn {
+	color: #fee500;
+}
+
+.brand {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	line-height: 1.28;
+}
+
+.brandLine1 {
+	font-size: 0.62rem;
+	font-weight: 700;
+	color: t.$teal-light;
+	letter-spacing: 0.01em;
+}
+
+.brandLine2 {
+	font-size: 0.86rem;
+	font-weight: 800;
+	color: #fff;
+	letter-spacing: -0.01em;
+}

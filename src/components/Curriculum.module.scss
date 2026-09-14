@@ -1,0 +1,130 @@
+@use "../styles/tokens" as t;
+
+.commonStrip {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	background: linear-gradient(135deg, #eefaf9, #f4f6fa);
+	border: 1px dashed t.$teal;
+	border-radius: 12px;
+	padding: 12px 14px;
+	margin-top: 14px;
+
+	i {
+		font-size: 1.2rem;
+		color: t.$teal-dark;
+	}
+
+	strong {
+		display: block;
+		font-size: 0.82rem;
+	}
+
+	span {
+		font-size: 0.72rem;
+		color: t.$text-mute;
+	}
+}
+
+.tabs {
+	display: flex;
+	gap: 6px;
+	background: #eef1f6;
+	padding: 5px;
+	border-radius: 999px;
+	margin: 16px 0 14px;
+}
+
+.tabBtn {
+	flex: 1;
+	border: none;
+	background: transparent;
+	padding: 9px 4px;
+	border-radius: 999px;
+	font-weight: 800;
+	font-size: 0.78rem;
+	color: t.$text-mute;
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s;
+
+	&.active {
+		background: t.$navy;
+		color: #fff;
+		box-shadow: 0 4px 10px rgba(28, 34, 51, 0.25);
+	}
+}
+
+.badge {
+	display: inline-block;
+	font-size: 0.68rem;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+	padding: 3px 9px;
+	border-radius: 999px;
+	color: #fff;
+	margin-bottom: 8px;
+}
+.lvBasic {
+	background: t.$blue;
+}
+.lvMid {
+	background: t.$amber;
+}
+.lvAdv {
+	background: t.$coral;
+}
+
+.trackTitle {
+	margin-bottom: 2px;
+}
+
+.trackSubtitle {
+	font-size: 0.78rem;
+}
+
+.hourGrid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.hourChip {
+	background: #f6f8fb;
+	border-radius: 10px;
+	padding: 8px 10px;
+	text-align: center;
+
+	strong {
+		display: block;
+		font-size: 0.95rem;
+		color: t.$navy;
+	}
+
+	span {
+		font-size: 0.68rem;
+		color: t.$text-mute;
+	}
+}
+
+.totalHours {
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: t.$navy;
+	color: #fff;
+	border-radius: 12px;
+	padding: 10px 14px;
+
+	strong {
+		font-family: t.$font-head;
+		font-size: 1.1rem;
+		color: t.$teal;
+	}
+
+	span {
+		font-size: 0.72rem;
+		color: #c7cbdb;
+	}
+}

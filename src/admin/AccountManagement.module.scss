@@ -1,0 +1,116 @@
+@use "../styles/tokens" as t;
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 24px;
+}
+
+.row {
+	background: t.$card;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-md;
+	padding: 14px 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	box-shadow: t.$shadow-xs;
+}
+
+.username {
+	font-weight: 800;
+	color: t.$navy;
+}
+
+.roleTag {
+	margin-left: auto;
+	font-size: 0.68rem;
+	font-weight: 800;
+	padding: 4px 10px;
+	border-radius: 999px;
+	color: #fff;
+}
+.roleAdmin {
+	background: t.$navy;
+}
+.roleManager {
+	background: t.$teal-dark;
+}
+
+.form {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 16px;
+	background: t.$card;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-lg;
+	padding: 22px;
+	box-shadow: t.$shadow-sm;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 0.82rem;
+	color: t.$text;
+	font-weight: 700;
+
+	&.wide {
+		grid-column: 1 / -1;
+	}
+
+	input,
+	select {
+		border: 1px solid t.$border;
+		border-radius: t.$radius-sm;
+		padding: 9px 12px;
+		font-size: 0.88rem;
+		font-family: inherit;
+		font-weight: 400;
+
+		&:focus {
+			outline: 2px solid t.$teal;
+			outline-offset: 1px;
+		}
+	}
+}
+
+.error {
+	grid-column: 1 / -1;
+	font-size: 0.78rem;
+	color: t.$coral;
+	margin: 0;
+}
+
+.success {
+	grid-column: 1 / -1;
+	font-size: 0.78rem;
+	color: t.$teal-dark;
+	margin: 0;
+}
+
+.submit {
+	grid-column: 1 / -1;
+	background: t.$navy;
+	color: #fff;
+	border: none;
+	border-radius: 999px;
+	padding: 10px 20px;
+	font-weight: 700;
+	font-size: 0.85rem;
+	cursor: pointer;
+	justify-self: end;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: default;
+	}
+}
+
+@media (max-width: 640px) {
+	.form {
+		grid-template-columns: 1fr;
+	}
+}

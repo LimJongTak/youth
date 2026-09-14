@@ -1,0 +1,9 @@
+@use "../styles/tokens" as t;
+
+.highlight {
+	color: t.$navy;
+}
+
+.body {
+	margin-bottom: 0;
+}

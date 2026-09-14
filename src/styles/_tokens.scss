@@ -1,0 +1,103 @@
+// Design tokens — palette adapted from the "Future Imperfect" (HTML5 UP)
+// template: dark navy chrome, teal accent. Typography uses Pretendard, a
+// Korean+Latin UI typeface (the previous Raleway/Source Sans Pro pairing had
+// no Hangul glyphs at all, so every Korean word silently fell back to the OS
+// default font — Pretendard fixes that at the root).
+
+$navy: #161a2b;
+$navy-2: #1f2438;
+$navy-3: #262c46;
+$teal: #2ebaae;
+$teal-dark: #1c9186;
+$teal-light: #6fd6cb;
+$amber: #ffb648;
+$coral: #ff6f61;
+$blue: #4aa8ff;
+
+$bg: #eef1f6;
+$card: #ffffff;
+$text: #1e2230;
+$text-mute: #6b7280;
+$text-faint: #9aa0b4;
+$border: #e8ebf1;
+
+$radius-sm: 10px;
+$radius-md: 14px;
+$radius-lg: 20px;
+$radius-app: 38px;
+
+$font: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+	system-ui, Roboto, "Malgun Gothic", sans-serif;
+// Kept as separate aliases so component code reads intent (heading vs body)
+// even though both now resolve to the same family.
+$font-head: #{$font};
+$font-body: #{$font};
+
+// Breakpoint: below this the phone-frame collapses into a plain
+// full-width mobile page (the device IS already a phone).
+$bp-desktop: 431px;
+
+$shadow-xs: 0 1px 2px rgba(20, 24, 40, 0.05);
+$shadow-sm: 0 2px 10px rgba(20, 24, 40, 0.06);
+$shadow-md: 0 10px 28px -8px rgba(20, 24, 40, 0.18);
+$shadow-lg: 0 24px 48px -16px rgba(12, 15, 26, 0.35);
+
+@mixin card {
+	background: $card;
+	border: 1px solid $border;
+	border-radius: $radius-lg;
+	padding: 18px;
+	box-shadow: $shadow-sm;
+}
+
+@mixin eyebrow($fg: $teal-dark, $bg: rgba(46, 186, 174, 0.1)) {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: $fg;
+	background: $bg;
+	padding: 5px 12px;
+	border-radius: 999px;
+	margin-bottom: 10px;
+
+	&::before {
+		content: "";
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: currentColor;
+	}
+}
+
+@mixin section-head {
+	margin-bottom: 18px;
+	h2 {
+		font-size: 1.32rem;
+		letter-spacing: -0.01em;
+	}
+	p {
+		font-size: 0.89rem;
+		margin-bottom: 0;
+	}
+}
+
+@mixin btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 13px 20px;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.86rem;
+	letter-spacing: -0.01em;
+	border: none;
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+	&:active {
+		transform: scale(0.97);
+	}
+}

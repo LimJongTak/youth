@@ -1,0 +1,131 @@
+@use "./tokens" as t;
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	// Fluid root type scale: every `rem` value in the app scales smoothly
+	// with the real device width between 320px (small phones) and 430px
+	// (our mobile/desktop-mockup breakpoint) — so proportions stay
+	// consistent across phone sizes instead of feeling cramped or
+	// oversized at the extremes. Above 430px real viewport width (desktop,
+	// where the phone-frame mockup takes over) this clamps to the max, i.e.
+	// always the "large phone" scale, which is what the mockup represents.
+	font-size: clamp(15px, calc(15px + (100vw - 320px) * (2 / 110)), 17px);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: t.$bg;
+	color: t.$text;
+	font-family: t.$font-body;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: t.$font-head;
+	font-weight: 800;
+	color: t.$navy;
+	letter-spacing: -0.015em;
+	margin: 0 0 0.5em;
+	line-height: 1.32;
+}
+
+p {
+	margin: 0 0 1em;
+	line-height: 1.65;
+	color: t.$text-mute;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+button {
+	font-family: inherit;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+#root {
+	width: 100%;
+	min-height: 100vh;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+.btn {
+	@include t.btn;
+}
+.btn-primary {
+	background: linear-gradient(135deg, t.$teal, t.$teal-dark);
+	color: #fff;
+	box-shadow: 0 12px 24px -10px rgba(28, 145, 134, 0.65);
+}
+.btn-ghost {
+	background: rgba(255, 255, 255, 0.08);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+}
+.btn-kakao {
+	background: #fee500;
+	color: #391b1b;
+	box-shadow: 0 10px 22px -10px rgba(254, 229, 0, 0.7);
+}
+.btn-outline {
+	background: #fff;
+	color: t.$navy;
+	border: 1px solid t.$border;
+}
+.btn-block {
+	width: 100%;
+}
+
+.section {
+	padding: 30px 20px;
+}
+
+// Every section is a same-page anchor target; without this, jumping to one
+// lands its top edge directly under the sticky status bar + top bar and
+// hides the heading.
+[id] {
+	scroll-margin-top: 100px;
+}
+
+.card {
+	@include t.card;
+
+	& + & {
+		margin-top: 12px;
+	}
+}
+
+@media (max-width: 374px) {
+	.section {
+		padding: 24px 16px;
+	}
+}

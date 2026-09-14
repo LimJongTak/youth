@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function callerRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && callerRole() == 'admin';
+    }
+
+    // Cohort (기수) data: the public site only ever reads this collection,
+    // so reads are open to anyone. Both admins and managers may edit
+    // cohort content.
+    match /cohorts/{cohortId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Editable page copy (hero text, about, checklist, tracks, benefits,
+    // journey, FAQ, contact info) — same public-read / signed-in-write
+    // shape as cohorts, so any logged-in admin or manager can edit any
+    // part of the page.
+    match /siteContent/{docId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Account profiles (role assignment). A signed-in user may read the
+    // list (needed for the admin's account-management screen and for
+    // looking up their own role). A brand-new account may create its own
+    // profile doc once (the bootstrap case, right after Auth sign-up);
+    // after that, only an existing admin may create/update/delete other
+    // accounts' profiles.
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+  }
+}

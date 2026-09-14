@@ -1,0 +1,116 @@
+@use "../styles/tokens" as t;
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.item {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	background: t.$card;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-md;
+	padding: 13px 15px;
+	cursor: pointer;
+	box-shadow: t.$shadow-xs;
+	transition: border-color 0.15s ease;
+
+	input {
+		display: none;
+	}
+
+	strong {
+		display: block;
+		font-size: 0.87rem;
+		color: t.$text;
+	}
+
+	small {
+		color: t.$text-mute;
+		font-size: 0.77rem;
+	}
+}
+
+.item:has(input:checked) {
+	border-color: rgba(46, 186, 174, 0.4);
+}
+
+.box {
+	width: 21px;
+	height: 21px;
+	min-width: 21px;
+	border-radius: 7px;
+	border: 2px solid #cfd4e2;
+	margin-top: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 0.68rem;
+	transition: background 0.15s, border-color 0.15s;
+
+	i {
+		opacity: 0;
+		transition: opacity 0.15s;
+	}
+}
+
+.item input:checked + .box {
+	background: t.$teal;
+	border-color: t.$teal;
+
+	i {
+		opacity: 1;
+	}
+}
+
+.resultCard {
+	margin-top: 14px;
+	background: linear-gradient(135deg, #eefaf9, #f4f6fa);
+	border: 1px solid rgba(46, 186, 174, 0.35);
+	border-radius: t.$radius-lg;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 10px;
+
+	i {
+		font-size: 1.5rem;
+		color: t.$teal-dark;
+	}
+
+	strong {
+		display: block;
+		font-size: 0.94rem;
+		color: t.$navy;
+	}
+
+	span {
+		display: block;
+		font-size: 0.8rem;
+		color: t.$text-mute;
+		margin-top: 2px;
+	}
+}
+
+.note {
+	margin-top: 12px;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+	background: #f4f6fa;
+	border-radius: t.$radius-sm;
+	padding: 11px 13px;
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+
+	i {
+		color: t.$amber;
+		margin-top: 2px;
+	}
+}
