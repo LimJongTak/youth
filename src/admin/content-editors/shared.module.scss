@@ -1,0 +1,169 @@
+@use "../../styles/tokens" as t;
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 0.82rem;
+	color: t.$text;
+	font-weight: 700;
+}
+
+.field input,
+.field textarea,
+.field select {
+	border: 1px solid t.$border;
+	border-radius: t.$radius-sm;
+	padding: 9px 12px;
+	font-size: 0.88rem;
+	font-family: inherit;
+	font-weight: 400;
+	color: t.$text;
+	background: #fff;
+
+	&:focus {
+		outline: 2px solid t.$teal;
+		outline-offset: 1px;
+	}
+}
+
+.field textarea {
+	resize: vertical;
+	min-height: 70px;
+}
+
+.row2 {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+}
+
+.row3 {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+}
+
+@media (max-width: 560px) {
+	.row2,
+	.row3 {
+		grid-template-columns: 1fr;
+	}
+}
+
+.itemCard {
+	background: t.$bg;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-md;
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	position: relative;
+}
+
+.itemHead {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.itemBadge {
+	font-size: 0.72rem;
+	font-weight: 800;
+	color: t.$text-mute;
+}
+
+.removeBtn {
+	border: 1px solid t.$border;
+	background: #fff;
+	color: t.$coral;
+	border-radius: 8px;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 0.76rem;
+	flex: 0 0 auto;
+}
+
+.addBtn {
+	align-self: flex-start;
+	background: none;
+	border: 1px dashed t.$teal;
+	color: t.$teal-dark;
+	border-radius: 999px;
+	padding: 8px 16px;
+	font-weight: 700;
+	font-size: 0.8rem;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.stringRow {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.stringRow input {
+	flex: 1;
+}
+
+.saveBar {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 4px;
+}
+
+.saveBtn {
+	background: t.$navy;
+	color: #fff;
+	border: none;
+	border-radius: 999px;
+	padding: 9px 18px;
+	font-weight: 700;
+	font-size: 0.82rem;
+	cursor: pointer;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: default;
+	}
+}
+
+.error {
+	font-size: 0.78rem;
+	color: t.$coral;
+	margin: 0;
+}
+
+.success {
+	font-size: 0.78rem;
+	color: t.$teal-dark;
+	margin: 0;
+}
+
+.checkboxRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.82rem;
+	font-weight: 700;
+
+	input {
+		width: 16px;
+		height: 16px;
+	}
+}

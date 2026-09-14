@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { statusLabel, type Cohort } from "../types/cohort";
-import type { AppUser } from "../types/user";
+import { roleLabel, type AppUser } from "../types/user";
 import { CohortForm } from "./CohortForm";
 import { AccountManagement } from "./AccountManagement";
 import { ContentEditor } from "./ContentEditor";
@@ -51,7 +51,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 		<div className={styles.page}>
 			<div className={styles.bar}>
 				<div>
-					<strong>관리자 · {profile.username}</strong>
+					<strong>{roleLabel[profile.role]} · {profile.username}</strong>
 					<span>청년도약 인재양성 부트캠프 CMS</span>
 				</div>
 				<div className={styles.barActions}>

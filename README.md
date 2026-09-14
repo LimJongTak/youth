@@ -86,14 +86,23 @@ node --env-file=.env --experimental-strip-types scripts/seed-site-content.mjs
 npx firebase-tools deploy --only firestore:rules --project youth-4c20b
 ```
 
-## 배포 (Cloudflare Pages)
+## 배포 (Cloudflare Workers — 정적 자산)
 
-이 프로젝트는 Vite로 빌드되는 정적 SPA이며, Cloudflare Pages에 배포하도록 구성되어 있습니다.
+`youth.scnuai.com`에 실제 배포되어 있는 구성입니다. Vite로 빌드한 정적 SPA를 Cloudflare Workers의 정적 자산(assets) 기능으로 서빙하며, `wrangler.jsonc`에 설정이 들어있습니다.
 
-- 빌드 명령: `npm run build`
-- 빌드 출력 디렉터리: `dist`
-- `public/_redirects`에 SPA 폴백(`/*  /index.html  200`)이 포함되어 있어 `/admin` 같은 경로로 직접 접속/새로고침해도 정상 동작합니다.
-- Cloudflare Pages 프로젝트 설정 > 환경변수에 `.env.example`의 `VITE_FIREBASE_*` 값을 등록하세요.
-- 커스텀 도메인: `youth.scnuai.com` (Cloudflare Pages 프로젝트 > Custom domains에서 연결)
+- `assets.directory`: `./dist` (빌드 출력)
+- `assets.not_found_handling: "single-page-application"` — 존재하지 않는 경로(`/admin` 등)를 요청해도 `index.html`로 폴백되어 클라이언트 라우팅이 정상 동작합니다.
+- `routes`에 `youth.scnuai.com` 커스텀 도메인이 등록되어 있고, Cloudflare가 SSL 인증서와 DNS까지 자동으로 관리합니다.
 
-배포는 GitHub 저장소([LimJongTak/youth](https://github.com/LimJongTak/youth))와 Cloudflare Pages를 연동하면, `main` 브랜치에 푸시할 때마다 자동으로 빌드/배포됩니다.
+### 재배포 방법
+
+```bash
+npm run build
+npx wrangler deploy
+```
+
+최초 1회는 `npx wrangler login`으로 Cloudflare 계정에 로그인해야 합니다 (이후에는 세션이 유지됩니다). 빌드에 필요한 `VITE_FIREBASE_*` 값은 로컬 `.env`에서 읽어 정적으로 번들되므로, 배포 전 `.env`가 최신 값인지 확인하세요.
+
+### GitHub Actions로 자동 배포하려면 (선택)
+
+`main` 브랜치 푸시마다 자동 배포하고 싶다면, [Cloudflare API 토큰](https://dash.cloudflare.com/profile/api-tokens)을 발급해 저장소 Settings > Secrets에 `CLOUDFLARE_API_TOKEN`으로 등록하고, `wrangler deploy`를 실행하는 워크플로를 추가하면 됩니다 (아직 설정되어 있지 않음 — 현재는 위 명령을 수동으로 실행해 배포합니다).
