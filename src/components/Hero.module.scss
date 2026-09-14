@@ -83,22 +83,26 @@
 	background: rgba(255, 255, 255, 0.06);
 	border: 1px solid rgba(255, 255, 255, 0.12);
 	border-radius: t.$radius-md;
-	padding: 12px 6px;
+	padding: 12px 4px;
 	text-align: center;
+	min-width: 0;
 
 	strong {
 		display: block;
-		font-size: 1.05rem;
+		font-size: 0.94rem;
 		color: #fff;
 		font-family: t.$font-head;
 		letter-spacing: -0.02em;
+		word-break: keep-all;
+		overflow-wrap: break-word;
 	}
 
 	span {
 		display: block;
-		font-size: 0.66rem;
-		color: t.$text-faint;
-		margin-top: 3px;
+		font-size: 0.7rem;
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.85);
+		margin-top: 4px;
 	}
 }
 
@@ -107,6 +111,9 @@
 		padding: 28px 18px 30px;
 	}
 	.statCard strong {
-		font-size: 0.92rem;
+		font-size: 0.84rem;
+	}
+	.statCard span {
+		font-size: 0.64rem;
 	}
 }
