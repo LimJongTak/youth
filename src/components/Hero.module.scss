@@ -1,38 +1,26 @@
 @use "../styles/tokens" as t;
 
 .hero {
-	background: radial-gradient(circle at 12% -10%, rgba(46, 186, 174, 0.38), transparent 55%),
-		linear-gradient(165deg, t.$navy 0%, t.$navy-2 55%, #12162450 100%);
+	background: t.$ink-2;
 	color: #fff;
-	padding: 34px 22px 36px;
-	position: relative;
-	overflow: hidden;
-
-	&::after {
-		content: "";
-		position: absolute;
-		right: -50px;
-		bottom: -70px;
-		width: 200px;
-		height: 200px;
-		border-radius: 50%;
-		background: radial-gradient(circle, rgba(255, 182, 72, 0.32), transparent 70%);
-	}
+	padding: 28px 20px 0;
 }
 
 .logoMark {
-	height: 28px;
+	height: 24px;
 	width: auto;
 	display: block;
-	margin-bottom: 14px;
-	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+	margin-bottom: 20px;
+	opacity: 0.92;
 }
 
 .title {
 	color: #fff;
-	font-size: 1.68rem;
-	margin-bottom: 0.45em;
-	letter-spacing: -0.02em;
+	font-size: 1.5rem;
+	line-height: 1.36;
+	margin-bottom: 0.5em;
+	letter-spacing: -0.01em;
+	font-weight: 700;
 
 	em {
 		color: t.$teal-light;
@@ -41,79 +29,78 @@
 }
 
 .lead {
-	color: #b9bfd1;
-	font-size: 0.93rem;
+	color: rgba(255, 255, 255, 0.56);
+	font-size: 0.88rem;
+	line-height: 1.55;
 	margin-bottom: 0;
 }
 
 .cohortPing {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
-	background: rgba(46, 186, 174, 0.14);
-	border: 1px solid rgba(46, 186, 174, 0.4);
-	border-radius: 999px;
-	padding: 7px 14px;
-	font-size: 0.76rem;
-	font-weight: 700;
+	gap: 6px;
+	font-size: 0.78rem;
+	font-weight: 600;
 	color: t.$teal-light;
 	margin-top: 18px;
 
 	i {
-		font-size: 0.55rem;
-		color: t.$teal;
+		font-size: 0.5rem;
 	}
 }
 
 .ctaRow {
 	display: flex;
-	gap: 10px;
-	margin-top: 16px;
+	gap: 8px;
+	margin-top: 18px;
 	flex-wrap: wrap;
 }
 
 .statRow {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 8px;
-	margin-top: 24px;
+	display: flex;
+	margin-top: 28px;
+	padding-top: 18px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .statCard {
-	background: rgba(255, 255, 255, 0.06);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: t.$radius-md;
-	padding: 12px 4px;
-	text-align: center;
+	flex: 1;
 	min-width: 0;
+	padding: 0 6px 22px;
+	text-align: left;
+
+	& + & {
+		border-left: 1px solid rgba(255, 255, 255, 0.1);
+	}
 
 	strong {
 		display: block;
-		font-size: 0.94rem;
+		font-size: 1rem;
 		color: #fff;
 		font-family: t.$font-head;
-		letter-spacing: -0.02em;
+		font-weight: 700;
+		letter-spacing: -0.01em;
 		word-break: keep-all;
 		overflow-wrap: break-word;
 	}
 
 	span {
 		display: block;
-		font-size: 0.7rem;
-		font-weight: 600;
-		color: rgba(255, 255, 255, 0.85);
+		font-size: 0.72rem;
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.5);
 		margin-top: 4px;
 	}
 }
 
 @media (max-width: 374px) {
 	.hero {
-		padding: 28px 18px 30px;
+		padding: 24px 16px 0;
 	}
 	.statCard strong {
-		font-size: 0.84rem;
+		font-size: 0.88rem;
 	}
 	.statCard span {
-		font-size: 0.64rem;
+		font-size: 0.66rem;
 	}
 }

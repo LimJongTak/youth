@@ -28,7 +28,7 @@ export const seedCohorts: Cohort[] = [
 		capacity: "총 30명",
 		recruitPeriod: "2026.09.14(월) ~ 09.30(수)",
 		eduPeriod: "2026.10.06(화) ~ 12.12(토)",
-		location: "광양 커뮤니티센터(공통과정) / 국립순천대학교(전문·몰입교과)",
+		location: "광양 커뮤니티센터(공통과정)\n국립순천대학교(전문·몰입교과)",
 		note: "선착순 모집으로 인해 조기 마감될 수 있습니다.",
 		applyUrl:
 			"https://docs.google.com/forms/d/e/1FAIpQLSd5-aya_NN-5Fma8SmLobOshtjVcfNxvtR0Pr4LGnf6tbLagw/viewform",

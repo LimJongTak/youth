@@ -41,7 +41,6 @@ export interface CommonCourse {
 
 export interface BenefitCard {
 	icon: string;
-	gradient: string;
 	title: string;
 	items: string[];
 }

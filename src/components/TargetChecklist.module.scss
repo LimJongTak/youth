@@ -69,8 +69,8 @@
 
 .resultCard {
 	margin-top: 14px;
-	background: linear-gradient(135deg, #eefaf9, #f4f6fa);
-	border: 1px solid rgba(46, 186, 174, 0.35);
+	background: t.$teal-tint;
+	border: 1px solid rgba(20, 184, 166, 0.25);
 	border-radius: t.$radius-lg;
 	padding: 16px;
 	display: flex;
@@ -87,7 +87,7 @@
 	strong {
 		display: block;
 		font-size: 0.94rem;
-		color: t.$navy;
+		color: t.$ink;
 	}
 
 	span {

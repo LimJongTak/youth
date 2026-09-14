@@ -8,8 +8,8 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 10px 22px 6px;
-	background: t.$navy;
-	color: #fff;
+	background: t.$card;
+	color: t.$ink;
 	font-size: 0.78rem;
 	font-weight: 700;
 	letter-spacing: 0.02em;
@@ -20,4 +20,5 @@
 	gap: 6px;
 	align-items: center;
 	font-size: 0.85rem;
+	color: t.$ink;
 }

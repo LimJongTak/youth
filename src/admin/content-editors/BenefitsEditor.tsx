@@ -7,7 +7,6 @@ import styles from "./shared.module.scss";
 function emptyBenefit(): BenefitCard {
 	return {
 		icon: "fa-star",
-		gradient: "linear-gradient(135deg,#4aa8ff,#2e6fd6)",
 		title: "",
 		items: [],
 	};
@@ -53,11 +52,6 @@ export function BenefitsEditor() {
 						label="아이콘 (Font Awesome 클래스명, 예: fa-briefcase)"
 						value={benefit.icon}
 						onChange={(v) => updateBenefit(index, { icon: v })}
-					/>
-					<TextField
-						label="배경 색상 (CSS 그라데이션)"
-						value={benefit.gradient}
-						onChange={(v) => updateBenefit(index, { gradient: v })}
 					/>
 				</div>
 			))}

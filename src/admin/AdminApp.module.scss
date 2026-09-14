@@ -7,7 +7,7 @@
 }
 
 .bar {
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 	padding: 18px 28px;
 	display: flex;
@@ -96,7 +96,7 @@
 }
 
 .tabActive {
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .addBtn {
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 	border: none;
 	border-radius: 999px;
@@ -164,7 +164,7 @@
 	font-family: t.$font-head;
 	font-weight: 800;
 	font-size: 1.05rem;
-	color: t.$navy;
+	color: t.$ink;
 }
 
 .badge {
@@ -219,8 +219,8 @@
 	transition: color 0.15s ease, border-color 0.15s ease;
 
 	&:hover {
-		color: t.$navy;
-		border-color: t.$navy;
+		color: t.$ink;
+		border-color: t.$ink;
 	}
 }
 

@@ -91,13 +91,11 @@ export const defaultSiteContent: SiteContent = {
 	benefits: [
 		{
 			icon: "fa-briefcase",
-			gradient: "linear-gradient(135deg,#4aa8ff,#2e6fd6)",
 			title: "취업 지원",
 			items: ["참여기업 멘토링", "채용연계형 인턴십", "모의면접·1:1 컨설팅", "교수추천서 지원"],
 		},
 		{
 			icon: "fa-graduation-cap",
-			gradient: "linear-gradient(135deg,#2ebaae,#1f9a90)",
 			title: "교육 지원",
 			items: [
 				"수강료·교재비 전액 무료",
@@ -108,7 +106,6 @@ export const defaultSiteContent: SiteContent = {
 		},
 		{
 			icon: "fa-award",
-			gradient: "linear-gradient(135deg,#ffb648,#ff8a3d)",
 			title: "인증 · 학습 지원",
 			items: [
 				"총장 명의 수료증",
@@ -119,7 +116,6 @@ export const defaultSiteContent: SiteContent = {
 		},
 		{
 			icon: "fa-bus",
-			gradient: "linear-gradient(135deg,#ff6f61,#e5493a)",
 			title: "원거리 교육생 지원",
 			items: ["교통비 지원", "게스트하우스 제공"],
 		},

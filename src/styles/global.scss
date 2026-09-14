@@ -33,8 +33,8 @@ h2,
 h3,
 h4 {
 	font-family: t.$font-head;
-	font-weight: 800;
-	color: t.$navy;
+	font-weight: 700;
+	color: t.$ink;
 	letter-spacing: -0.015em;
 	margin: 0 0 0.5em;
 	line-height: 1.32;
@@ -82,23 +82,20 @@ body {
 	@include t.btn;
 }
 .btn-primary {
-	background: linear-gradient(135deg, t.$teal, t.$teal-dark);
+	background: t.$teal;
 	color: #fff;
-	box-shadow: 0 12px 24px -10px rgba(28, 145, 134, 0.65);
 }
 .btn-ghost {
-	background: rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.1);
 	color: #fff;
-	border: 1px solid rgba(255, 255, 255, 0.22);
 }
 .btn-kakao {
 	background: #fee500;
 	color: #391b1b;
-	box-shadow: 0 10px 22px -10px rgba(254, 229, 0, 0.7);
 }
 .btn-outline {
 	background: #fff;
-	color: t.$navy;
+	color: t.$ink;
 	border: 1px solid t.$border;
 }
 .btn-block {

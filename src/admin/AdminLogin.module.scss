@@ -3,7 +3,7 @@
 .page {
 	width: 100%;
 	min-height: 100vh;
-	background: t.$navy;
+	background: t.$ink;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -51,7 +51,7 @@
 }
 
 .roleTabActive {
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 }
 
@@ -86,7 +86,7 @@
 
 .submit {
 	width: 100%;
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 	border: none;
 	border-radius: 999px;

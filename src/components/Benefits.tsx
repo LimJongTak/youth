@@ -15,7 +15,7 @@ export function Benefits() {
 			<div className={styles.grid}>
 				{content.benefits.map((benefit) => (
 					<div className={styles.card} key={benefit.title}>
-						<span className={styles.icon} style={{ background: benefit.gradient }}>
+						<span className={styles.icon}>
 							<i className={`fas ${benefit.icon}`} />
 						</span>
 						<h4>{benefit.title}</h4>

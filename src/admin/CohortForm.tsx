@@ -103,13 +103,12 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 				/>
 			</div>
 
-			<div className={styles.field}>
-				<label htmlFor="location">교육장소</label>
-				<input
+			<div className={`${styles.field} ${styles.wide}`}>
+				<label htmlFor="location">교육장소 (줄바꿈으로 여러 줄 입력 가능)</label>
+				<textarea
 					id="location"
-					type="text"
 					required
-					placeholder="예: 광양 커뮤니티센터(공통과정)/국립순천대학교(전문·몰입교과)"
+					placeholder={"예: 광양 커뮤니티센터(공통과정)\n국립순천대학교(전문·몰입교과)"}
 					value={draft.location}
 					onChange={(e) => setDraft((d) => ({ ...d, location: e.target.value }))}
 				/>

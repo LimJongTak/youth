@@ -29,8 +29,8 @@
 	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
 	&.active {
-		background: t.$navy;
-		border-color: t.$navy;
+		background: t.$ink;
+		border-color: t.$ink;
 		color: #fff;
 	}
 }
@@ -111,6 +111,7 @@
 	span:last-child {
 		font-weight: 700;
 		text-align: right;
+		white-space: pre-line;
 	}
 }
 

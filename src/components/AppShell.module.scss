@@ -55,8 +55,7 @@ main {
 
 @media (min-width: t.$bp-desktop) {
 	:global(body) {
-		background: radial-gradient(circle at 20% 20%, #2b3350 0%, transparent 45%),
-			radial-gradient(circle at 80% 85%, #1a3d3a 0%, transparent 45%), #{t.$navy};
+		background: #e4e7eb;
 		padding: 48px 20px;
 		align-items: center;
 	}

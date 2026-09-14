@@ -20,7 +20,7 @@
 
 .username {
 	font-weight: 800;
-	color: t.$navy;
+	color: t.$ink;
 }
 
 .roleTag {
@@ -32,7 +32,7 @@
 	color: #fff;
 }
 .roleAdmin {
-	background: t.$navy;
+	background: t.$ink;
 }
 .roleManager {
 	background: t.$teal-dark;
@@ -93,7 +93,7 @@
 
 .submit {
 	grid-column: 1 / -1;
-	background: t.$navy;
+	background: t.$ink;
 	color: #fff;
 	border: none;
 	border-radius: 999px;
