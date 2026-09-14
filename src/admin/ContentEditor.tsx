@@ -8,7 +8,6 @@ import { TracksEditor } from "./content-editors/TracksEditor";
 import { BenefitsEditor } from "./content-editors/BenefitsEditor";
 import { JourneyEditor } from "./content-editors/JourneyEditor";
 import { ApplyStepsEditor } from "./content-editors/ApplyStepsEditor";
-import { FaqsEditor } from "./content-editors/FaqsEditor";
 import { ContactEditor } from "./content-editors/ContactEditor";
 import styles from "./ContentEditor.module.scss";
 
@@ -36,7 +35,6 @@ const sections: { id: string; title: string; hint: string; render: () => ReactNo
 		hint: "신청 절차 단계",
 		render: () => <ApplyStepsEditor />,
 	},
-	{ id: "faqs", title: "자주 묻는 질문", hint: "FAQ 목록", render: () => <FaqsEditor /> },
 	{
 		id: "contact",
 		title: "문의처",

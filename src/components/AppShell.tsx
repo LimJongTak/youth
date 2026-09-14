@@ -9,7 +9,6 @@ import { TargetChecklist } from "./TargetChecklist";
 import { Curriculum } from "./Curriculum";
 import { Benefits } from "./Benefits";
 import { Journey } from "./Journey";
-import { Faq } from "./Faq";
 import { Contact } from "./Contact";
 import { bottomNav } from "../data/content";
 import { useActiveSection } from "../hooks/useActiveSection";
@@ -48,7 +47,6 @@ export function AppShell() {
 					<Curriculum />
 					<Benefits />
 					<Journey />
-					<Faq />
 					<Contact />
 				</main>
 

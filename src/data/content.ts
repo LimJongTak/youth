@@ -12,7 +12,6 @@ export const drawerNav: NavItem[] = [
 	{ id: "curriculum", label: "커리큘럼", icon: "fa-layer-group" },
 	{ id: "benefit", label: "참여 혜택", icon: "fa-gift" },
 	{ id: "journey", label: "참여 여정", icon: "fa-route" },
-	{ id: "faq", label: "자주 묻는 질문", icon: "fa-question-circle" },
 	{ id: "contact", label: "문의처", icon: "fa-phone" },
 ];
 

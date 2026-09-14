@@ -56,11 +56,6 @@ export interface ApplyStep {
 	desc: string;
 }
 
-export interface FaqItem {
-	q: string;
-	a: string;
-}
-
 export interface ContactInfo {
 	org: string;
 	email: string;
@@ -78,19 +73,5 @@ export interface SiteContent {
 	benefits: BenefitCard[];
 	journey: TimelineStep[];
 	applySteps: ApplyStep[];
-	faqs: FaqItem[];
 	contact: ContactInfo;
 }
-
-export const SITE_CONTENT_SECTIONS: (keyof SiteContent)[] = [
-	"hero",
-	"about",
-	"checklist",
-	"commonCourse",
-	"tracks",
-	"benefits",
-	"journey",
-	"applySteps",
-	"faqs",
-	"contact",
-];
