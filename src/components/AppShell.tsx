@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { StatusBar } from "./StatusBar";
+import { useEffect, useState } from "react";
 import { TopBar } from "./TopBar";
 import { Drawer } from "./Drawer";
 import { BottomNav } from "./BottomNav";
@@ -17,23 +16,27 @@ import { useActiveSection } from "../hooks/useActiveSection";
 import { useElementRect } from "../hooks/useElementRect";
 import styles from "./AppShell.module.scss";
 
+const sectionIds = bottomNav.map((item) => item.id);
+
 export function AppShell() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [appEl, setAppEl] = useState<HTMLDivElement | null>(null);
 
-	const sectionIds = bottomNav.map((item) => item.id);
-	const activeSection = useActiveSection(sectionIds, appEl);
+	const activeSection = useActiveSection(sectionIds);
 	const appRect = useElementRect(appEl);
 
-	return (
-		<div className={styles.deviceWrap}>
-			<div
-				className={`${styles.app} ${drawerOpen ? styles.locked : ""}`}
-				ref={setAppEl}
-			>
-				<span className={styles.notch} aria-hidden="true" />
+	// The page scrolls normally now (no inner scroll container to lock), so
+	// the drawer's open-state locks the real body scroll instead.
+	useEffect(() => {
+		document.body.style.overflow = drawerOpen ? "hidden" : "";
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [drawerOpen]);
 
-				<StatusBar />
+	return (
+		<div className={styles.shell}>
+			<div className={styles.app} ref={setAppEl}>
 				<Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} rect={appRect} />
 				<TopBar onMenuClick={() => setDrawerOpen(true)} />
 

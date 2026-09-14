@@ -16,6 +16,7 @@ function emptyDraft(): Omit<Cohort, "id"> {
 		capacity: "",
 		recruitPeriod: "",
 		eduPeriod: "",
+		eduHours: "",
 		location: "",
 		note: "",
 		applyUrl: "",
@@ -100,6 +101,18 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					placeholder="예: 2026.10.06(화) ~ 12.12(토)"
 					value={draft.eduPeriod}
 					onChange={(e) => setDraft((d) => ({ ...d, eduPeriod: e.target.value }))}
+				/>
+			</div>
+
+			<div className={styles.field}>
+				<label htmlFor="eduHours">교육시간</label>
+				<input
+					id="eduHours"
+					type="text"
+					required
+					placeholder="예: 105~150시간 (트랙별 상이)"
+					value={draft.eduHours}
+					onChange={(e) => setDraft((d) => ({ ...d, eduHours: e.target.value }))}
 				/>
 			</div>
 

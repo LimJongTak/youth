@@ -33,6 +33,7 @@
 	font-size: 0.88rem;
 	line-height: 1.55;
 	margin-bottom: 0;
+	white-space: pre-line;
 }
 
 .cohortPing {
@@ -54,6 +55,13 @@
 	gap: 8px;
 	margin-top: 18px;
 	flex-wrap: wrap;
+}
+
+.noActiveMsg {
+	margin: 10px 0 0;
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: t.$amber;
 }
 
 .statRow {

@@ -13,7 +13,7 @@ export function JourneyEditor() {
 				onChange={setDraft}
 				fields={[
 					{ key: "title", label: "단계 제목" },
-					{ key: "desc", label: "설명" },
+					{ key: "desc", label: "설명", type: "textarea" },
 				]}
 				emptyItem={() => ({ title: "", desc: "" })}
 				itemLabel={(item, i) => item.title || `단계 ${i + 1}`}

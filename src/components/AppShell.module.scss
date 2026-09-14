@@ -1,79 +1,29 @@
 @use "../styles/tokens" as t;
 
-.deviceWrap {
+// No more fake phone bezel/notch/status-bar. On any screen size this is
+// just a normal page whose content stays inside a mobile-width column —
+// the same pattern ordinary responsive sites use, not a simulated device
+// screenshot. The page scrolls normally; nothing here creates its own
+// scroll container.
+.shell {
 	width: 100%;
-	background: transparent;
+	min-height: 100vh;
+	background: t.$bg;
+	display: flex;
+	justify-content: center;
 }
 
 .app {
-	// .app is always treated as its own fixed-height "device viewport" —
-	// both on a real phone and inside the desktop mockup — so sticky bars
-	// behave identically at every breakpoint.
 	position: relative;
 	width: 100%;
-	height: 100vh;
-	height: 100dvh;
+	max-width: 480px;
+	min-height: 100vh;
 	background: t.$card;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto;
-	overflow-x: hidden;
-	-webkit-overflow-scrolling: touch;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-	scroll-behavior: smooth;
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
-
-	// Applied while the drawer is open so the page behind it can't be
-	// scrolled at the same time — otherwise content drifts under the
-	// (portal-rendered, viewport-pinned) drawer in a jarring way.
-	&.locked {
-		overflow: hidden;
-	}
-}
-
-.notch {
-	display: none;
-	position: absolute;
-	top: 14px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 120px;
-	height: 26px;
-	background: #0b0d14;
-	border-radius: 16px;
-	z-index: 50;
 }
 
 main {
 	flex: 1;
 	padding-bottom: 8px;
-}
-
-@media (min-width: t.$bp-desktop) {
-	:global(body) {
-		background: #e4e7eb;
-		padding: 48px 20px;
-		align-items: center;
-	}
-	.deviceWrap {
-		width: 390px;
-		height: 844px;
-		background: #0b0d14;
-		border-radius: 52px;
-		padding: 14px;
-		box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6),
-			0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-	}
-	.app {
-		width: 100%;
-		height: 100%;
-		border-radius: t.$radius-app;
-	}
-	.notch {
-		display: block;
-	}
 }

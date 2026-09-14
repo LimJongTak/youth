@@ -42,7 +42,9 @@
 	}
 
 	span {
+		display: block;
 		font-size: 0.75rem;
 		color: t.$text-mute;
+		white-space: pre-line;
 	}
 }

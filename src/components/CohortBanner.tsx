@@ -72,6 +72,10 @@ export function CohortBanner() {
 						<span>{selected.eduPeriod}</span>
 					</div>
 					<div className={styles.row}>
+						<span>교육시간</span>
+						<span>{selected.eduHours}</span>
+					</div>
+					<div className={styles.row}>
 						<span>교육장소</span>
 						<span>{selected.location}</span>
 					</div>

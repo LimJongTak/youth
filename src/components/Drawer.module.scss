@@ -77,15 +77,4 @@
 	position: fixed;
 	z-index: 190;
 	background: rgba(10, 12, 20, 0.5);
-	border-radius: 0;
-}
-
-@media (min-width: t.$bp-desktop) {
-	.backdrop {
-		border-radius: t.$radius-app;
-	}
-	.drawer {
-		border-top-left-radius: t.$radius-app;
-		border-bottom-left-radius: t.$radius-app;
-	}
 }

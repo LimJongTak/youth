@@ -7,6 +7,7 @@ export interface Cohort {
 	capacity: string;
 	recruitPeriod: string;
 	eduPeriod: string;
+	eduHours: string;
 	location: string;
 	note?: string;
 	/** Google Form (or other) application link for this cohort. */

@@ -13,7 +13,7 @@ export function ChecklistEditor() {
 				onChange={setDraft}
 				fields={[
 					{ key: "title", label: "항목 제목" },
-					{ key: "desc", label: "설명" },
+					{ key: "desc", label: "설명", type: "textarea" },
 					{ key: "defaultChecked", label: "처음부터 체크되어 있음", type: "checkbox" },
 				]}
 				emptyItem={() => ({ title: "", desc: "", defaultChecked: false })}

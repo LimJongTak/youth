@@ -43,9 +43,10 @@
 		font-size: 0.78rem;
 		padding: 0 2px 14px;
 		margin: 0;
+		white-space: pre-line;
 	}
 }
 
 .open .answer {
-	max-height: 200px;
+	max-height: 600px;
 }

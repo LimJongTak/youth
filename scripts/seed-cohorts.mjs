@@ -20,6 +20,7 @@ const seedCohorts = [
 		capacity: "미정 (공식 페이지 참고)",
 		recruitPeriod: "2026.08.24(월) 이후 선착순",
 		eduPeriod: "트랙별 상이 (커리큘럼 참고)",
+		eduHours: "트랙별 상이 (105~150시간, 커리큘럼 참고)",
 		location: "국립순천대학교 · 참여기업 연계",
 		note: "선착순 모집으로 조기 마감되었습니다.",
 		applyUrl:
@@ -33,6 +34,7 @@ const seedCohorts = [
 		capacity: "총 30명",
 		recruitPeriod: "2026.09.14(월) ~ 09.30(수)",
 		eduPeriod: "2026.10.06(화) ~ 12.12(토)",
+		eduHours: "105~150시간 (트랙별 상이)",
 		location: "광양 커뮤니티센터(공통과정)\n국립순천대학교(전문·몰입교과)",
 		note: "선착순 모집으로 인해 조기 마감될 수 있습니다.",
 		applyUrl:

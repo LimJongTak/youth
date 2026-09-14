@@ -17,7 +17,7 @@ export function ApplyStepsEditor() {
 				}
 				fields={[
 					{ key: "title", label: "단계 제목" },
-					{ key: "desc", label: "설명" },
+					{ key: "desc", label: "설명", type: "textarea" },
 				]}
 				emptyItem={() => ({ num: draft.length + 1, title: "", desc: "" })}
 				itemLabel={(item) => `${item.num}단계`}
