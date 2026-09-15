@@ -56,6 +56,7 @@ export const defaultSiteContent: SiteContent = {
 				{ value: "-", label: "몰입과정 없음" },
 			],
 			total: "105시간",
+			courses: [{ name: "AI와 코딩", kind: "전문과정" }],
 		},
 		{
 			id: "mid",
@@ -71,6 +72,10 @@ export const defaultSiteContent: SiteContent = {
 				{ value: "45H", label: "몰입(메가존클라우드)" },
 			],
 			total: "150시간",
+			courses: [
+				{ name: "심층강화학습", kind: "전문과정" },
+				{ name: "메가존클라우드 부트캠프", kind: "몰입과정" },
+			],
 		},
 		{
 			id: "adv",
@@ -86,6 +91,10 @@ export const defaultSiteContent: SiteContent = {
 				{ value: "45H", label: "몰입(네이버클라우드)" },
 			],
 			total: "150시간",
+			courses: [
+				{ name: "머신러닝", kind: "전문과정" },
+				{ name: "네이버클라우드 부트캠프", kind: "몰입과정" },
+			],
 		},
 	],
 	benefits: [

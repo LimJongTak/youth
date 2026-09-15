@@ -54,6 +54,139 @@
 	}
 }
 
+.cardHead {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.detailBtn {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	border: none;
+	background: transparent;
+	padding: 2px 0;
+	font-size: 0.76rem;
+	font-weight: 700;
+	color: t.$text-mute;
+	cursor: pointer;
+
+	i {
+		font-size: 0.66rem;
+	}
+
+	&:active {
+		opacity: 0.6;
+	}
+}
+
+.detailOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: rgba(16, 20, 30, 0.5);
+}
+
+.detailCard {
+	position: relative;
+	width: 100%;
+	max-width: 360px;
+	max-height: 80vh;
+	overflow-y: auto;
+	background: t.$card;
+	border-radius: t.$radius-lg;
+	padding: 24px 20px 20px;
+	box-shadow: t.$shadow-lg;
+}
+
+.detailClose {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	border: none;
+	background: t.$bg;
+	color: t.$text-mute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+
+	&:active {
+		background: t.$border;
+	}
+}
+
+.detailTitle {
+	margin-top: 8px;
+	margin-bottom: 2px;
+}
+
+.detailDesc {
+	font-size: 0.78rem;
+	color: t.$text-mute;
+	margin-bottom: 14px;
+}
+
+.detailGroupLabel {
+	display: block;
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	color: t.$text-mute;
+	margin: 14px 0 6px;
+
+	&:first-of-type {
+		margin-top: 0;
+	}
+}
+
+.detailList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		background: #f6f8fb;
+		border-radius: 10px;
+		padding: 10px 12px;
+		font-size: 0.84rem;
+		font-weight: 600;
+		color: t.$ink;
+
+		span:first-of-type {
+			flex: 1;
+		}
+	}
+
+	i {
+		color: t.$teal-dark;
+		font-size: 0.9rem;
+	}
+}
+
+.detailKind {
+	flex-shrink: 0;
+	font-size: 0.68rem;
+	font-weight: 700;
+	color: t.$text-mute;
+	background: #eef1f6;
+	border-radius: 999px;
+	padding: 3px 8px;
+}
+
 .badge {
 	display: inline-block;
 	font-size: 0.68rem;

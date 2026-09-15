@@ -20,6 +20,7 @@ function emptyTrack(): Track {
 		subtitle: "",
 		hours: [],
 		total: "",
+		courses: [],
 	};
 }
 
@@ -107,6 +108,21 @@ export function TracksEditor() {
 						label="총 교육시간 (예: 105시간)"
 						value={track.total}
 						onChange={(v) => updateTrack(index, { total: v })}
+					/>
+
+					<label className={styles.field}>
+						이 트랙만의 과목 (자세히 보기 카드에 표시 — 공통과정 2과목은 자동으로 함께 표시됩니다)
+					</label>
+					<RepeatableList
+						items={track.courses}
+						onChange={(courses) => updateTrack(index, { courses })}
+						fields={[
+							{ key: "name", label: "과목명 (예: 심층강화학습)" },
+							{ key: "kind", label: "구분 (예: 전문과정 / 몰입과정)" },
+						]}
+						emptyItem={() => ({ name: "", kind: "" })}
+						itemLabel={(item, i) => item.name || `과목 ${i + 1}`}
+						addLabel="과목 추가"
 					/>
 				</div>
 			))}

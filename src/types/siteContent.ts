@@ -23,6 +23,12 @@ export interface HourChip {
 	label: string;
 }
 
+export interface TrackCourse {
+	name: string;
+	/** e.g. "전문과정" or "몰입과정" — shown as a small tag next to the name. */
+	kind: string;
+}
+
 export interface Track {
 	id: "basic" | "mid" | "adv";
 	tabLabel: string;
@@ -32,6 +38,10 @@ export interface Track {
 	subtitle: string;
 	hours: HourChip[];
 	total: string;
+	/** This track's own subjects, shown in the "자세히" detail card (the
+	 * shared 공통과정 subjects are shown alongside them, parsed from
+	 * `commonCourse.desc`). */
+	courses: TrackCourse[];
 }
 
 export interface CommonCourse {
