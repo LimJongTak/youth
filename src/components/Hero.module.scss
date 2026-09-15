@@ -7,7 +7,7 @@
 }
 
 .logoMark {
-	height: 24px;
+	height: 40px;
 	width: auto;
 	display: block;
 	margin-bottom: 20px;
@@ -75,7 +75,7 @@
 	flex: 1;
 	min-width: 0;
 	padding: 0 6px 22px;
-	text-align: left;
+	text-align: center;
 
 	& + & {
 		border-left: 1px solid rgba(255, 255, 255, 0.1);
