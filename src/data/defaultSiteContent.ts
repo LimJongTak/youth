@@ -13,11 +13,6 @@ export const defaultSiteContent: SiteContent = {
 			{ label: "참여기업", value: "21개사" },
 		],
 	},
-	about: {
-		description: "국립순천대학교가 운영하는 실무 중심 청년 취업 역량 강화 프로그램입니다.",
-		bodyHighlight: "청년도약 인재양성 부트캠프",
-		body: "는 AI·첨단산업 취업을 준비하는 미취업 청년을 위해 정규 교과 과정과 네이버클라우드·메가존클라우드 등 빅테크 기업 연계 몰입형 교육을 결합했습니다. 비전공자도 초급 과정부터 체계적으로 학습할 수 있도록 단계별 트랙으로 설계되었습니다.",
-	},
 	checklist: [
 		{
 			title: "만 19~34세, 미취업 청년",

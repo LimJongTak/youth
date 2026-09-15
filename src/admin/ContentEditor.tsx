@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { HeroEditor } from "./content-editors/HeroEditor";
-import { AboutEditor } from "./content-editors/AboutEditor";
 import { ChecklistEditor } from "./content-editors/ChecklistEditor";
 import { CommonCourseEditor } from "./content-editors/CommonCourseEditor";
 import { TracksEditor } from "./content-editors/TracksEditor";
@@ -13,7 +12,6 @@ import styles from "./ContentEditor.module.scss";
 
 const sections: { id: string; title: string; hint: string; render: () => ReactNode }[] = [
 	{ id: "hero", title: "히어로 (첫 화면)", hint: "제목, 소개 문구, 상단 통계 카드", render: () => <HeroEditor /> },
-	{ id: "about", title: "프로그램 소개", hint: "소개 섹션 문구", render: () => <AboutEditor /> },
 	{
 		id: "checklist",
 		title: "모집대상 체크리스트",

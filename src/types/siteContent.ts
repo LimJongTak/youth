@@ -6,12 +6,6 @@ export interface HeroContent {
 	stats: { label: string; value: string }[];
 }
 
-export interface AboutContent {
-	description: string;
-	bodyHighlight: string;
-	body: string;
-}
-
 export interface ChecklistItem {
 	title: string;
 	desc: string;
@@ -76,7 +70,6 @@ export interface ContactInfo {
 
 export interface SiteContent {
 	hero: HeroContent;
-	about: AboutContent;
 	checklist: ChecklistItem[];
 	commonCourse: CommonCourse;
 	tracks: Track[];

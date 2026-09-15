@@ -18,7 +18,7 @@ interface AuditEntry {
 
 const sectionLabel: Record<string, string> = {
 	hero: "히어로",
-	about: "프로그램 소개",
+	about: "프로그램 안내",
 	checklist: "모집대상 체크리스트",
 	commonCourse: "공통과정",
 	tracks: "커리큘럼 트랙",
