@@ -14,6 +14,22 @@
 	}
 }
 
+.headRow {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.headText {
+	min-width: 0;
+}
+
+.headAction {
+	flex-shrink: 0;
+	padding-top: 26px;
+}
+
 .eyebrow {
 	@include t.eyebrow;
 }

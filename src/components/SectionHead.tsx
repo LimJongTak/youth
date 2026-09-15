@@ -6,6 +6,8 @@ interface SectionHeadProps {
 	title: ReactNode;
 	description?: string;
 	eyebrowClassName?: string;
+	/** Optional control rendered top-right, aligned with the title. */
+	action?: ReactNode;
 }
 
 export function SectionHead({
@@ -13,11 +15,17 @@ export function SectionHead({
 	title,
 	description,
 	eyebrowClassName,
+	action,
 }: SectionHeadProps) {
 	return (
 		<div className={styles.head}>
-			<span className={`${styles.eyebrow} ${eyebrowClassName ?? ""}`}>{eyebrow}</span>
-			<h2>{title}</h2>
+			<div className={styles.headRow}>
+				<div className={styles.headText}>
+					<span className={`${styles.eyebrow} ${eyebrowClassName ?? ""}`}>{eyebrow}</span>
+					<h2>{title}</h2>
+				</div>
+				{action && <div className={styles.headAction}>{action}</div>}
+			</div>
 			{description && <p>{description}</p>}
 		</div>
 	);

@@ -34,6 +34,12 @@ export function Journey() {
 				eyebrow="JOURNEY"
 				title="참여 여정"
 				description="신청부터 채용연계까지, 전 과정을 함께합니다."
+				action={
+					<button type="button" className={styles.detailBtn} onClick={() => setDetailOpen(true)}>
+						자세히 보기
+						<i className="fas fa-chevron-right" />
+					</button>
+				}
 			/>
 
 			<div className={styles.timeline}>
@@ -43,11 +49,6 @@ export function Journey() {
 					</div>
 				))}
 			</div>
-
-			<button type="button" className={styles.detailBtn} onClick={() => setDetailOpen(true)}>
-				자세히 보기
-				<i className="fas fa-chevron-right" />
-			</button>
 
 			{detailOpen &&
 				createPortal(
