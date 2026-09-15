@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
 import { statusLabel } from "../types/cohort";
@@ -20,6 +21,7 @@ export function CohortBanner() {
 	const { cohorts, selected, select } = useCohorts();
 	const { content } = useSiteContent();
 	const { applySteps, contact } = content;
+	const [stepsOpen, setStepsOpen] = useState(false);
 
 	if (cohorts.length === 0) return null;
 
@@ -84,19 +86,35 @@ export function CohortBanner() {
 			</div>
 
 			<div className={`${styles.card} ${styles.stepsCard}`}>
-				<p className={styles.stepsTitle}>신청 방법</p>
-				{applySteps.map((step, index) => (
-					<div className={styles.step} key={step.num}>
-						<div className={styles.stepMarker}>
-							<div className={styles.num}>{step.num}</div>
-							{index < applySteps.length - 1 && <div className={styles.line} />}
-						</div>
-						<div className={styles.stepBody}>
-							<strong>{step.title}</strong>
-							<p>{step.desc}</p>
-						</div>
+				<button
+					type="button"
+					className={styles.stepsToggle}
+					aria-expanded={stepsOpen}
+					onClick={() => setStepsOpen((open) => !open)}
+				>
+					신청 방법
+					<i
+						className={`fas fa-chevron-down ${styles.stepsChevron} ${
+							stepsOpen ? styles.open : ""
+						}`}
+					/>
+				</button>
+				<div className={`${styles.stepsCollapse} ${stepsOpen ? styles.open : ""}`}>
+					<div className={styles.stepsInner}>
+						{applySteps.map((step, index) => (
+							<div className={styles.step} key={step.num}>
+								<div className={styles.stepMarker}>
+									<div className={styles.num}>{step.num}</div>
+									{index < applySteps.length - 1 && <div className={styles.line} />}
+								</div>
+								<div className={styles.stepBody}>
+									<strong>{step.title}</strong>
+									<p>{step.desc}</p>
+								</div>
+							</div>
+						))}
 					</div>
-				))}
+				</div>
 			</div>
 
 			<div className={styles.ctaCard}>
