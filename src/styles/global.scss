@@ -7,6 +7,14 @@
 }
 
 html {
+	// Force light mode regardless of the OS/browser dark mode setting, so
+	// colors never get auto-inverted or re-tinted by the browser.
+	color-scheme: light only;
+
+	// Animate in-page anchor jumps (bottom nav, drawer, hero buttons) instead
+	// of snapping instantly to the target section.
+	scroll-behavior: smooth;
+
 	// Fluid root type scale: every `rem` value in the app scales smoothly
 	// with the real device width between 320px (small phones) and 430px
 	// (our mobile/desktop-mockup breakpoint) — so proportions stay
