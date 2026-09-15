@@ -11,6 +11,7 @@ export function TargetChecklist() {
 	const [checked, setChecked] = useState<boolean[]>(() =>
 		checklist.map((item) => Boolean(item.defaultChecked)),
 	);
+	const [listOpen, setListOpen] = useState(false);
 
 	useEffect(() => {
 		setChecked(checklist.map((item) => Boolean(item.defaultChecked)));
@@ -36,23 +37,40 @@ export function TargetChecklist() {
 				}
 				description="아래 항목에 해당하는지 하나씩 확인해보세요."
 			/>
-			<div className={styles.list}>
-				{checklist.map((item, index) => (
-					<label className={styles.item} key={item.title}>
-						<input
-							type="checkbox"
-							checked={checked[index]}
-							onChange={() => toggle(index)}
-						/>
-						<span className={styles.box}>
-							<i className="fas fa-check" />
-						</span>
-						<span>
-							<strong>{item.title}</strong>
-							<small>{item.desc}</small>
-						</span>
-					</label>
-				))}
+			<div className="card">
+				<button
+					type="button"
+					className={styles.toggle}
+					aria-expanded={listOpen}
+					onClick={() => setListOpen((open) => !open)}
+				>
+					체크리스트 확인하기
+					<i
+						className={`fas fa-chevron-down ${styles.chevron} ${listOpen ? styles.open : ""}`}
+					/>
+				</button>
+				<div className={`${styles.collapse} ${listOpen ? styles.open : ""}`}>
+					<div className={styles.collapseInner}>
+						<div className={styles.list}>
+							{checklist.map((item, index) => (
+								<label className={styles.item} key={item.title}>
+									<input
+										type="checkbox"
+										checked={checked[index]}
+										onChange={() => toggle(index)}
+									/>
+									<span className={styles.box}>
+										<i className="fas fa-check" />
+									</span>
+									<span>
+										<strong>{item.title}</strong>
+										<small>{item.desc}</small>
+									</span>
+								</label>
+							))}
+						</div>
+					</div>
+				</div>
 			</div>
 
 			{allChecked && (

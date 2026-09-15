@@ -17,7 +17,7 @@
 
 .item {
 	position: relative;
-	padding-bottom: 18px;
+	padding-bottom: 14px;
 
 	&:last-child {
 		padding-bottom: 0;
@@ -38,12 +38,149 @@
 	strong {
 		display: block;
 		font-size: 0.86rem;
+		font-weight: 600;
 		color: t.$ink;
 	}
+}
 
-	span {
-		display: block;
-		font-size: 0.75rem;
+.detailBtn {
+	margin-top: 6px;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	border: none;
+	background: transparent;
+	padding: 0;
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: t.$teal-dark;
+	cursor: pointer;
+
+	i {
+		font-size: 0.66rem;
+	}
+
+	&:active {
+		opacity: 0.6;
+	}
+}
+
+.detailOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: rgba(16, 20, 30, 0.5);
+}
+
+.detailCard {
+	position: relative;
+	width: 100%;
+	max-width: 360px;
+	max-height: 80vh;
+	overflow-y: auto;
+	background: t.$card;
+	border-radius: t.$radius-lg;
+	padding: 24px 20px 20px;
+	box-shadow: t.$shadow-lg;
+}
+
+.detailClose {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	border: none;
+	background: t.$bg;
+	color: t.$text-mute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+
+	&:active {
+		background: t.$border;
+	}
+}
+
+.detailTitle {
+	margin-bottom: 2px;
+}
+
+.detailDesc {
+	font-size: 0.78rem;
+	color: t.$text-mute;
+	margin-bottom: 14px;
+}
+
+.accordion {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.accordionItem {
+	background: #f6f8fb;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.accordionHead {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	border: none;
+	background: transparent;
+	padding: 12px;
+	font-family: inherit;
+	font-size: 0.84rem;
+	font-weight: 700;
+	color: t.$ink;
+	text-align: left;
+	cursor: pointer;
+
+	&:active {
+		opacity: 0.7;
+	}
+}
+
+.accordionChevron {
+	flex-shrink: 0;
+	font-size: 0.68rem;
+	color: t.$text-mute;
+	transition: transform 0.25s ease;
+
+	&.open {
+		transform: rotate(180deg);
+	}
+}
+
+.accordionCollapse {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.25s ease;
+
+	&.open {
+		grid-template-rows: 1fr;
+	}
+}
+
+.accordionInner {
+	overflow: hidden;
+	min-height: 0;
+
+	p {
+		margin: 0;
+		padding: 0 12px 12px;
+		font-size: 0.78rem;
+		line-height: 1.5;
 		color: t.$text-mute;
 		white-space: pre-line;
 	}
