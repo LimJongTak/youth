@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { TopBar } from "./TopBar";
 import { BottomNav } from "./BottomNav";
 import { Hero } from "./Hero";
@@ -10,12 +11,17 @@ import { Journey } from "./Journey";
 import { Contact } from "./Contact";
 import { bottomNav } from "../data/content";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { logEvent } from "../lib/analytics";
 import styles from "./AppShell.module.scss";
 
 const sectionIds = bottomNav.map((item) => item.id);
 
 export function AppShell() {
 	const activeSection = useActiveSection(sectionIds);
+
+	useEffect(() => {
+		logEvent("page_view");
+	}, []);
 
 	return (
 		<div className={styles.shell}>

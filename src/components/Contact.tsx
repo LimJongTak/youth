@@ -1,6 +1,7 @@
 import type { MouseEvent } from "react";
 import { useSiteContent } from "../context/SiteContentContext";
 import { SectionHead } from "./SectionHead";
+import { logEvent } from "../lib/analytics";
 import styles from "./Contact.module.scss";
 
 const KAKAO_MAP_WEB_URL = "https://place.map.kakao.com/2091779575";
@@ -30,6 +31,7 @@ export function Contact() {
 				<a
 					className={`${styles.row} ${styles.kakaoRow}`}
 					href={contact.kakaoUrl}
+					onClick={() => logEvent("kakao_click", { source: "contact" })}
 					target="_blank"
 					rel="noopener noreferrer"
 				>

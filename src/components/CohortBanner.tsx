@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
 import { statusLabel } from "../types/cohort";
+import { logEvent } from "../lib/analytics";
 import { SectionHead } from "./SectionHead";
 import styles from "./CohortBanner.module.scss";
 
@@ -123,6 +124,7 @@ export function CohortBanner() {
 						className="btn btn-primary btn-block"
 						href={selected.applyUrl}
 						rel="noopener"
+						onClick={() => logEvent("apply_click", { source: "cohort_banner" })}
 					>
 						<i className="fas fa-paper-plane" />
 						{selected.generation}기 신청하기
@@ -136,6 +138,7 @@ export function CohortBanner() {
 				<a
 					className="btn btn-kakao btn-block"
 					href={contact.kakaoUrl}
+					onClick={() => logEvent("kakao_click", { source: "cohort_banner" })}
 					target="_blank"
 					rel="noopener noreferrer"
 				>

@@ -1,4 +1,5 @@
 import { useSiteContent } from "../context/SiteContentContext";
+import { logEvent } from "../lib/analytics";
 import styles from "./TopBar.module.scss";
 
 export function TopBar() {
@@ -13,6 +14,7 @@ export function TopBar() {
 			<a
 				className={`${styles.iconBtn} ${styles.kakaoBtn}`}
 				href={content.contact.kakaoUrl}
+				onClick={() => logEvent("kakao_click", { source: "topbar" })}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="카카오톡으로 문의하기"

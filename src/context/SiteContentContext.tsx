@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { addDoc, collection, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
+import { auth, db } from "../lib/firebase";
 import { defaultSiteContent } from "../data/defaultSiteContent";
 import type { SiteContent } from "../types/siteContent";
 
@@ -36,6 +36,14 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
 
 	async function updateSection<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {
 		await updateDoc(doc(db, ...DOC_PATH), { [key]: value });
+		const uid = auth.currentUser?.uid;
+		if (uid) {
+			addDoc(collection(db, "auditLog"), {
+				uid,
+				section: key,
+				at: serverTimestamp(),
+			}).catch(() => {});
+		}
 	}
 
 	return (

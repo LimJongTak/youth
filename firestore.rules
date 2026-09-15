@@ -43,5 +43,24 @@ service cloud.firestore {
       allow create: if isSignedIn() && (request.auth.uid == userId || isAdmin());
       allow update, delete: if isAdmin();
     }
+
+    // First-party analytics events (page views, apply/kakao clicks). Any
+    // visitor (including anonymous) may log an event; only signed-in
+    // admins/managers can read the log back (admin "통계" tab), and it is
+    // append-only — no client may edit or delete past entries.
+    match /analyticsEvents/{eventId} {
+      allow create: if true;
+      allow read: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Audit trail of content saves (who changed which section, when).
+    // Same shape as analytics: append-only, readable by signed-in
+    // admins/managers, writable only by a signed-in user for their own uid.
+    match /auditLog/{entryId} {
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow read: if isSignedIn();
+      allow update, delete: if false;
+    }
   }
 }

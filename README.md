@@ -103,6 +103,11 @@ npx wrangler deploy
 
 최초 1회는 `npx wrangler login`으로 Cloudflare 계정에 로그인해야 합니다 (이후에는 세션이 유지됩니다). 빌드에 필요한 `VITE_FIREBASE_*` 값은 로컬 `.env`에서 읽어 정적으로 번들되므로, 배포 전 `.env`가 최신 값인지 확인하세요.
 
-### GitHub Actions로 자동 배포하려면 (선택)
+### GitHub Actions 자동 배포
 
-`main` 브랜치 푸시마다 자동 배포하고 싶다면, [Cloudflare API 토큰](https://dash.cloudflare.com/profile/api-tokens)을 발급해 저장소 Settings > Secrets에 `CLOUDFLARE_API_TOKEN`으로 등록하고, `wrangler deploy`를 실행하는 워크플로를 추가하면 됩니다 (아직 설정되어 있지 않음 — 현재는 위 명령을 수동으로 실행해 배포합니다).
+`.github/workflows/deploy.yml`이 이미 등록되어 있어, `main` 브랜치에 푸시하면 자동으로 빌드 후 `wrangler deploy`까지 실행됩니다. 최초 1회, 저장소 Settings > Secrets and variables > Actions에 아래 값들을 등록해야 동작합니다.
+
+- `CLOUDFLARE_API_TOKEN`: [Cloudflare API 토큰 발급 페이지](https://dash.cloudflare.com/profile/api-tokens)에서 "Edit Cloudflare Workers" 템플릿으로 토큰을 만들어 등록
+- `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID`: 로컬 `.env`와 동일한 값
+
+시크릿 등록 전까지는 워크플로가 실패하므로, 등록하기 전에는 지금처럼 `npm run build && npx wrangler deploy`로 수동 배포하면 됩니다.

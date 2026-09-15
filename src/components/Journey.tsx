@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSiteContent } from "../context/SiteContentContext";
 import { SectionHead } from "./SectionHead";
@@ -15,6 +15,27 @@ export function Journey() {
 	const { content } = useSiteContent();
 	const [detailOpen, setDetailOpen] = useState(false);
 	const [openSteps, setOpenSteps] = useState<Set<number>>(new Set());
+	const [revealed, setRevealed] = useState(false);
+	const timelineRef = useRef<HTMLDivElement>(null);
+
+	// Play the timeline's stagger-in animation once, the first time it
+	// scrolls into view, instead of on every render.
+	useEffect(() => {
+		const el = timelineRef.current;
+		if (!el) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setRevealed(true);
+					observer.disconnect();
+				}
+			},
+			{ threshold: 0.2 },
+		);
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
 
 	function toggleStep(index: number) {
 		setOpenSteps((prev) => {
@@ -42,7 +63,10 @@ export function Journey() {
 				}
 			/>
 
-			<div className={styles.timeline}>
+			<div
+				className={`${styles.timeline} ${revealed ? styles.revealed : ""}`}
+				ref={timelineRef}
+			>
 				{content.journey.map((step) => (
 					<div className={styles.item} key={step.title}>
 						<strong>{stripNumbering(step.title)}</strong>

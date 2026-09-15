@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
 import { SectionHead } from "./SectionHead";
+import { logEvent } from "../lib/analytics";
 import styles from "./TargetChecklist.module.scss";
 
 export function TargetChecklist() {
@@ -85,7 +86,11 @@ export function TargetChecklist() {
 						</span>
 					</div>
 					{canApply && (
-						<a className="btn btn-primary btn-block" href={selected.applyUrl}>
+						<a
+							className="btn btn-primary btn-block"
+							href={selected.applyUrl}
+							onClick={() => logEvent("apply_click", { source: "checklist" })}
+						>
 							<i className="fas fa-paper-plane" />
 							{selected.generation}기 신청하기
 						</a>

@@ -3,6 +3,7 @@ import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
 import { statusLabel } from "../types/cohort";
 import logoUrl from "../assets/logo-mark.png";
+import { logEvent } from "../lib/analytics";
 import styles from "./Hero.module.scss";
 
 export function Hero() {
@@ -24,7 +25,9 @@ export function Hero() {
 			event.preventDefault();
 			setShowNoActive(true);
 			window.setTimeout(() => setShowNoActive(false), 3000);
+			return;
 		}
+		logEvent("apply_click", { source: "hero" });
 	}
 
 	return (

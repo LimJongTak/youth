@@ -1,0 +1,15 @@
+{
+	"name": "청년도약 인재양성 부트캠프",
+	"short_name": "청년도약부트캠프",
+	"description": "AI·첨단산업 취업을 준비하는 청년을 위한 실무형 부트캠프 — 국립순천대학교",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#f2f4f6",
+	"theme_color": "#1c2233",
+	"lang": "ko",
+	"icons": [
+		{ "src": "/icon-512.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+	]
+}

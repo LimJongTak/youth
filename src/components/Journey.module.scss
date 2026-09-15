@@ -12,12 +12,22 @@
 		bottom: 4px;
 		width: 2px;
 		background: t.$border;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: transform 0.6s ease;
+	}
+
+	&.revealed::before {
+		transform: scaleY(1);
 	}
 }
 
 .item {
 	position: relative;
 	padding-bottom: 14px;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.45s ease, transform 0.45s ease;
 
 	&:last-child {
 		padding-bottom: 0;
@@ -33,6 +43,8 @@
 		border-radius: 50%;
 		background: t.$teal;
 		border: 3px solid #d9f3f0;
+		transform: scale(0);
+		transition: transform 0.3s ease;
 	}
 
 	strong {
@@ -40,6 +52,25 @@
 		font-size: 0.86rem;
 		font-weight: 600;
 		color: t.$ink;
+	}
+}
+
+.timeline.revealed .item {
+	opacity: 1;
+	transform: translateY(0);
+
+	&::before {
+		transform: scale(1);
+	}
+
+	@for $i from 1 through 10 {
+		&:nth-child(#{$i}) {
+			transition-delay: #{($i - 1) * 70}ms;
+
+			&::before {
+				transition-delay: #{($i - 1) * 70 + 120}ms;
+			}
+		}
 	}
 }
 
@@ -64,6 +95,19 @@
 	}
 }
 
+@keyframes journeyOverlayIn {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes journeyCardIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px) scale(0.97);
+	}
+}
+
 .detailOverlay {
 	position: fixed;
 	inset: 0;
@@ -73,6 +117,7 @@
 	justify-content: center;
 	padding: 20px;
 	background: rgba(16, 20, 30, 0.5);
+	animation: journeyOverlayIn 0.2s ease;
 }
 
 .detailCard {
@@ -85,6 +130,7 @@
 	border-radius: t.$radius-lg;
 	padding: 24px 20px 20px;
 	box-shadow: t.$shadow-lg;
+	animation: journeyCardIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .detailClose {

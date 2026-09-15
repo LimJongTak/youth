@@ -1,12 +1,17 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { signOut } from "firebase/auth";
 import { AppShell } from "./components/AppShell";
-import { AdminApp } from "./admin/AdminApp";
-import { AdminLogin } from "./admin/AdminLogin";
 import { CohortProvider } from "./context/CohortContext";
 import { SiteContentProvider } from "./context/SiteContentContext";
 import { useAppUser } from "./hooks/useAppUser";
 import { auth } from "./lib/firebase";
+
+// Split out of the public-site bundle — most visitors never hit /admin,
+// so its (fairly large) CMS code shouldn't cost them anything upfront.
+const AdminApp = lazy(() => import("./admin/AdminApp").then((m) => ({ default: m.AdminApp })));
+const AdminLogin = lazy(() =>
+	import("./admin/AdminLogin").then((m) => ({ default: m.AdminLogin })),
+);
 
 function isAdminRoute(): boolean {
 	return (
@@ -53,7 +58,9 @@ function App() {
 
 	return (
 		<SiteContentProvider>
-			<CohortProvider>{body}</CohortProvider>
+			<CohortProvider>
+				<Suspense fallback={null}>{body}</Suspense>
+			</CohortProvider>
 		</SiteContentProvider>
 	);
 }
