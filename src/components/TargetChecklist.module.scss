@@ -15,7 +15,7 @@
 
 .item {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: 12px;
 	background: t.$card;
 	border: 1px solid rgba(46, 186, 174, 0.4);
@@ -44,7 +44,6 @@
 	border-radius: 7px;
 	border: 2px solid t.$teal;
 	background: t.$teal;
-	margin-top: 1px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
