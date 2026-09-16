@@ -1,0 +1,35 @@
+@use "../../styles/tokens" as t;
+
+.head {
+	margin-bottom: 16px;
+
+	h2 {
+		font-size: 1.28rem;
+	}
+
+	p {
+		font-size: 0.88rem;
+		margin-bottom: 0;
+		white-space: pre-line;
+	}
+}
+
+.headRow {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.headText {
+	min-width: 0;
+}
+
+.headAction {
+	flex-shrink: 0;
+	padding-top: 26px;
+}
+
+.eyebrow {
+	@include t.eyebrow;
+}

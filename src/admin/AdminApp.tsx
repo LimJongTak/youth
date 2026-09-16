@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { statusLabel, type Cohort } from "../types/cohort";
 import { roleLabel, type AppUser } from "../types/user";
-import { CohortForm } from "./CohortForm";
-import { AccountManagement } from "./AccountManagement";
-import { ContentEditor } from "./ContentEditor";
-import { AnalyticsPanel } from "./AnalyticsPanel";
-import { ScheduleManager } from "./ScheduleManager";
+import { CohortForm } from "./cohorts/CohortForm";
+import { AccountManagement } from "./accounts/AccountManagement";
+import { ContentEditor } from "./content/ContentEditor";
+import { AnalyticsPanel } from "./analytics/AnalyticsPanel";
+import { ScheduleManager } from "./schedule/ScheduleManager";
 import styles from "./AdminApp.module.scss";
 
 const badgeClass: Record<string, string> = {

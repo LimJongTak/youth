@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { signOut } from "firebase/auth";
-import { AppShell } from "./components/AppShell";
+import { AppShell } from "./components/layout/AppShell";
 import { CohortProvider } from "./context/CohortContext";
 import { SiteContentProvider } from "./context/SiteContentContext";
 import { ScheduleProvider } from "./context/ScheduleContext";

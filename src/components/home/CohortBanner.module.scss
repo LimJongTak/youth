@@ -1,0 +1,504 @@
+@use "../../styles/tokens" as t;
+
+.chipRow {
+	display: flex;
+	gap: 8px;
+	overflow-x: auto;
+	padding-bottom: 4px;
+	margin-bottom: 16px;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.chip {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	border: 1px solid t.$border;
+	background: #fff;
+	border-radius: 999px;
+	padding: 9px 15px;
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: t.$text-mute;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+	&.active {
+		background: t.$ink;
+		border-color: t.$ink;
+		color: #fff;
+	}
+}
+
+.dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #c7cbd4;
+}
+.dotRecruiting {
+	background: t.$teal;
+}
+.dotUpcoming {
+	background: t.$amber;
+}
+.dotClosed {
+	background: #c7cbd4;
+}
+
+.card {
+	@include t.card;
+}
+
+// Segmented switcher inside the cohort card — 교육 안내 shows the existing
+// detail rows, 일정 swaps in a short upcoming-schedule preview with a link
+// out to the full 스케줄 tab. Same flat pill language as Curriculum's track
+// tabs.
+.cardSwitcher {
+	display: flex;
+	gap: 6px;
+	background: t.$bg;
+	padding: 5px;
+	border-radius: 999px;
+	margin-bottom: 14px;
+}
+
+.cardTabBtn {
+	flex: 1;
+	border: none;
+	background: transparent;
+	padding: 9px 4px;
+	border-radius: 999px;
+	font-family: inherit;
+	font-weight: 800;
+	font-size: 0.78rem;
+	color: t.$text-mute;
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s;
+
+	&.active {
+		background: t.$ink;
+		color: #fff;
+		box-shadow: 0 4px 10px rgba(28, 34, 51, 0.25);
+	}
+}
+
+.schedulePreview {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.miniHead {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	font-size: 0.86rem;
+	font-weight: 800;
+	color: t.$ink;
+}
+
+.miniNavBtn {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: none;
+	background: t.$bg;
+	color: t.$text-mute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.64rem;
+	cursor: pointer;
+
+	&:active {
+		background: t.$border;
+	}
+}
+
+.miniGrid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.miniWeekday {
+	text-align: center;
+	font-size: 0.6rem;
+	font-weight: 800;
+	color: t.$text-faint;
+	padding-bottom: 2px;
+}
+
+.miniDay {
+	position: relative;
+	aspect-ratio: 1;
+	border: none;
+	background: transparent;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	font-size: 0.7rem;
+	color: t.$text;
+	cursor: pointer;
+}
+
+.miniDayOut {
+	color: t.$text-faint;
+	opacity: 0.5;
+}
+
+.miniDayToday {
+	background: t.$ink;
+	color: #fff;
+	font-weight: 800;
+}
+
+.miniDot {
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: t.$teal;
+}
+
+.miniDayToday .miniDot {
+	background: #fff;
+}
+
+// Multi-day event span — bleeds into the grid gap on the connected side so
+// it reads as one continuous bar across the days it covers.
+.miniBar {
+	position: absolute;
+	left: 3px;
+	right: 3px;
+	bottom: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: t.$teal;
+}
+
+.miniBarLeftConnect {
+	left: -2px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.miniBarRightConnect {
+	right: -2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.miniDayToday .miniBar {
+	background: #fff;
+}
+
+.miniDaySelected {
+	box-shadow: inset 0 0 0 2px t.$teal;
+}
+
+// The tapped date's schedule, shown right in the 홈 탭 card — this is the
+// "미리보기" (topic + time only); full details live behind 자세히 보기.
+.previewPanel {
+	background: t.$bg;
+	border-radius: t.$radius-sm;
+	padding: 12px 14px;
+}
+
+.previewHead {
+	display: block;
+	font-size: 0.8rem;
+	margin-bottom: 8px;
+}
+
+.previewList {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.previewRow {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 7px 0;
+	border-bottom: 1px solid t.$border;
+	font-size: 0.8rem;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.previewTime {
+	flex: 0 0 auto;
+	font-weight: 800;
+	color: t.$teal-dark;
+	font-size: 0.72rem;
+	min-width: 80px;
+}
+
+.previewTitle {
+	flex: 1;
+	min-width: 0;
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.detailBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	border: none;
+	background: t.$teal-tint;
+	color: t.$teal-dark;
+	border-radius: t.$radius-sm;
+	padding: 11px;
+	font-family: inherit;
+	font-weight: 800;
+	font-size: 0.82rem;
+	cursor: pointer;
+
+	i {
+		font-size: 0.7rem;
+	}
+}
+
+.cardHead {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+
+	h4 {
+		margin: 0;
+		font-size: 1.02rem;
+	}
+}
+
+.badge {
+	display: inline-block;
+	font-size: 0.7rem;
+	font-weight: 800;
+	padding: 4px 10px;
+	border-radius: 999px;
+	color: #fff;
+}
+.badgeRecruiting {
+	background: t.$teal-dark;
+}
+.badgeUpcoming {
+	background: t.$amber;
+}
+.badgeClosed {
+	background: #9aa0b4;
+}
+
+.rows {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	font-size: 0.82rem;
+	padding: 9px 0;
+	border-bottom: 1px solid t.$border;
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	span:first-child {
+		color: t.$text-mute;
+		flex: 0 0 auto;
+	}
+
+	span:last-child {
+		font-weight: 700;
+		text-align: right;
+		white-space: pre-line;
+	}
+}
+
+.note {
+	margin-top: 12px;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+}
+
+// The "나도 신청할 수 있을까?" checklist block, relocated here (between the
+// cohort card and the CTA buttons) from its own former section.
+.checklistBlock {
+	margin-top: 28px;
+}
+
+.checklistHeading {
+	margin: 0 0 14px;
+	font-size: 0.86rem;
+	font-weight: 700;
+	color: t.$ink;
+}
+
+.checklistList {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.checklistItem {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: t.$card;
+	border: 1px solid rgba(46, 186, 174, 0.4);
+	border-radius: t.$radius-md;
+	padding: 13px 15px;
+	box-shadow: t.$shadow-xs;
+
+	strong {
+		display: block;
+		font-size: 0.87rem;
+		color: t.$text;
+	}
+
+	small {
+		display: block;
+		color: t.$text-mute;
+		font-size: 0.77rem;
+		white-space: pre-line;
+	}
+}
+
+.checklistBox {
+	width: 21px;
+	height: 21px;
+	min-width: 21px;
+	border-radius: 7px;
+	border: 2px solid t.$teal;
+	background: t.$teal;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 0.68rem;
+}
+
+.warningNote {
+	margin-top: 12px;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+	background: #f4f6fa;
+	border-radius: t.$radius-sm;
+	padding: 11px 13px;
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+
+	i {
+		color: t.$amber;
+		margin-top: 2px;
+	}
+}
+
+.stepsCard {
+	margin-top: 28px;
+}
+
+.stepsHeading {
+	margin: 0;
+	font-size: 0.78rem;
+	font-weight: 800;
+	color: t.$text-mute;
+	letter-spacing: 0.02em;
+}
+
+.stepsInner {
+	padding-top: 12px;
+}
+
+.step {
+	display: flex;
+	gap: 12px;
+}
+
+.stepMarker {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.num {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: t.$teal;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.74rem;
+	font-weight: 800;
+	flex: 0 0 auto;
+}
+
+.line {
+	width: 2px;
+	flex: 1;
+	background: t.$border;
+	margin: 4px 0;
+}
+
+.stepBody {
+	padding-bottom: 14px;
+
+	strong {
+		display: block;
+		font-size: 0.84rem;
+	}
+
+	p {
+		font-size: 0.75rem;
+		margin: 2px 0 0;
+		white-space: pre-line;
+	}
+}
+
+.ctaCard {
+	margin-top: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.mutedNote {
+	background: #f4f6fa;
+	border-radius: t.$radius-sm;
+	padding: 12px 14px;
+	font-size: 0.8rem;
+	color: t.$text-mute;
+	text-align: center;
+}
+
+.more {
+	text-align: center;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+	margin-top: 10px;
+}

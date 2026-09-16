@@ -1,0 +1,103 @@
+@use "../../styles/tokens" as t;
+
+.hero {
+	background: t.$ink-2;
+	color: #fff;
+	padding: 28px 20px;
+}
+
+.title {
+	color: #fff;
+	font-size: 1.5rem;
+	line-height: 1.36;
+	margin-bottom: 0.5em;
+	letter-spacing: -0.01em;
+	font-weight: 700;
+	// Safety net only — the JS measurement is what actually sizes the text
+	// to fit; this just hides the sliver of overflow in the one frame
+	// before that runs (or if it ever fails to for some reason).
+	overflow: hidden;
+
+	em {
+		color: t.$teal-light;
+		font-style: normal;
+	}
+}
+
+// Each line is measured (via JS) against its natural, unconstrained nowrap
+// width — no max-width here, since capping the box is exactly what made
+// scrollWidth-based measurement unreliable on mobile Safari. .title above
+// clips any real overflow instead.
+.titleLine {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.lead {
+	color: rgba(255, 255, 255, 0.56);
+	font-size: 0.88rem;
+	line-height: 1.55;
+	margin-bottom: 0;
+	white-space: pre-line;
+	// Korean line-breaking defaults to breaking between any two
+	// characters — keep-all restricts breaks to word gaps (spaces) so a
+	// wrap never lands mid-word (e.g. splitting "실무").
+	word-break: keep-all;
+}
+
+.cohortPing {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: t.$teal-light;
+	margin-top: 18px;
+
+	i {
+		font-size: 0.5rem;
+	}
+}
+
+// Three equal-width columns so the row always fills edge-to-edge — no
+// leftover gap on the right the way content-sized buttons left one.
+.ctaRow {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+	margin-top: 18px;
+}
+
+.ctaBtn {
+	padding: 12px 4px;
+	gap: 5px;
+	font-size: 0.82rem;
+	white-space: nowrap;
+
+	i {
+		font-size: 0.8rem;
+	}
+}
+
+.noActiveMsg {
+	margin: 10px 0 0;
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: t.$amber;
+}
+
+@media (max-width: 374px) {
+	.hero {
+		padding: 24px 16px;
+	}
+
+	.ctaBtn {
+		padding: 11px 2px;
+		gap: 4px;
+		font-size: 0.74rem;
+
+		i {
+			font-size: 0.72rem;
+		}
+	}
+}
