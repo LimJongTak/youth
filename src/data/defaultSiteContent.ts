@@ -3,9 +3,9 @@ import type { SiteContent } from "../types/siteContent";
 /** Fallback copy shown while Firestore loads (or if a section is missing). */
 export const defaultSiteContent: SiteContent = {
 	hero: {
-		titleBefore: "AI·첨단산업 취업을 준비하는",
-		titleEmphasis: "미취업 청년",
-		titleAfter: "을 위한 실무형 부트캠프",
+		titleBefore: "AI·첨단산업 분야 취업을 꿈꾸는 청년을 위한",
+		titleEmphasis: "실무 중심 인재양성 교육 프로그램",
+		titleAfter: "",
 		lead: "정규 교과와 빅테크 연계 몰입형 교육을 결합한, 수강료·교재비 전액 무료 실무 교육 프로그램입니다.",
 		stats: [
 			{ label: "모집 대상", value: "만 19~34세" },

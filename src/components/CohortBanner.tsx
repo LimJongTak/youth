@@ -27,7 +27,7 @@ const badgeClass: Record<string, string> = {
 export function CohortBanner() {
 	const { cohorts, selected, select } = useCohorts();
 	const { content } = useSiteContent();
-	const { applySteps, contact } = content;
+	const { applySteps, contact, checklist } = content;
 	const { events } = useSchedule();
 	const { goToSchedule } = useNavigation();
 	const [cardTab, setCardTab] = useState<CardTab>("info");
@@ -85,7 +85,7 @@ export function CohortBanner() {
 							}}
 						>
 							<span className={`${styles.dot} ${dotClass[cohort.status]}`} />
-							{cohort.generation}기 · {statusLabel[cohort.status]}
+							교육생 {statusLabel[cohort.status]}({cohort.generation}기)
 						</button>
 					))}
 			</div>
@@ -233,22 +233,40 @@ export function CohortBanner() {
 				)}
 			</div>
 
-			<div className={`${styles.card} ${styles.stepsCard}`}>
-				<h4 className={styles.stepsHeading}>신청 방법</h4>
-				<div className={styles.stepsInner}>
-					{applySteps.map((step, index) => (
-						<div className={styles.step} key={step.num}>
-							<div className={styles.stepMarker}>
-								<div className={styles.num}>{step.num}</div>
-								{index < applySteps.length - 1 && <div className={styles.line} />}
+			<div className={styles.checklistBlock}>
+				<SectionHead
+					title={
+						<>
+							나도 신청할 수 있을까? <br />
+							모집대상 확인
+						</>
+					}
+					description="아래 항목에 해당하는지 하나씩 확인해보세요."
+				/>
+				<div className={styles.card}>
+					<h4 className={styles.checklistHeading}>모집대상 확인</h4>
+					<div className={styles.checklistList}>
+						{checklist.map((item) => (
+							<div className={styles.checklistItem} key={item.title}>
+								<span className={styles.checklistBox}>
+									<i className="fas fa-check" />
+								</span>
+								<span>
+									<strong>{item.title}</strong>
+									<small>{item.desc}</small>
+								</span>
 							</div>
-							<div className={styles.stepBody}>
-								<strong>{step.title}</strong>
-								<p>{step.desc}</p>
-							</div>
-						</div>
-					))}
+						))}
+					</div>
 				</div>
+			</div>
+
+			<div className={styles.warningNote}>
+				<i className="fas fa-exclamation-triangle" />
+				<span>
+					{selected.generation}기 모집기간은 <strong>{selected.recruitPeriod}</strong>
+					이며, 선착순 모집으로 조기 마감될 수 있습니다.
+				</span>
 			</div>
 
 			<div className={styles.ctaCard}>
@@ -278,6 +296,24 @@ export function CohortBanner() {
 					<i className="fas fa-comment" />
 					카카오톡 문의하기
 				</a>
+			</div>
+
+			<div className={`${styles.card} ${styles.stepsCard}`}>
+				<h4 className={styles.stepsHeading}>신청 방법</h4>
+				<div className={styles.stepsInner}>
+					{applySteps.map((step, index) => (
+						<div className={styles.step} key={step.num}>
+							<div className={styles.stepMarker}>
+								<div className={styles.num}>{step.num}</div>
+								{index < applySteps.length - 1 && <div className={styles.line} />}
+							</div>
+							<div className={styles.stepBody}>
+								<strong>{step.title}</strong>
+								<p>{step.desc}</p>
+							</div>
+						</div>
+					))}
+				</div>
 			</div>
 		</section>
 	);

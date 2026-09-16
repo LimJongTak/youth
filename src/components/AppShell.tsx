@@ -3,7 +3,6 @@ import { TopBar } from "./TopBar";
 import { BottomNav } from "./BottomNav";
 import { Hero } from "./Hero";
 import { CohortBanner } from "./CohortBanner";
-import { TargetChecklist } from "./TargetChecklist";
 import { ProgramTab } from "./ProgramTab";
 import { Schedule } from "./Schedule";
 import { Benefits } from "./Benefits";
@@ -43,7 +42,6 @@ function Shell() {
 						<>
 							<Hero />
 							<CohortBanner />
-							<TargetChecklist />
 						</>
 					)}
 					{tab === "program" && <ProgramTab />}

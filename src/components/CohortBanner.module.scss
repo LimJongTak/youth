@@ -343,8 +343,82 @@
 	color: t.$text-mute;
 }
 
-.stepsCard {
+// The "나도 신청할 수 있을까?" checklist block, relocated here (between the
+// cohort card and the CTA buttons) from its own former section.
+.checklistBlock {
+	margin-top: 28px;
+}
+
+.checklistHeading {
+	margin: 0 0 14px;
+	font-size: 0.86rem;
+	font-weight: 700;
+	color: t.$ink;
+}
+
+.checklistList {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.checklistItem {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: t.$card;
+	border: 1px solid rgba(46, 186, 174, 0.4);
+	border-radius: t.$radius-md;
+	padding: 13px 15px;
+	box-shadow: t.$shadow-xs;
+
+	strong {
+		display: block;
+		font-size: 0.87rem;
+		color: t.$text;
+	}
+
+	small {
+		display: block;
+		color: t.$text-mute;
+		font-size: 0.77rem;
+		white-space: pre-line;
+	}
+}
+
+.checklistBox {
+	width: 21px;
+	height: 21px;
+	min-width: 21px;
+	border-radius: 7px;
+	border: 2px solid t.$teal;
+	background: t.$teal;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 0.68rem;
+}
+
+.warningNote {
 	margin-top: 12px;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+	background: #f4f6fa;
+	border-radius: t.$radius-sm;
+	padding: 11px 13px;
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+
+	i {
+		color: t.$amber;
+		margin-top: 2px;
+	}
+}
+
+.stepsCard {
+	margin-top: 28px;
 }
 
 .stepsHeading {

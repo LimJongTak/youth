@@ -20,12 +20,25 @@
 	}
 }
 
+// Each line is measured (via JS) against its natural nowrap width and the
+// shared font-size on .title shrinks to fit — this is what actually keeps
+// it on one line; nowrap here is the hard guarantee, not just a hint.
+.titleLine {
+	display: inline-block;
+	max-width: 100%;
+	white-space: nowrap;
+}
+
 .lead {
 	color: rgba(255, 255, 255, 0.56);
 	font-size: 0.88rem;
 	line-height: 1.55;
 	margin-bottom: 0;
 	white-space: pre-line;
+	// Korean line-breaking defaults to breaking between any two
+	// characters — keep-all restricts breaks to word gaps (spaces) so a
+	// wrap never lands mid-word (e.g. splitting "실무").
+	word-break: keep-all;
 }
 
 .cohortPing {
@@ -42,11 +55,24 @@
 	}
 }
 
+// Three equal-width columns so the row always fills edge-to-edge — no
+// leftover gap on the right the way content-sized buttons left one.
 .ctaRow {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 8px;
 	margin-top: 18px;
-	flex-wrap: wrap;
+}
+
+.ctaBtn {
+	padding: 12px 4px;
+	gap: 5px;
+	font-size: 0.82rem;
+	white-space: nowrap;
+
+	i {
+		font-size: 0.8rem;
+	}
 }
 
 .noActiveMsg {
@@ -59,5 +85,15 @@
 @media (max-width: 374px) {
 	.hero {
 		padding: 24px 16px;
+	}
+
+	.ctaBtn {
+		padding: 11px 2px;
+		gap: 4px;
+		font-size: 0.74rem;
+
+		i {
+			font-size: 0.72rem;
+		}
 	}
 }
