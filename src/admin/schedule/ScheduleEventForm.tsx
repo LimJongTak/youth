@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
+import { DEFAULT_DOT_COLOR } from "../../lib/schedule";
 // Reuses the cohort form's field/button styling so admin forms look
 // consistent without duplicating the same CSS in every feature folder.
 import styles from "../cohorts/CohortForm.module.scss";
@@ -31,6 +32,7 @@ function emptyCommon(cohortId: string): CommonFields {
 		location: "",
 		instructor: "",
 		memo: "",
+		color: DEFAULT_DOT_COLOR,
 	};
 }
 
@@ -52,6 +54,7 @@ export function ScheduleEventForm({
 					location: initial.location ?? "",
 					instructor: initial.instructor ?? "",
 					memo: initial.memo ?? "",
+					color: initial.color ?? DEFAULT_DOT_COLOR,
 				}
 			: emptyCommon(cohortId),
 	);
@@ -131,7 +134,7 @@ export function ScheduleEventForm({
 				</div>
 			)}
 
-			<div className={`${styles.field} ${styles.wide}`}>
+			<div className={styles.field}>
 				<label htmlFor="ev-title">제목 (강의명 또는 일정명)</label>
 				<input
 					id="ev-title"
@@ -141,6 +144,20 @@ export function ScheduleEventForm({
 					value={common.title}
 					onChange={(e) => setCommon((c) => ({ ...c, title: e.target.value }))}
 				/>
+			</div>
+
+			<div className={styles.field}>
+				<label htmlFor="ev-color">캘린더 점 색상</label>
+				<div className={formStyles.colorRow}>
+					<input
+						id="ev-color"
+						type="color"
+						className={formStyles.colorInput}
+						value={common.color || DEFAULT_DOT_COLOR}
+						onChange={(e) => setCommon((c) => ({ ...c, color: e.target.value }))}
+					/>
+					<span className={formStyles.colorValue}>{common.color || DEFAULT_DOT_COLOR}</span>
+				</div>
 			</div>
 
 			{mode === "single" ? (

@@ -163,43 +163,20 @@
 	font-weight: 800;
 }
 
+// One dot per event covering that day (getDayDotColors), each tinted with
+// that event's own color — a ring keeps a dot visible regardless of its
+// color against either the today (dark) or normal cell background.
+.miniDots {
+	display: flex;
+	gap: 1px;
+}
+
 .miniDot {
 	width: 3px;
 	height: 3px;
 	border-radius: 50%;
 	background: t.$teal;
-}
-
-.miniDayToday .miniDot {
-	background: #fff;
-}
-
-// Multi-day event span — bleeds into the grid gap on the connected side so
-// it reads as one continuous bar across the days it covers.
-.miniBar {
-	position: absolute;
-	left: 3px;
-	right: 3px;
-	bottom: 3px;
-	height: 2px;
-	border-radius: 1px;
-	background: t.$teal;
-}
-
-.miniBarLeftConnect {
-	left: -2px;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.miniBarRightConnect {
-	right: -2px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.miniDayToday .miniBar {
-	background: #fff;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
 .miniDaySelected {
@@ -237,6 +214,14 @@
 	&:last-child {
 		border-bottom: none;
 	}
+}
+
+.previewColorDot {
+	flex: 0 0 auto;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: t.$teal;
 }
 
 .previewTime {

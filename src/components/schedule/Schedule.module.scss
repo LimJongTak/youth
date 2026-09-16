@@ -113,44 +113,23 @@
 	font-weight: 800;
 }
 
+// Multi-day events used to render as a connecting bar; now every event —
+// single or multi-day — is just a dot on each day it covers, colored per
+// event (getDayDotColors). A thin ring keeps a dot visible regardless of
+// its own color against either the normal or the selected (dark) cell
+// background, since the color itself is admin-chosen and can't be
+// guaranteed to contrast.
+.dayDots {
+	display: flex;
+	gap: 2px;
+}
+
 .dayDot {
-	width: 4px;
-	height: 4px;
+	width: 5px;
+	height: 5px;
 	border-radius: 50%;
 	background: t.$teal;
-}
-
-.daySelected .dayDot {
-	background: #fff;
-}
-
-// A multi-day event's cells connect into one continuous bar instead of a
-// dot per day — bleeding past the cell edge into the grid gap on whichever
-// side the span keeps going is what makes it read as unbroken.
-.dayBar {
-	position: absolute;
-	left: 4px;
-	right: 4px;
-	bottom: 5px;
-	height: 3px;
-	border-radius: 2px;
-	background: t.$teal;
-}
-
-.barLeftConnect {
-	left: -3px;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.barRightConnect {
-	right: -3px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.daySelected .dayBar {
-	background: #fff;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
 .dayPanel {
@@ -183,6 +162,15 @@
 	background: #fff;
 	border-radius: t.$radius-sm;
 	padding: 10px 12px;
+}
+
+.eventColorDot {
+	flex: 0 0 auto;
+	width: 8px;
+	height: 8px;
+	margin-top: 6px;
+	border-radius: 50%;
+	background: t.$teal;
 }
 
 .eventTime {

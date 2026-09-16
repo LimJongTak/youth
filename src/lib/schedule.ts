@@ -1,4 +1,4 @@
-import { isDateInRange, shiftDateKey } from "./calendar";
+import { isDateInRange } from "./calendar";
 import type { ScheduleEvent } from "../types/schedule";
 
 /** How an event's time reads on the calendar: a time range for a class
@@ -11,39 +11,19 @@ export function formatEventTime(event: ScheduleEvent): string {
 	return "종일";
 }
 
-export interface DayIndicator {
-	/** Covered by a multi-day event — rendered as a bar, not a dot. */
-	hasBar: boolean;
-	/** Has a single-day event and no bar already covers it. */
-	hasDot: boolean;
-	/** The bar should bleed into the grid gap on that side to look
-	 * unbroken, because the same event also covers the neighboring day
-	 * (and that neighbor is still in the same calendar row). */
-	barLeftConnect: boolean;
-	barRightConnect: boolean;
-}
+// Matches tokens.scss's $teal — the dot color an event gets when nobody
+// picked one (including every event created before this field existed).
+export const DEFAULT_DOT_COLOR = "#14b8a6";
 
-type RangeLike = Pick<ScheduleEvent, "startDate" | "endDate">;
+type ColorableRange = Pick<ScheduleEvent, "startDate" | "endDate" | "color">;
 
-/** What a calendar cell should show for one day: a continuous bar for a
- * multi-day event (so a 3-day session reads as one span, not three dots),
- * or a plain dot for a single-day one. `weekday` (0=Sun..6=Sat) tells us
- * whether there's a visual neighbor to bridge the bar into — a week's
- * first/last column always caps its own bar segment.
+/** The colored dots a calendar cell should show for one day — one dot per
+ * event that covers that date (a multi-day event contributes a dot on
+ * every day it spans, not just its first), each tinted with that event's
+ * own color.
  */
-export function getDayIndicator(key: string, weekday: number, events: RangeLike[]): DayIndicator {
-	const multiDay = events.filter((e) => e.startDate !== e.endDate);
-	const hasBar = multiDay.some((e) => isDateInRange(key, e.startDate, e.endDate));
-	const hasDot = !hasBar && events.some((e) => e.startDate === e.endDate && e.startDate === key);
-
-	const barLeftConnect =
-		hasBar &&
-		weekday !== 0 &&
-		multiDay.some((e) => isDateInRange(shiftDateKey(key, -1), e.startDate, e.endDate));
-	const barRightConnect =
-		hasBar &&
-		weekday !== 6 &&
-		multiDay.some((e) => isDateInRange(shiftDateKey(key, 1), e.startDate, e.endDate));
-
-	return { hasBar, hasDot, barLeftConnect, barRightConnect };
+export function getDayDotColors(key: string, events: ColorableRange[]): string[] {
+	return events
+		.filter((e) => isDateInRange(key, e.startDate, e.endDate))
+		.map((e) => e.color || DEFAULT_DOT_COLOR);
 }

@@ -17,6 +17,10 @@ export interface ScheduleEvent {
 	location?: string;
 	instructor?: string;
 	memo?: string;
+	/** Hex color (e.g. "#14b8a6") for this event's calendar dot. Falls back
+	 * to the default teal when unset — events created before this field
+	 * existed just render with that same default. */
+	color?: string;
 }
 
 export type ScheduleEventDraft = Omit<ScheduleEvent, "id">;

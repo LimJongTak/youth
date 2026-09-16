@@ -9,7 +9,7 @@ import {
 	toDateKey,
 	WEEKDAY_LABELS,
 } from "../../lib/calendar";
-import { formatEventTime, getDayIndicator } from "../../lib/schedule";
+import { formatEventTime, getDayDotColors } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import styles from "./Schedule.module.scss";
 
@@ -104,7 +104,7 @@ export function Schedule() {
 				))}
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
-					const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
+					const dotColors = getDayDotColors(key, cohortEvents);
 					const isToday = key === toDateKey(today);
 					return (
 						<button
@@ -116,14 +116,17 @@ export function Schedule() {
 							onClick={() => setSelectedDate(key)}
 						>
 							<span>{date.getDate()}</span>
-							{indicator.hasBar && (
-								<span
-									className={`${styles.dayBar} ${
-										indicator.barLeftConnect ? styles.barLeftConnect : ""
-									} ${indicator.barRightConnect ? styles.barRightConnect : ""}`}
-								/>
+							{dotColors.length > 0 && (
+								<span className={styles.dayDots}>
+									{dotColors.slice(0, 4).map((color, i) => (
+										<span
+											key={i}
+											className={styles.dayDot}
+											style={{ background: color }}
+										/>
+									))}
+								</span>
 							)}
-							{indicator.hasDot && <span className={styles.dayDot} />}
 						</button>
 					);
 				})}
@@ -146,6 +149,10 @@ export function Schedule() {
 					<div className={styles.eventList}>
 						{selectedDateEvents.map((event) => (
 							<div className={styles.eventRow} key={event.id}>
+								<span
+									className={styles.eventColorDot}
+									style={{ background: event.color || undefined }}
+								/>
 								<span className={styles.eventTime}>{formatEventTime(event)}</span>
 								<div className={styles.eventMain}>
 									<strong>{event.title}</strong>

@@ -1,17 +1,39 @@
 import * as XLSX from "xlsx";
 import type { ScheduleEventDraft } from "../types/schedule";
 import { toDateKey } from "./calendar";
+import { DEFAULT_DOT_COLOR } from "./schedule";
 
 // Column order for both the downloadable template and any export — keep
 // these two in sync, since an exported file should re-import cleanly.
-const COLUMNS = ["제목", "시작일", "종료일", "시작시간", "종료시간", "강의장소", "교수/강사", "비고"] as const;
+const COLUMNS = [
+	"제목",
+	"시작일",
+	"종료일",
+	"시작시간",
+	"종료시간",
+	"강의장소",
+	"교수/강사",
+	"비고",
+	"색상",
+] as const;
 
 const EXAMPLE_ROWS = [
-	["공통(교양)", "2026-10-06", "2026-10-06", "10:00", "13:00", "광양 커뮤니티센터", "홍길동 교수", ""],
+	[
+		"공통(교양)",
+		"2026-10-06",
+		"2026-10-06",
+		"10:00",
+		"13:00",
+		"광양 커뮤니티센터",
+		"홍길동 교수",
+		"",
+		DEFAULT_DOT_COLOR,
+	],
 	// 같은 과목이 여러 날짜에 반복될 때는 시작일 칸에 콤마로 구분해 날짜를
 	// 나열하면 한 행으로 여러 일정을 한 번에 등록할 수 있다 (종료일은 무시됨).
 	// 시작시간/종료시간도 같은 개수로 콤마 나열하면 날짜마다 다른 시간을
 	// 지정할 수 있고, 하나만 적으면 모든 날짜에 그 시간이 똑같이 적용된다.
+	// 색상은 "#RRGGBB" 형식 하나만 적으면 되고, 비워두면 기본 색상이 된다.
 	[
 		"AI와 코딩",
 		"2026-09-10, 2026-09-17, 2026-09-21",
@@ -21,6 +43,7 @@ const EXAMPLE_ROWS = [
 		"국립순천대학교",
 		"김철수 교수",
 		"같은 제목으로 여러 날짜(시간도 각각)를 한 번에 등록하려면 이렇게 콤마로 나열하세요",
+		"#f5a623",
 	],
 ];
 
@@ -34,6 +57,7 @@ function draftToRow(draft: ScheduleEventDraft): (string | undefined)[] {
 		draft.location,
 		draft.instructor,
 		draft.memo,
+		draft.color,
 	];
 }
 
@@ -48,6 +72,7 @@ function buildWorkbook(rows: (string | undefined)[][]) {
 		{ wch: 20 }, // 강의장소
 		{ wch: 14 }, // 교수/강사
 		{ wch: 24 }, // 비고
+		{ wch: 9 }, // 색상
 	];
 	const workbook = XLSX.utils.book_new();
 	XLSX.utils.book_append_sheet(workbook, sheet, "일정");
@@ -134,6 +159,17 @@ function cellToTimeList(value: unknown): (string | undefined)[] {
 	return [];
 }
 
+// Accepts "#RGB" or "#RRGGBB" (with or without the leading #); anything
+// else is treated as not set, so a typo falls back to the default color
+// instead of silently becoming an invalid CSS value.
+function cellToColor(value: unknown): string | undefined {
+	if (typeof value !== "string") return undefined;
+	const trimmed = value.trim();
+	if (!trimmed) return undefined;
+	const withHash = trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
+	return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(withHash) ? withHash : undefined;
+}
+
 function cellToText(value: unknown): string | undefined {
 	if (value === null || value === undefined) return undefined;
 	const text = String(value).trim();
@@ -174,6 +210,7 @@ export async function parseScheduleExcel(file: File, cohortId: string): Promise<
 			location: cellToText(row["강의장소"]),
 			instructor: cellToText(row["교수/강사"]),
 			memo: cellToText(row["비고"]),
+			color: cellToColor(row["색상"]),
 		};
 
 		if (dateKeys.length === 1) {

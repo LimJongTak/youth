@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { useCohorts } from "../../context/CohortContext";
 import { useSchedule } from "../../context/ScheduleContext";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
-import { getDayIndicator } from "../../lib/schedule";
+import { getDayDotColors } from "../../lib/schedule";
 import {
 	downloadScheduleTemplate,
 	exportScheduleToExcel,
@@ -204,6 +204,10 @@ export function ScheduleManager() {
 						<div className={styles.importList}>
 							{importPreview.drafts.map((d, i) => (
 								<div className={styles.importRow} key={i}>
+									<span
+										className={styles.importColorDot}
+										style={{ background: d.color || undefined }}
+									/>
 									<span className={styles.importDate}>
 										{d.startDate}
 										{d.endDate !== d.startDate ? ` ~ ${d.endDate}` : ""}
@@ -257,7 +261,7 @@ export function ScheduleManager() {
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
 					const count = cohortEvents.filter((e) => isDateInRange(key, e.startDate, e.endDate)).length;
-					const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
+					const dotColors = getDayDotColors(key, cohortEvents);
 					return (
 						<button
 							type="button"
@@ -269,12 +273,12 @@ export function ScheduleManager() {
 						>
 							<span>{date.getDate()}</span>
 							{count > 0 && <span className={styles.dayCount}>{count}</span>}
-							{indicator.hasBar && (
-								<span
-									className={`${styles.dayBar} ${
-										indicator.barLeftConnect ? styles.barLeftConnect : ""
-									} ${indicator.barRightConnect ? styles.barRightConnect : ""}`}
-								/>
+							{dotColors.length > 0 && (
+								<span className={styles.dayDots}>
+									{dotColors.slice(0, 5).map((color, i) => (
+										<span key={i} className={styles.dayDot} style={{ background: color }} />
+									))}
+								</span>
 							)}
 						</button>
 					);
@@ -309,6 +313,10 @@ export function ScheduleManager() {
 						)}
 						{selectedDateEvents.map((event) => (
 							<div className={styles.eventRow} key={event.id}>
+								<span
+									className={styles.eventColorDot}
+									style={{ background: event.color || undefined }}
+								/>
 								<span className={styles.eventTime}>{formatEventTime(event)}</span>
 								<div className={styles.eventMain}>
 									<strong>{event.title}</strong>

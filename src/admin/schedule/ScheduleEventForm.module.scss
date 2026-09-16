@@ -26,6 +26,30 @@
 	}
 }
 
+.colorRow {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 38px;
+}
+
+.colorInput {
+	flex: 0 0 auto;
+	width: 38px;
+	height: 32px;
+	padding: 2px;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-sm;
+	background: #fff;
+	cursor: pointer;
+}
+
+.colorValue {
+	font-size: 0.82rem;
+	color: t.$text-mute;
+	font-family: monospace;
+}
+
 .dateList {
 	display: flex;
 	flex-direction: column;

@@ -6,7 +6,7 @@ import { useNavigation } from "../../context/NavigationContext";
 import { statusLabel } from "../../types/cohort";
 import { logEvent } from "../../lib/analytics";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
-import { formatEventTime, getDayIndicator } from "../../lib/schedule";
+import { formatEventTime, getDayDotColors } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import styles from "./CohortBanner.module.scss";
 
@@ -176,7 +176,7 @@ export function CohortBanner() {
 							))}
 							{previewWeeks.flat().map(({ date, inMonth }) => {
 								const key = toDateKey(date);
-								const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
+								const dotColors = getDayDotColors(key, cohortEvents);
 								return (
 									<button
 										type="button"
@@ -187,14 +187,17 @@ export function CohortBanner() {
 										onClick={() => setPreviewDate(key)}
 									>
 										<span>{date.getDate()}</span>
-										{indicator.hasBar && (
-											<span
-												className={`${styles.miniBar} ${
-													indicator.barLeftConnect ? styles.miniBarLeftConnect : ""
-												} ${indicator.barRightConnect ? styles.miniBarRightConnect : ""}`}
-											/>
+										{dotColors.length > 0 && (
+											<span className={styles.miniDots}>
+												{dotColors.slice(0, 3).map((color, i) => (
+													<span
+														key={i}
+														className={styles.miniDot}
+														style={{ background: color }}
+													/>
+												))}
+											</span>
 										)}
-										{indicator.hasDot && <span className={styles.miniDot} />}
 									</button>
 								);
 							})}
@@ -213,6 +216,10 @@ export function CohortBanner() {
 								<div className={styles.previewList}>
 									{previewDateEvents.map((event) => (
 										<div className={styles.previewRow} key={event.id}>
+											<span
+												className={styles.previewColorDot}
+												style={{ background: event.color || undefined }}
+											/>
 											<span className={styles.previewTime}>{formatEventTime(event)}</span>
 											<span className={styles.previewTitle}>{event.title}</span>
 										</div>
