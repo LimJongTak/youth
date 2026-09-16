@@ -134,7 +134,7 @@ export const defaultSiteContent: SiteContent = {
 		{ title: "취업 컨설팅 · 채용연계", desc: "모의면접, 1:1 컨설팅, 교수추천서 지원" },
 	],
 	applySteps: [
-		{ num: 1, title: "모집대상 자가 체크", desc: "체크리스트로 지원 자격을 먼저 확인하세요." },
+		{ num: 1, title: "모집대상 확인", desc: "모집대상 확인을 통해 지원자격을 먼저 확인하세요." },
 		{ num: 2, title: "희망 트랙 선택", desc: "초급 · 중급 · 고급 중 원하는 트랙을 정하세요." },
 		{ num: 3, title: "온라인 신청서 제출", desc: "공식 안내 페이지의 구글 폼으로 신청을 완료하세요." },
 	],

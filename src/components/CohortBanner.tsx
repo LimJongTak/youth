@@ -30,7 +30,6 @@ export function CohortBanner() {
 	const { applySteps, contact } = content;
 	const { events } = useSchedule();
 	const { goToSchedule } = useNavigation();
-	const [stepsOpen, setStepsOpen] = useState(false);
 	const [cardTab, setCardTab] = useState<CardTab>("info");
 	const todayKey = toDateKey(new Date());
 	const [previewMonth, setPreviewMonth] = useState(() => {
@@ -235,34 +234,20 @@ export function CohortBanner() {
 			</div>
 
 			<div className={`${styles.card} ${styles.stepsCard}`}>
-				<button
-					type="button"
-					className={styles.stepsToggle}
-					aria-expanded={stepsOpen}
-					onClick={() => setStepsOpen((open) => !open)}
-				>
-					신청 방법
-					<i
-						className={`fas fa-chevron-down ${styles.stepsChevron} ${
-							stepsOpen ? styles.open : ""
-						}`}
-					/>
-				</button>
-				<div className={`${styles.stepsCollapse} ${stepsOpen ? styles.open : ""}`}>
-					<div className={styles.stepsInner}>
-						{applySteps.map((step, index) => (
-							<div className={styles.step} key={step.num}>
-								<div className={styles.stepMarker}>
-									<div className={styles.num}>{step.num}</div>
-									{index < applySteps.length - 1 && <div className={styles.line} />}
-								</div>
-								<div className={styles.stepBody}>
-									<strong>{step.title}</strong>
-									<p>{step.desc}</p>
-								</div>
+				<h4 className={styles.stepsHeading}>신청 방법</h4>
+				<div className={styles.stepsInner}>
+					{applySteps.map((step, index) => (
+						<div className={styles.step} key={step.num}>
+							<div className={styles.stepMarker}>
+								<div className={styles.num}>{step.num}</div>
+								{index < applySteps.length - 1 && <div className={styles.line} />}
 							</div>
-						))}
-					</div>
+							<div className={styles.stepBody}>
+								<strong>{step.title}</strong>
+								<p>{step.desc}</p>
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 

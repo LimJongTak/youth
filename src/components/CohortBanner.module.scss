@@ -347,47 +347,15 @@
 	margin-top: 12px;
 }
 
-.stepsToggle {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	border: none;
-	background: transparent;
-	padding: 0;
-	font-family: inherit;
+.stepsHeading {
+	margin: 0;
 	font-size: 0.78rem;
 	font-weight: 800;
 	color: t.$text-mute;
 	letter-spacing: 0.02em;
-	cursor: pointer;
-
-	&:active {
-		opacity: 0.7;
-	}
-}
-
-.stepsChevron {
-	font-size: 0.7rem;
-	transition: transform 0.25s ease;
-
-	&.open {
-		transform: rotate(180deg);
-	}
-}
-
-.stepsCollapse {
-	display: grid;
-	grid-template-rows: 0fr;
-	transition: grid-template-rows 0.25s ease;
-
-	&.open {
-		grid-template-rows: 1fr;
-	}
 }
 
 .stepsInner {
-	overflow: hidden;
 	padding-top: 12px;
 }
 
