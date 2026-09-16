@@ -47,6 +47,16 @@
 	</head>
 	<body>
 		<div id="root"></div>
+		<script>
+			// Capture the install prompt as early as possible — if this listener
+			// were only attached after React mounts, a browser that fires the
+			// event immediately on load could fire it before we're listening,
+			// and we'd never get a chance to trigger install from our button.
+			window.addEventListener("beforeinstallprompt", function (event) {
+				event.preventDefault();
+				window.__deferredInstallPrompt = event;
+			});
+		</script>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
 </html>

@@ -13,6 +13,15 @@ function isIos(): boolean {
 	return /iphone|ipad|ipod/i.test(navigator.userAgent) && !("MSStream" in window);
 }
 
+// Set by the inline script in index.html, which listens from the very
+// first paint — this component may mount well after that event already
+// fired, so a listener attached only here could miss it entirely.
+declare global {
+	interface Window {
+		__deferredInstallPrompt?: BeforeInstallPromptEvent;
+	}
+}
+
 function isStandalone(): boolean {
 	if (typeof window === "undefined") return false;
 	return (
@@ -27,6 +36,11 @@ export function useInstallPrompt() {
 	const [installed, setInstalled] = useState(isStandalone);
 
 	useEffect(() => {
+		// Already captured before this component mounted.
+		if (window.__deferredInstallPrompt) {
+			setDeferredPrompt(window.__deferredInstallPrompt);
+		}
+
 		function handleBeforeInstallPrompt(event: Event) {
 			event.preventDefault();
 			setDeferredPrompt(event as BeforeInstallPromptEvent);
@@ -34,6 +48,7 @@ export function useInstallPrompt() {
 		function handleAppInstalled() {
 			setInstalled(true);
 			setDeferredPrompt(null);
+			window.__deferredInstallPrompt = undefined;
 		}
 		window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 		window.addEventListener("appinstalled", handleAppInstalled);
@@ -48,6 +63,7 @@ export function useInstallPrompt() {
 		await deferredPrompt.prompt();
 		const { outcome } = await deferredPrompt.userChoice;
 		setDeferredPrompt(null);
+		window.__deferredInstallPrompt = undefined;
 		return outcome;
 	}, [deferredPrompt]);
 

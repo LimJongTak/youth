@@ -21,16 +21,16 @@ export function InstallButton() {
 		setPressed(false);
 	}
 
-	async function handleClick() {
+	function handleClick() {
 		setPressed(true);
-		if (canPrompt) {
-			const outcome = await promptInstall();
-			logEvent("install_prompt", { outcome });
-			setPressed(false);
-			return;
-		}
-		logEvent("install_guide_open", { platform: isIos ? "ios" : "other" });
+		logEvent("install_guide_open", { platform: isIos ? "ios" : canPrompt ? "prompt" : "other" });
 		setShowGuide(true);
+	}
+
+	async function handleInstallNow() {
+		const outcome = await promptInstall();
+		logEvent("install_prompt", { outcome });
+		closeGuide();
 	}
 
 	return (
@@ -64,49 +64,57 @@ export function InstallButton() {
 								앱처럼 아이콘을 눌러 바로 열 수 있도록 홈 화면에 추가해보세요.
 							</p>
 
-							{isIos ? (
-								<ol className={styles.steps}>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-share-square" />
-										</span>
-										<span>Safari 하단의 공유 버튼을 눌러주세요.</span>
-									</li>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-plus-square" />
-										</span>
-										<span>메뉴에서 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
-									</li>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-check" />
-										</span>
-										<span>오른쪽 위 &lsquo;추가&rsquo;를 누르면 완료돼요.</span>
-									</li>
-								</ol>
-							) : (
-								<ol className={styles.steps}>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-ellipsis-v" />
-										</span>
-										<span>브라우저 메뉴(⋮)를 열어주세요.</span>
-									</li>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-plus-square" />
-										</span>
-										<span>&lsquo;앱 설치&rsquo; 또는 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
-									</li>
-									<li>
-										<span className={styles.stepIcon}>
-											<i className="fas fa-check" />
-										</span>
-										<span>안내에 따라 추가를 완료해주세요.</span>
-									</li>
-								</ol>
+							{canPrompt && (
+								<button type="button" className={styles.installCta} onClick={handleInstallNow}>
+									<i className="fas fa-download" />
+									앱 설치하기
+								</button>
 							)}
+
+							{!canPrompt &&
+								(isIos ? (
+									<ol className={styles.steps}>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-share-square" />
+											</span>
+											<span>Safari 하단의 공유 버튼을 눌러주세요.</span>
+										</li>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-plus-square" />
+											</span>
+											<span>메뉴에서 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
+										</li>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-check" />
+											</span>
+											<span>오른쪽 위 &lsquo;추가&rsquo;를 누르면 완료돼요.</span>
+										</li>
+									</ol>
+								) : (
+									<ol className={styles.steps}>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-ellipsis-v" />
+											</span>
+											<span>브라우저 메뉴(⋮)를 열어주세요.</span>
+										</li>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-plus-square" />
+											</span>
+											<span>&lsquo;앱 설치&rsquo; 또는 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
+										</li>
+										<li>
+											<span className={styles.stepIcon}>
+												<i className="fas fa-check" />
+											</span>
+											<span>안내에 따라 추가를 완료해주세요.</span>
+										</li>
+									</ol>
+								))}
 						</div>
 					</div>,
 					document.body,

@@ -111,6 +111,18 @@
 	color: t.$text-mute;
 }
 
+.installCta {
+	@include t.btn;
+	width: 100%;
+	margin-bottom: 18px;
+	background: t.$teal;
+	color: #fff;
+
+	i {
+		font-size: 0.85rem;
+	}
+}
+
 .steps {
 	display: flex;
 	flex-direction: column;
