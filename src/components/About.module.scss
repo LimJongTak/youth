@@ -1,13 +1,81 @@
 @use "../styles/tokens" as t;
 
-.viewBtn {
-	@include t.btn;
+// Inline pager — the guide images shown directly on the page now that the
+// program/curriculum split lives in its own tab, no button needed to reveal
+// them.
+.pager {
+	margin-top: 14px;
+}
+
+.pagerImgBtn {
+	position: relative;
+	display: block;
 	width: 100%;
-	background: t.$teal;
+	padding: 0;
+	border: none;
+	border-radius: t.$radius-md;
+	overflow: hidden;
+	box-shadow: t.$shadow-md;
+	background: #fff;
+	cursor: zoom-in;
+
+	&:active {
+		opacity: 0.94;
+	}
+}
+
+.pagerImg {
+	display: block;
+	width: 100%;
+	height: auto;
+	background: #fff;
+}
+
+.expandHint {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(16, 20, 30, 0.55);
 	color: #fff;
+	font-size: 0.78rem;
+	backdrop-filter: blur(2px);
+}
+
+.pagerNav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.pagerNavBtn {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 9px 14px;
+	border: none;
+	border-radius: 999px;
+	background: t.$bg;
+	color: t.$text-mute;
+	font-family: inherit;
+	font-size: 0.82rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.15s ease;
 
 	i {
-		font-size: 0.85rem;
+		font-size: 0.7rem;
+	}
+
+	&:active {
+		background: t.$border;
 	}
 }
 

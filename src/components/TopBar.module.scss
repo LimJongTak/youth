@@ -13,31 +13,43 @@
 	border-bottom: 1px solid t.$border;
 }
 
-.iconBtn {
-	width: 34px;
-	height: 34px;
-	min-width: 34px;
-	border-radius: 50%;
+.contactBtn {
+	grid-column: 3;
+	justify-self: end;
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	background: t.$bg;
+	gap: 6px;
+	height: 34px;
+	padding: 0 14px;
+	border-radius: 999px;
+	background: t.$ink;
 	border: none;
-	color: t.$ink;
-	font-size: 0.92rem;
+	color: #fff;
+	font-family: inherit;
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
 	cursor: pointer;
-	transition: background 0.15s ease;
+	box-shadow: 0 4px 12px -4px rgba(25, 31, 40, 0.4);
+	transition: transform 0.15s ease, opacity 0.15s ease;
+
+	i {
+		font-size: 0.82rem;
+		color: t.$teal-light;
+	}
 
 	&:active {
-		background: t.$border;
+		transform: scale(0.96);
+		opacity: 0.92;
 	}
 }
 
-.kakaoBtn {
-	grid-column: 3;
-	justify-self: end;
-	background: #fff6d1;
-	color: #7a6100;
+.contactBtnActive {
+	background: t.$teal-dark;
+
+	i {
+		color: #fff;
+	}
 }
 
 .brand {

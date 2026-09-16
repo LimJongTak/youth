@@ -1,9 +1,14 @@
-import { useSiteContent } from "../context/SiteContentContext";
+import { useNavigation } from "../context/NavigationContext";
 import { logEvent } from "../lib/analytics";
 import styles from "./TopBar.module.scss";
 
 export function TopBar() {
-	const { content } = useSiteContent();
+	const { tab, goToContact } = useNavigation();
+
+	function handleContactClick() {
+		logEvent("contact_click", { source: "topbar" });
+		goToContact();
+	}
 
 	return (
 		<header className={styles.topbar}>
@@ -11,16 +16,14 @@ export function TopBar() {
 				<span className={styles.brandLine1}>국립순천대학교 인공지능분야</span>
 				<span className={styles.brandLine2}>청년도약 인재양성 부트캠프</span>
 			</div>
-			<a
-				className={`${styles.iconBtn} ${styles.kakaoBtn}`}
-				href={content.contact.kakaoUrl}
-				onClick={() => logEvent("kakao_click", { source: "topbar" })}
-				target="_blank"
-				rel="noopener noreferrer"
-				aria-label="카카오톡으로 문의하기"
+			<button
+				type="button"
+				className={`${styles.contactBtn} ${tab === "contact" ? styles.contactBtnActive : ""}`}
+				onClick={handleContactClick}
 			>
-				<i className="fas fa-comment" />
-			</a>
+				<i className="fas fa-headset" />
+				문의
+			</button>
 		</header>
 	);
 }

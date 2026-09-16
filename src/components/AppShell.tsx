@@ -3,25 +3,34 @@ import { TopBar } from "./TopBar";
 import { BottomNav } from "./BottomNav";
 import { Hero } from "./Hero";
 import { CohortBanner } from "./CohortBanner";
-import { About } from "./About";
 import { TargetChecklist } from "./TargetChecklist";
-import { Curriculum } from "./Curriculum";
+import { ProgramTab } from "./ProgramTab";
 import { Benefits } from "./Benefits";
 import { Journey } from "./Journey";
 import { Contact } from "./Contact";
-import { bottomNav } from "../data/content";
-import { useActiveSection } from "../hooks/useActiveSection";
+import { NavigationProvider, useNavigation } from "../context/NavigationContext";
 import { logEvent } from "../lib/analytics";
 import styles from "./AppShell.module.scss";
 
-const sectionIds = bottomNav.map((item) => item.id);
-
 export function AppShell() {
-	const activeSection = useActiveSection(sectionIds);
+	return (
+		<NavigationProvider>
+			<Shell />
+		</NavigationProvider>
+	);
+}
+
+function Shell() {
+	const { tab } = useNavigation();
 
 	useEffect(() => {
 		logEvent("page_view");
 	}, []);
+
+	useEffect(() => {
+		logEvent("tab_view", { tab });
+		window.scrollTo({ top: 0 });
+	}, [tab]);
 
 	return (
 		<div className={styles.shell}>
@@ -29,17 +38,24 @@ export function AppShell() {
 				<TopBar />
 
 				<main>
-					<Hero />
-					<CohortBanner />
-					<About />
-					<TargetChecklist />
-					<Curriculum />
-					<Benefits />
-					<Journey />
-					<Contact />
+					{tab === "home" && (
+						<>
+							<Hero />
+							<CohortBanner />
+							<TargetChecklist />
+						</>
+					)}
+					{tab === "program" && <ProgramTab />}
+					{tab === "benefit" && (
+						<>
+							<Benefits />
+							<Journey />
+						</>
+					)}
+					{tab === "contact" && <Contact />}
 				</main>
 
-				<BottomNav active={activeSection} />
+				<BottomNav />
 			</div>
 		</div>
 	);

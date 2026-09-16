@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { SectionHead } from "./SectionHead";
 import styles from "./About.module.scss";
@@ -11,6 +11,7 @@ const PAGES = [
 // Below this width the device is a phone: skip the desktop card/pager and
 // show one photo at a time full-screen, with prev/next below it.
 const MOBILE_BREAKPOINT = 480;
+const AUTO_ADVANCE_MS = 30000;
 
 function useIsMobile() {
 	const [isMobile, setIsMobile] = useState(
@@ -32,23 +33,82 @@ export function About() {
 	const [open, setOpen] = useState(false);
 	const [pageIndex, setPageIndex] = useState(0);
 	const isMobile = useIsMobile();
-
-	function openViewer() {
-		setPageIndex(0);
-		setOpen(true);
-	}
+	const timerRef = useRef<number | undefined>(undefined);
 
 	function goTo(index: number) {
 		setPageIndex((index + PAGES.length) % PAGES.length);
 	}
 
+	function restartTimer() {
+		window.clearInterval(timerRef.current);
+		timerRef.current = window.setInterval(() => {
+			setPageIndex((i) => (i + 1) % PAGES.length);
+		}, AUTO_ADVANCE_MS);
+	}
+
+	// The 30s auto-advance runs continuously while this page is mounted;
+	// any manual prev/next/dot interaction restarts the countdown instead
+	// of stacking with the timer already running.
+	useEffect(() => {
+		restartTimer();
+		return () => window.clearInterval(timerRef.current);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	function handleNav(index: number) {
+		goTo(index);
+		restartTimer();
+	}
+
 	return (
 		<section className="section" id="about">
 			<SectionHead eyebrow="PROGRAM" />
-			<button type="button" className={styles.viewBtn} onClick={openViewer}>
-				<i className="fas fa-images" />
-				프로그램 안내 보기
-			</button>
+
+			<div className={styles.pager}>
+				<button
+					type="button"
+					className={styles.pagerImgBtn}
+					onClick={() => setOpen(true)}
+					aria-label="전체화면으로 크게 보기"
+				>
+					<img className={styles.pagerImg} src={PAGES[pageIndex].src} alt={PAGES[pageIndex].alt} />
+					<span className={styles.expandHint}>
+						<i className="fas fa-expand" />
+					</span>
+				</button>
+
+				<div className={styles.pagerNav}>
+					<button
+						type="button"
+						className={styles.pagerNavBtn}
+						onClick={() => handleNav(pageIndex - 1)}
+						aria-label="이전 이미지"
+					>
+						<i className="fas fa-chevron-left" />
+						이전
+					</button>
+					<div className={styles.viewerDots}>
+						{PAGES.map((page, i) => (
+							<button
+								type="button"
+								key={page.src}
+								className={`${styles.dot} ${i === pageIndex ? styles.dotActive : ""}`}
+								onClick={() => handleNav(i)}
+								aria-label={`${i + 1}페이지`}
+							/>
+						))}
+					</div>
+					<button
+						type="button"
+						className={styles.pagerNavBtn}
+						onClick={() => handleNav(pageIndex + 1)}
+						aria-label="다음 이미지"
+					>
+						다음
+						<i className="fas fa-chevron-right" />
+					</button>
+				</div>
+			</div>
 
 			{open &&
 				createPortal(
@@ -72,7 +132,7 @@ export function About() {
 									<button
 										type="button"
 										className={styles.mobileNavBtn}
-										onClick={() => goTo(pageIndex - 1)}
+										onClick={() => handleNav(pageIndex - 1)}
 										aria-label="이전 페이지"
 									>
 										<i className="fas fa-chevron-left" />
@@ -84,7 +144,7 @@ export function About() {
 												type="button"
 												key={page.src}
 												className={`${styles.dot} ${i === pageIndex ? styles.dotActive : ""}`}
-												onClick={() => goTo(i)}
+												onClick={() => handleNav(i)}
 												aria-label={`${i + 1}페이지`}
 											/>
 										))}
@@ -92,7 +152,7 @@ export function About() {
 									<button
 										type="button"
 										className={styles.mobileNavBtn}
-										onClick={() => goTo(pageIndex + 1)}
+										onClick={() => handleNav(pageIndex + 1)}
 										aria-label="다음 페이지"
 									>
 										다음
@@ -117,7 +177,7 @@ export function About() {
 									<button
 										type="button"
 										className={`${styles.viewerArrow} ${styles.viewerArrowPrev}`}
-										onClick={() => goTo(pageIndex - 1)}
+										onClick={() => handleNav(pageIndex - 1)}
 										aria-label="이전 페이지"
 									>
 										<i className="fas fa-chevron-left" />
@@ -134,7 +194,7 @@ export function About() {
 									<button
 										type="button"
 										className={`${styles.viewerArrow} ${styles.viewerArrowNext}`}
-										onClick={() => goTo(pageIndex + 1)}
+										onClick={() => handleNav(pageIndex + 1)}
 										aria-label="다음 페이지"
 									>
 										<i className="fas fa-chevron-right" />
@@ -147,7 +207,7 @@ export function About() {
 											type="button"
 											key={page.src}
 											className={`${styles.dot} ${i === pageIndex ? styles.dotActive : ""}`}
-											onClick={() => goTo(i)}
+											onClick={() => handleNav(i)}
 											aria-label={`${i + 1}페이지`}
 										/>
 									))}

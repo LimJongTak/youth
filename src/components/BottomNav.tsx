@@ -1,23 +1,23 @@
 import { bottomNav } from "../data/content";
+import { useNavigation } from "../context/NavigationContext";
 import styles from "./BottomNav.module.scss";
 
-interface BottomNavProps {
-	active: string;
-}
+export function BottomNav() {
+	const { tab, setTab } = useNavigation();
 
-export function BottomNav({ active }: BottomNavProps) {
 	return (
 		<nav className={styles.bottomnav}>
 			<ul>
 				{bottomNav.map((item) => (
 					<li key={item.id}>
-						<a
-							href={`#${item.id}`}
-							className={`${styles.link} ${active === item.id ? styles.active : ""}`}
+						<button
+							type="button"
+							className={`${styles.link} ${tab === item.id ? styles.active : ""}`}
+							onClick={() => setTab(item.id)}
 						>
 							<i className={`fas ${item.icon}`} />
 							{item.label}
-						</a>
+						</button>
 					</li>
 				))}
 			</ul>

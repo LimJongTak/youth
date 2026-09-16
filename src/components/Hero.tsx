@@ -1,6 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
+import { useNavigation } from "../context/NavigationContext";
 import { statusLabel } from "../types/cohort";
 import logoUrl from "../assets/logo-mark.png";
 import { logEvent } from "../lib/analytics";
@@ -10,6 +11,7 @@ export function Hero() {
 	const { selected, cohorts } = useCohorts();
 	const { content } = useSiteContent();
 	const { hero } = content;
+	const { goToProgram } = useNavigation();
 	const [showNoActive, setShowNoActive] = useState(false);
 
 	const recruiting = cohorts.filter((c) => c.status === "recruiting");
@@ -49,10 +51,14 @@ export function Hero() {
 					<i className="fas fa-paper-plane" />
 					지금 신청하기
 				</a>
-				<a className="btn btn-ghost" href="#curriculum">
+				<button
+					type="button"
+					className="btn btn-ghost"
+					onClick={() => goToProgram("curriculum")}
+				>
 					<i className="fas fa-layer-group" />
 					커리큘럼 보기
-				</a>
+				</button>
 			</div>
 			{showNoActive && (
 				<p className={styles.noActiveMsg}>현재 운영 중인 기수가 없습니다.</p>

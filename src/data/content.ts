@@ -1,13 +1,16 @@
+import type { MainTab } from "../context/NavigationContext";
+
 export interface NavItem {
-	id: string;
+	id: MainTab;
 	label: string;
 	icon: string;
 }
 
+// The bottom bar now switches between real tab pages instead of scrolling
+// to an anchor — 문의 moved to the top bar, and 신청/체크리스트 live inside
+// the 홈 tab, so only these three remain.
 export const bottomNav: NavItem[] = [
-	{ id: "hero", label: "홈", icon: "fa-home" },
-	{ id: "cohort", label: "신청", icon: "fa-paper-plane" },
-	{ id: "curriculum", label: "커리큘럼", icon: "fa-layer-group" },
+	{ id: "home", label: "홈", icon: "fa-home" },
+	{ id: "program", label: "프로그램", icon: "fa-graduation-cap" },
 	{ id: "benefit", label: "혜택", icon: "fa-gift" },
-	{ id: "contact", label: "문의", icon: "fa-phone" },
 ];
