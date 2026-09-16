@@ -6,7 +6,7 @@ import { useNavigation } from "../context/NavigationContext";
 import { statusLabel } from "../types/cohort";
 import { logEvent } from "../lib/analytics";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../lib/calendar";
-import { formatEventTime } from "../lib/schedule";
+import { formatEventTime, getDayIndicator } from "../lib/schedule";
 import { SectionHead } from "./SectionHead";
 import styles from "./CohortBanner.module.scss";
 
@@ -177,9 +177,7 @@ export function CohortBanner() {
 							))}
 							{previewWeeks.flat().map(({ date, inMonth }) => {
 								const key = toDateKey(date);
-								const hasEvents = cohortEvents.some((e) =>
-									isDateInRange(key, e.startDate, e.endDate),
-								);
+								const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
 								return (
 									<button
 										type="button"
@@ -190,7 +188,14 @@ export function CohortBanner() {
 										onClick={() => setPreviewDate(key)}
 									>
 										<span>{date.getDate()}</span>
-										{hasEvents && <span className={styles.miniDot} />}
+										{indicator.hasBar && (
+											<span
+												className={`${styles.miniBar} ${
+													indicator.barLeftConnect ? styles.miniBarLeftConnect : ""
+												} ${indicator.barRightConnect ? styles.miniBarRightConnect : ""}`}
+											/>
+										)}
+										{indicator.hasDot && <span className={styles.miniDot} />}
 									</button>
 								);
 							})}

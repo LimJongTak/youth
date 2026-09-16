@@ -174,6 +174,34 @@
 	background: #fff;
 }
 
+// Multi-day event span — bleeds into the grid gap on the connected side so
+// it reads as one continuous bar across the days it covers.
+.miniBar {
+	position: absolute;
+	left: 3px;
+	right: 3px;
+	bottom: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: t.$teal;
+}
+
+.miniBarLeftConnect {
+	left: -2px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.miniBarRightConnect {
+	right: -2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.miniDayToday .miniBar {
+	background: #fff;
+}
+
 .miniDaySelected {
 	box-shadow: inset 0 0 0 2px t.$teal;
 }

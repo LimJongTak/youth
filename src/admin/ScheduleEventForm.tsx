@@ -1,22 +1,25 @@
 import { useState, type FormEvent } from "react";
 import type { ScheduleEvent, ScheduleEventDraft } from "../types/schedule";
 import styles from "./CohortForm.module.scss";
+import formStyles from "./ScheduleEventForm.module.scss";
 
 interface ScheduleEventFormProps {
 	cohortId: string;
 	initial: ScheduleEvent | null;
 	/** Pre-fills the date when adding from a calendar-day click. */
 	defaultDate?: string;
-	onSubmit: (event: ScheduleEventDraft) => void;
+	/** Always an array — one entry when editing or adding a single/range
+	 * event, several when adding the same content on multiple dates. */
+	onSubmit: (events: ScheduleEventDraft[]) => void;
 	onCancel: () => void;
 }
 
-function emptyDraft(cohortId: string, defaultDate?: string): ScheduleEventDraft {
+type CommonFields = Omit<ScheduleEventDraft, "startDate" | "endDate">;
+
+function emptyCommon(cohortId: string): CommonFields {
 	return {
 		cohortId,
 		title: "",
-		startDate: defaultDate ?? "",
-		endDate: defaultDate ?? "",
 		startTime: "",
 		endTime: "",
 		location: "",
@@ -32,18 +35,75 @@ export function ScheduleEventForm({
 	onSubmit,
 	onCancel,
 }: ScheduleEventFormProps) {
-	const [draft, setDraft] = useState<ScheduleEventDraft>(
-		initial ? { ...initial } : emptyDraft(cohortId, defaultDate),
+	// Editing always targets one existing document, so only a fresh "add"
+	// offers the multi-date shortcut.
+	const [mode, setMode] = useState<"single" | "multi">("single");
+	const [common, setCommon] = useState<CommonFields>(
+		initial
+			? {
+					cohortId,
+					title: initial.title,
+					startTime: initial.startTime ?? "",
+					endTime: initial.endTime ?? "",
+					location: initial.location ?? "",
+					instructor: initial.instructor ?? "",
+					memo: initial.memo ?? "",
+				}
+			: emptyCommon(cohortId),
 	);
+	const [startDate, setStartDate] = useState(initial?.startDate ?? defaultDate ?? "");
+	const [endDate, setEndDate] = useState(initial?.endDate ?? defaultDate ?? "");
+	const [multiDates, setMultiDates] = useState<string[]>([defaultDate ?? ""]);
+
+	function updateMultiDate(index: number, value: string) {
+		setMultiDates((prev) => prev.map((d, i) => (i === index ? value : d)));
+	}
+	function addMultiDateRow() {
+		setMultiDates((prev) => [...prev, ""]);
+	}
+	function removeMultiDateRow(index: number) {
+		setMultiDates((prev) => prev.filter((_, i) => i !== index));
+	}
+
+	const validMultiDates = Array.from(new Set(multiDates.filter(Boolean))).sort();
 
 	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
-		const endDate = draft.endDate || draft.startDate;
-		onSubmit({ ...draft, endDate });
+		if (mode === "multi") {
+			if (validMultiDates.length === 0) return;
+			onSubmit(validMultiDates.map((date) => ({ ...common, startDate: date, endDate: date })));
+			return;
+		}
+		onSubmit([{ ...common, startDate, endDate: endDate || startDate }]);
 	}
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>
+			{!initial && (
+				<div className={`${styles.field} ${styles.wide}`}>
+					<div className={formStyles.modeToggle} role="tablist">
+						<button
+							type="button"
+							role="tab"
+							aria-selected={mode === "single"}
+							className={`${formStyles.modeBtn} ${mode === "single" ? formStyles.active : ""}`}
+							onClick={() => setMode("single")}
+						>
+							하루 · 기간
+						</button>
+						<button
+							type="button"
+							role="tab"
+							aria-selected={mode === "multi"}
+							className={`${formStyles.modeBtn} ${mode === "multi" ? formStyles.active : ""}`}
+							onClick={() => setMode("multi")}
+						>
+							같은 내용 여러 날짜
+						</button>
+					</div>
+				</div>
+			)}
+
 			<div className={`${styles.field} ${styles.wide}`}>
 				<label htmlFor="ev-title">제목 (강의명 또는 일정명)</label>
 				<input
@@ -51,48 +111,82 @@ export function ScheduleEventForm({
 					type="text"
 					required
 					placeholder="예: 공통(교양) 또는 수료식"
-					value={draft.title}
-					onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
+					value={common.title}
+					onChange={(e) => setCommon((c) => ({ ...c, title: e.target.value }))}
 				/>
 			</div>
 
-			<div className={styles.field}>
-				<label htmlFor="ev-start-date">시작일</label>
-				<input
-					id="ev-start-date"
-					type="date"
-					required
-					value={draft.startDate}
-					onChange={(e) =>
-						setDraft((d) => ({
-							...d,
-							startDate: e.target.value,
-							endDate: d.endDate && d.endDate >= e.target.value ? d.endDate : e.target.value,
-						}))
-					}
-				/>
-			</div>
+			{mode === "single" ? (
+				<>
+					<div className={styles.field}>
+						<label htmlFor="ev-start-date">시작일</label>
+						<input
+							id="ev-start-date"
+							type="date"
+							required
+							value={startDate}
+							onChange={(e) => {
+								const next = e.target.value;
+								setStartDate(next);
+								setEndDate((prev) => (prev && prev >= next ? prev : next));
+							}}
+						/>
+					</div>
 
-			<div className={styles.field}>
-				<label htmlFor="ev-end-date">
-					종료일 <span>(하루짜리면 비워두면 시작일과 같아져요)</span>
-				</label>
-				<input
-					id="ev-end-date"
-					type="date"
-					min={draft.startDate || undefined}
-					value={draft.endDate}
-					onChange={(e) => setDraft((d) => ({ ...d, endDate: e.target.value }))}
-				/>
-			</div>
+					<div className={styles.field}>
+						<label htmlFor="ev-end-date">
+							종료일 <span>(하루짜리면 비워두면 시작일과 같아져요)</span>
+						</label>
+						<input
+							id="ev-end-date"
+							type="date"
+							min={startDate || undefined}
+							value={endDate}
+							onChange={(e) => setEndDate(e.target.value)}
+						/>
+					</div>
+				</>
+			) : (
+				<div className={`${styles.field} ${styles.wide}`}>
+					<label>
+						날짜 목록 <span>(같은 제목·시간·장소로 여러 날짜에 한 번에 등록해요)</span>
+					</label>
+					<div className={formStyles.dateList}>
+						{multiDates.map((date, index) => (
+							<div className={formStyles.dateRow} key={index}>
+								<input
+									type="date"
+									required
+									value={date}
+									onChange={(e) => updateMultiDate(index, e.target.value)}
+								/>
+								{multiDates.length > 1 && (
+									<button
+										type="button"
+										className={formStyles.removeDateBtn}
+										onClick={() => removeMultiDateRow(index)}
+										aria-label="이 날짜 삭제"
+									>
+										<i className="fas fa-times" />
+									</button>
+								)}
+							</div>
+						))}
+					</div>
+					<button type="button" className={formStyles.addDateBtn} onClick={addMultiDateRow}>
+						<i className="fas fa-plus" />
+						날짜 추가
+					</button>
+				</div>
+			)}
 
 			<div className={styles.field}>
 				<label htmlFor="ev-start-time">시작시간 (수업이 아니면 생략)</label>
 				<input
 					id="ev-start-time"
 					type="time"
-					value={draft.startTime ?? ""}
-					onChange={(e) => setDraft((d) => ({ ...d, startTime: e.target.value }))}
+					value={common.startTime ?? ""}
+					onChange={(e) => setCommon((c) => ({ ...c, startTime: e.target.value }))}
 				/>
 			</div>
 
@@ -101,8 +195,8 @@ export function ScheduleEventForm({
 				<input
 					id="ev-end-time"
 					type="time"
-					value={draft.endTime ?? ""}
-					onChange={(e) => setDraft((d) => ({ ...d, endTime: e.target.value }))}
+					value={common.endTime ?? ""}
+					onChange={(e) => setCommon((c) => ({ ...c, endTime: e.target.value }))}
 				/>
 			</div>
 
@@ -112,8 +206,8 @@ export function ScheduleEventForm({
 					id="ev-location"
 					type="text"
 					placeholder="예: 광양 커뮤니티센터"
-					value={draft.location ?? ""}
-					onChange={(e) => setDraft((d) => ({ ...d, location: e.target.value }))}
+					value={common.location ?? ""}
+					onChange={(e) => setCommon((c) => ({ ...c, location: e.target.value }))}
 				/>
 			</div>
 
@@ -123,8 +217,8 @@ export function ScheduleEventForm({
 					id="ev-instructor"
 					type="text"
 					placeholder="예: 홍길동 교수"
-					value={draft.instructor ?? ""}
-					onChange={(e) => setDraft((d) => ({ ...d, instructor: e.target.value }))}
+					value={common.instructor ?? ""}
+					onChange={(e) => setCommon((c) => ({ ...c, instructor: e.target.value }))}
 				/>
 			</div>
 
@@ -133,8 +227,8 @@ export function ScheduleEventForm({
 				<textarea
 					id="ev-memo"
 					placeholder="참고사항이 있다면 입력하세요."
-					value={draft.memo ?? ""}
-					onChange={(e) => setDraft((d) => ({ ...d, memo: e.target.value }))}
+					value={common.memo ?? ""}
+					onChange={(e) => setCommon((c) => ({ ...c, memo: e.target.value }))}
 				/>
 			</div>
 
@@ -142,8 +236,16 @@ export function ScheduleEventForm({
 				<button type="button" className={styles.btnGhost} onClick={onCancel}>
 					취소
 				</button>
-				<button type="submit" className={styles.btnPrimary}>
-					{initial ? "저장" : "일정 추가"}
+				<button
+					type="submit"
+					className={styles.btnPrimary}
+					disabled={mode === "multi" && validMultiDates.length === 0}
+				>
+					{initial
+						? "저장"
+						: mode === "multi"
+							? `${validMultiDates.length || ""}개 날짜에 추가`
+							: "일정 추가"}
 				</button>
 			</div>
 		</form>

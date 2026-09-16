@@ -3,7 +3,6 @@ import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
 import { useNavigation } from "../context/NavigationContext";
 import { statusLabel } from "../types/cohort";
-import logoUrl from "../assets/logo-mark.png";
 import { logEvent } from "../lib/analytics";
 import styles from "./Hero.module.scss";
 
@@ -11,7 +10,7 @@ export function Hero() {
 	const { selected, cohorts } = useCohorts();
 	const { content } = useSiteContent();
 	const { hero } = content;
-	const { goToProgram } = useNavigation();
+	const { goToProgram, setTab } = useNavigation();
 	const [showNoActive, setShowNoActive] = useState(false);
 
 	const recruiting = cohorts.filter((c) => c.status === "recruiting");
@@ -34,7 +33,6 @@ export function Hero() {
 
 	return (
 		<section className={styles.hero} id="hero">
-			<img className={styles.logoMark} src={logoUrl} alt="국립순천대학교 AI인재양성부트캠프사업단" />
 			<h1 className={styles.title}>
 				{hero.titleBefore}
 				<br />
@@ -57,20 +55,16 @@ export function Hero() {
 					onClick={() => goToProgram("curriculum")}
 				>
 					<i className="fas fa-layer-group" />
-					커리큘럼 보기
+					커리큘럼
+				</button>
+				<button type="button" className="btn btn-ghost" onClick={() => setTab("benefit")}>
+					<i className="fas fa-gift" />
+					참여 혜택
 				</button>
 			</div>
 			{showNoActive && (
 				<p className={styles.noActiveMsg}>현재 운영 중인 기수가 없습니다.</p>
 			)}
-			<div className={styles.statRow}>
-				{hero.stats.map((stat) => (
-					<div className={styles.statCard} key={stat.label}>
-						<strong>{stat.value}</strong>
-						<span>{stat.label}</span>
-					</div>
-				))}
-			</div>
 		</section>
 	);
 }

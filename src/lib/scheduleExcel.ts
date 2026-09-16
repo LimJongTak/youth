@@ -6,15 +6,20 @@ import { toDateKey } from "./calendar";
 // these two in sync, since an exported file should re-import cleanly.
 const COLUMNS = ["제목", "시작일", "종료일", "시작시간", "종료시간", "강의장소", "교수/강사", "비고"] as const;
 
-const EXAMPLE_ROW = [
-	"공통(교양)",
-	"2026-10-06",
-	"2026-10-06",
-	"10:00",
-	"13:00",
-	"광양 커뮤니티센터",
-	"홍길동 교수",
-	"",
+const EXAMPLE_ROWS = [
+	["공통(교양)", "2026-10-06", "2026-10-06", "10:00", "13:00", "광양 커뮤니티센터", "홍길동 교수", ""],
+	// 같은 과목이 여러 날짜에 반복될 때는 시작일 칸에 콤마로 구분해 날짜를
+	// 나열하면 한 행으로 여러 일정을 한 번에 등록할 수 있다 (종료일은 무시됨).
+	[
+		"AI와 코딩",
+		"2026-09-10, 2026-09-17, 2026-09-21",
+		"",
+		"14:00",
+		"17:00",
+		"국립순천대학교",
+		"김철수 교수",
+		"같은 제목으로 여러 날짜를 한 번에 등록하려면 이렇게 시작일에 콤마로 나열하세요",
+	],
 ];
 
 function draftToRow(draft: ScheduleEventDraft): (string | undefined)[] {
@@ -48,7 +53,7 @@ function buildWorkbook(rows: (string | undefined)[][]) {
 }
 
 export function downloadScheduleTemplate(cohortLabel: string) {
-	const workbook = buildWorkbook([EXAMPLE_ROW]);
+	const workbook = buildWorkbook(EXAMPLE_ROWS);
 	XLSX.writeFile(workbook, `일정_양식_${cohortLabel}.xlsx`);
 }
 
@@ -72,6 +77,24 @@ function cellToDateKey(value: unknown): string | null {
 			: null;
 	}
 	return null;
+}
+
+// Lets one row register the same class on several non-contiguous dates
+// (e.g. "AI와 코딩" meeting 9/10, 9/17, 9/21) instead of needing one row
+// per date — split the 시작일 cell on commas/newlines/Korean-comma and
+// parse each piece as its own date.
+function cellToDateKeys(value: unknown): string[] {
+	if (value instanceof Date) {
+		const key = toDateKey(value);
+		return [key];
+	}
+	if (typeof value === "string") {
+		return value
+			.split(/[,\n、]+/)
+			.map((token) => cellToDateKey(token))
+			.filter((key): key is string => key !== null);
+	}
+	return [];
 }
 
 function cellToTime(value: unknown): string | undefined {
@@ -116,28 +139,40 @@ export async function parseScheduleExcel(file: File, cohortId: string): Promise<
 	rows.forEach((row, index) => {
 		const rowNum = index + 2; // header is row 1
 		const title = cellToText(row["제목"]);
-		const startDate = cellToDateKey(row["시작일"]);
 		if (!title) {
 			errors.push(`${rowNum}행: 제목이 비어 있어 건너뜁니다.`);
 			return;
 		}
-		if (!startDate) {
+
+		const dateKeys = cellToDateKeys(row["시작일"]);
+		if (dateKeys.length === 0) {
 			errors.push(`${rowNum}행: 시작일 형식을 읽을 수 없어 건너뜁니다 (예: 2026-10-06).`);
 			return;
 		}
-		const endDate = cellToDateKey(row["종료일"]) ?? startDate;
 
-		drafts.push({
+		const common = {
 			cohortId,
 			title,
-			startDate,
-			endDate,
 			startTime: cellToTime(row["시작시간"]),
 			endTime: cellToTime(row["종료시간"]),
 			location: cellToText(row["강의장소"]),
 			instructor: cellToText(row["교수/강사"]),
 			memo: cellToText(row["비고"]),
-		});
+		};
+
+		if (dateKeys.length === 1) {
+			// A single date — 종료일 still means what it always has (a
+			// range), including a blank cell falling back to the start date.
+			const endDate = cellToDateKey(row["종료일"]) ?? dateKeys[0];
+			drafts.push({ ...common, startDate: dateKeys[0], endDate });
+		} else {
+			// Several comma-separated dates in one row — each becomes its
+			// own single-day event with the same content; 종료일 doesn't
+			// apply to a set of discrete dates, so it's ignored here.
+			for (const date of dateKeys) {
+				drafts.push({ ...common, startDate: date, endDate: date });
+			}
+		}
 	});
 
 	return { drafts, errors };

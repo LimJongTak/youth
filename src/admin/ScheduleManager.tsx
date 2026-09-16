@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSchedule } from "../context/ScheduleContext";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../lib/calendar";
+import { getDayIndicator } from "../lib/schedule";
 import {
 	downloadScheduleTemplate,
 	exportScheduleToExcel,
@@ -74,12 +75,14 @@ export function ScheduleManager() {
 		}
 	}
 
-	async function handleFormSubmit(draft: ScheduleEventDraft) {
+	async function handleFormSubmit(drafts: ScheduleEventDraft[]) {
 		try {
 			if (editing) {
-				await updateEvent({ ...draft, id: editing.id });
+				await updateEvent({ ...drafts[0], id: editing.id });
+			} else if (drafts.length === 1) {
+				await addEvent(drafts[0]);
 			} else {
-				await addEvent(draft);
+				await addMany(drafts);
 			}
 			setEditing(null);
 			setAddingDate(null);
@@ -254,6 +257,7 @@ export function ScheduleManager() {
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
 					const count = cohortEvents.filter((e) => isDateInRange(key, e.startDate, e.endDate)).length;
+					const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
 					return (
 						<button
 							type="button"
@@ -265,6 +269,13 @@ export function ScheduleManager() {
 						>
 							<span>{date.getDate()}</span>
 							{count > 0 && <span className={styles.dayCount}>{count}</span>}
+							{indicator.hasBar && (
+								<span
+									className={`${styles.dayBar} ${
+										indicator.barLeftConnect ? styles.barLeftConnect : ""
+									} ${indicator.barRightConnect ? styles.barRightConnect : ""}`}
+								/>
+							)}
 						</button>
 					);
 				})}

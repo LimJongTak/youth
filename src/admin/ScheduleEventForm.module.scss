@@ -1,0 +1,92 @@
+@use "../styles/tokens" as t;
+
+.modeToggle {
+	display: flex;
+	gap: 6px;
+	background: t.$bg;
+	padding: 4px;
+	border-radius: 999px;
+	width: fit-content;
+}
+
+.modeBtn {
+	border: none;
+	background: transparent;
+	padding: 8px 16px;
+	border-radius: 999px;
+	font-family: inherit;
+	font-weight: 700;
+	font-size: 0.8rem;
+	color: t.$text-mute;
+	cursor: pointer;
+
+	&.active {
+		background: t.$ink;
+		color: #fff;
+	}
+}
+
+.dateList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.dateRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	input {
+		flex: 1;
+		border: 1px solid t.$border;
+		border-radius: t.$radius-sm;
+		padding: 9px 12px;
+		font-size: 0.88rem;
+		font-family: inherit;
+		color: t.$text;
+		background: #fff;
+
+		&:focus {
+			outline: 2px solid t.$teal;
+			outline-offset: 1px;
+		}
+	}
+}
+
+.removeDateBtn {
+	flex: 0 0 auto;
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	border: 1px solid t.$border;
+	background: #fff;
+	color: t.$text-mute;
+	cursor: pointer;
+
+	&:hover {
+		color: t.$coral;
+		border-color: t.$coral;
+	}
+}
+
+.addDateBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	border: 1px dashed t.$border;
+	background: transparent;
+	border-radius: t.$radius-sm;
+	padding: 8px 14px;
+	font-family: inherit;
+	font-weight: 700;
+	font-size: 0.8rem;
+	color: t.$text-mute;
+	cursor: pointer;
+
+	&:hover {
+		color: t.$ink;
+		border-color: t.$ink;
+	}
+}

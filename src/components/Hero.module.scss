@@ -3,15 +3,7 @@
 .hero {
 	background: t.$ink-2;
 	color: #fff;
-	padding: 28px 20px 0;
-}
-
-.logoMark {
-	height: 40px;
-	width: auto;
-	display: block;
-	margin-bottom: 20px;
-	opacity: 0.92;
+	padding: 28px 20px;
 }
 
 .title {
@@ -64,51 +56,8 @@
 	color: t.$amber;
 }
 
-.statRow {
-	display: flex;
-	margin-top: 28px;
-	padding-top: 18px;
-	border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.statCard {
-	flex: 1;
-	min-width: 0;
-	padding: 0 6px 22px;
-	text-align: center;
-
-	& + & {
-		border-left: 1px solid rgba(255, 255, 255, 0.1);
-	}
-
-	strong {
-		display: block;
-		font-size: 1rem;
-		color: #fff;
-		font-family: t.$font-head;
-		font-weight: 700;
-		letter-spacing: -0.01em;
-		word-break: keep-all;
-		overflow-wrap: break-word;
-	}
-
-	span {
-		display: block;
-		font-size: 0.72rem;
-		font-weight: 500;
-		color: rgba(255, 255, 255, 0.5);
-		margin-top: 4px;
-	}
-}
-
 @media (max-width: 374px) {
 	.hero {
-		padding: 24px 16px 0;
-	}
-	.statCard strong {
-		font-size: 0.88rem;
-	}
-	.statCard span {
-		font-size: 0.66rem;
+		padding: 24px 16px;
 	}
 }

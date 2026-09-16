@@ -13,6 +13,12 @@ export function parseDateKey(key: string): Date {
 	return new Date(y, (m ?? 1) - 1, d ?? 1);
 }
 
+export function shiftDateKey(key: string, days: number): string {
+	const date = parseDateKey(key);
+	date.setDate(date.getDate() + days);
+	return toDateKey(date);
+}
+
 /** True if `key` falls within [startKey, endKey] (both inclusive), as plain
  * YYYY-MM-DD string comparison — safe because the format is fixed-width.
  */

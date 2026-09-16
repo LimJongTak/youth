@@ -56,16 +56,10 @@
 	align-items: flex-start;
 	gap: 12px;
 	background: t.$card;
-	border: 1px solid t.$border;
+	border: 1px solid rgba(46, 186, 174, 0.4);
 	border-radius: t.$radius-md;
 	padding: 13px 15px;
-	cursor: pointer;
 	box-shadow: t.$shadow-xs;
-	transition: border-color 0.15s ease;
-
-	input {
-		display: none;
-	}
 
 	strong {
 		display: block;
@@ -81,68 +75,19 @@
 	}
 }
 
-.item:has(input:checked) {
-	border-color: rgba(46, 186, 174, 0.4);
-}
-
 .box {
 	width: 21px;
 	height: 21px;
 	min-width: 21px;
 	border-radius: 7px;
-	border: 2px solid #cfd4e2;
+	border: 2px solid t.$teal;
+	background: t.$teal;
 	margin-top: 1px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: #fff;
 	font-size: 0.68rem;
-	transition: background 0.15s, border-color 0.15s;
-
-	i {
-		opacity: 0;
-		transition: opacity 0.15s;
-	}
-}
-
-.item input:checked + .box {
-	background: t.$teal;
-	border-color: t.$teal;
-
-	i {
-		opacity: 1;
-	}
-}
-
-.resultCard {
-	margin-top: 14px;
-	background: t.$teal-tint;
-	border: 1px solid rgba(20, 184, 166, 0.25);
-	border-radius: t.$radius-lg;
-	padding: 16px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	gap: 10px;
-
-	i {
-		font-size: 1.5rem;
-		color: t.$teal-dark;
-	}
-
-	strong {
-		display: block;
-		font-size: 0.94rem;
-		color: t.$ink;
-	}
-
-	span {
-		display: block;
-		font-size: 0.8rem;
-		color: t.$text-mute;
-		margin-top: 2px;
-	}
 }
 
 .note {

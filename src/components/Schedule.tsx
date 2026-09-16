@@ -9,7 +9,7 @@ import {
 	toDateKey,
 	WEEKDAY_LABELS,
 } from "../lib/calendar";
-import { formatEventTime } from "../lib/schedule";
+import { formatEventTime, getDayIndicator } from "../lib/schedule";
 import { SectionHead } from "./SectionHead";
 import styles from "./Schedule.module.scss";
 
@@ -104,7 +104,7 @@ export function Schedule() {
 				))}
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
-					const hasEvents = cohortEvents.some((e) => isDateInRange(key, e.startDate, e.endDate));
+					const indicator = getDayIndicator(key, date.getDay(), cohortEvents);
 					const isToday = key === toDateKey(today);
 					return (
 						<button
@@ -116,7 +116,14 @@ export function Schedule() {
 							onClick={() => setSelectedDate(key)}
 						>
 							<span>{date.getDate()}</span>
-							{hasEvents && <span className={styles.dayDot} />}
+							{indicator.hasBar && (
+								<span
+									className={`${styles.dayBar} ${
+										indicator.barLeftConnect ? styles.barLeftConnect : ""
+									} ${indicator.barRightConnect ? styles.barRightConnect : ""}`}
+								/>
+							)}
+							{indicator.hasDot && <span className={styles.dayDot} />}
 						</button>
 					);
 				})}
