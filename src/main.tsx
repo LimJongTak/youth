@@ -12,3 +12,11 @@ createRoot(document.getElementById("root")!).render(
 		<App />
 	</StrictMode>,
 );
+
+// Registered only in production — a dev-mode service worker would keep
+// intercepting requests after `npm run dev` restarts and confuse HMR.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker.register("/sw.js").catch(() => {});
+	});
+}

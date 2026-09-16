@@ -1,5 +1,6 @@
 import { bottomNav } from "../data/content";
 import { useNavigation } from "../context/NavigationContext";
+import { InstallButton } from "./InstallButton";
 import styles from "./BottomNav.module.scss";
 
 export function BottomNav() {
@@ -20,6 +21,7 @@ export function BottomNav() {
 						</button>
 					</li>
 				))}
+				<InstallButton />
 			</ul>
 			<div className={styles.homeIndicator}>
 				<span />
