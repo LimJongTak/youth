@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { SectionHead } from "./SectionHead";
 import styles from "./About.module.scss";
 
 const PAGES = [
@@ -62,8 +61,6 @@ export function About() {
 
 	return (
 		<section className="section" id="about">
-			<SectionHead eyebrow="PROGRAM" />
-
 			<div className={styles.pager}>
 				<button
 					type="button"

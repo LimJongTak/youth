@@ -3,6 +3,7 @@ import { signOut } from "firebase/auth";
 import { AppShell } from "./components/AppShell";
 import { CohortProvider } from "./context/CohortContext";
 import { SiteContentProvider } from "./context/SiteContentContext";
+import { ScheduleProvider } from "./context/ScheduleContext";
 import { useAppUser } from "./hooks/useAppUser";
 import { auth } from "./lib/firebase";
 
@@ -59,7 +60,9 @@ function App() {
 	return (
 		<SiteContentProvider>
 			<CohortProvider>
-				<Suspense fallback={null}>{body}</Suspense>
+				<ScheduleProvider>
+					<Suspense fallback={null}>{body}</Suspense>
+				</ScheduleProvider>
 			</CohortProvider>
 		</SiteContentProvider>
 	);

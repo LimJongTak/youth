@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useCohorts } from "../context/CohortContext";
 import { useSiteContent } from "../context/SiteContentContext";
+import { useSchedule } from "../context/ScheduleContext";
+import { useNavigation } from "../context/NavigationContext";
 import { statusLabel } from "../types/cohort";
 import { logEvent } from "../lib/analytics";
+import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../lib/calendar";
+import { formatEventTime } from "../lib/schedule";
 import { SectionHead } from "./SectionHead";
 import styles from "./CohortBanner.module.scss";
+
+type CardTab = "info" | "schedule";
 
 const dotClass: Record<string, string> = {
 	recruiting: styles.dotRecruiting,
@@ -22,7 +28,39 @@ export function CohortBanner() {
 	const { cohorts, selected, select } = useCohorts();
 	const { content } = useSiteContent();
 	const { applySteps, contact } = content;
+	const { events } = useSchedule();
+	const { goToSchedule } = useNavigation();
 	const [stepsOpen, setStepsOpen] = useState(false);
+	const [cardTab, setCardTab] = useState<CardTab>("info");
+	const todayKey = toDateKey(new Date());
+	const [previewMonth, setPreviewMonth] = useState(() => {
+		const now = new Date();
+		return { year: now.getFullYear(), month: now.getMonth() };
+	});
+	const [previewDate, setPreviewDate] = useState<string | null>(todayKey);
+
+	const cohortEvents = useMemo(
+		() => events.filter((e) => e.cohortId === selected.id),
+		[events, selected.id],
+	);
+	const previewWeeks = useMemo(
+		() => getMonthGrid(previewMonth.year, previewMonth.month),
+		[previewMonth],
+	);
+	const previewDateEvents = useMemo(() => {
+		if (!previewDate) return [];
+		return cohortEvents
+			.filter((e) => isDateInRange(previewDate, e.startDate, e.endDate))
+			.sort((a, b) => (a.startTime ?? "").localeCompare(b.startTime ?? ""));
+	}, [cohortEvents, previewDate]);
+
+	function shiftPreviewMonth(delta: number) {
+		setPreviewMonth(({ year, month }) => {
+			const next = new Date(year, month + delta, 1);
+			return { year: next.getFullYear(), month: next.getMonth() };
+		});
+		setPreviewDate(null);
+	}
 
 	if (cohorts.length === 0) return null;
 
@@ -30,11 +68,7 @@ export function CohortBanner() {
 
 	return (
 		<section className="section" id="cohort">
-			<SectionHead
-				eyebrow="COHORT"
-				title="기수 안내 · 신청"
-				description="여러 기수가 함께 진행될 수 있어요. 기수를 선택해 일정을 확인하고 바로 신청하세요."
-			/>
+			<SectionHead title="기수 안내 및 신청" />
 
 			<div className={styles.chipRow} role="tablist">
 				{cohorts
@@ -46,7 +80,10 @@ export function CohortBanner() {
 							role="tab"
 							aria-selected={selected.id === cohort.id}
 							className={`${styles.chip} ${selected.id === cohort.id ? styles.active : ""}`}
-							onClick={() => select(cohort.id)}
+							onClick={() => {
+								select(cohort.id);
+								setCardTab("info");
+							}}
 						>
 							<span className={`${styles.dot} ${dotClass[cohort.status]}`} />
 							{cohort.generation}기 · {statusLabel[cohort.status]}
@@ -55,35 +92,141 @@ export function CohortBanner() {
 			</div>
 
 			<div className={styles.card}>
-				<div className={styles.cardHead}>
-					<h4>{selected.generation}기 교육생</h4>
-					<span className={`${styles.badge} ${badgeClass[selected.status]}`}>
-						{statusLabel[selected.status]}
-					</span>
+				<div className={styles.cardSwitcher} role="tablist">
+					<button
+						type="button"
+						role="tab"
+						aria-selected={cardTab === "info"}
+						className={`${styles.cardTabBtn} ${cardTab === "info" ? styles.active : ""}`}
+						onClick={() => setCardTab("info")}
+					>
+						교육 안내
+					</button>
+					<button
+						type="button"
+						role="tab"
+						aria-selected={cardTab === "schedule"}
+						className={`${styles.cardTabBtn} ${cardTab === "schedule" ? styles.active : ""}`}
+						onClick={() => setCardTab("schedule")}
+					>
+						일정
+					</button>
 				</div>
-				<div className={styles.rows}>
-					<div className={styles.row}>
-						<span>모집인원</span>
-						<span>{selected.capacity}</span>
+
+				{cardTab === "info" ? (
+					<>
+						<div className={styles.cardHead}>
+							<h4>{selected.generation}기 교육생</h4>
+							<span className={`${styles.badge} ${badgeClass[selected.status]}`}>
+								{statusLabel[selected.status]}
+							</span>
+						</div>
+						<div className={styles.rows}>
+							<div className={styles.row}>
+								<span>모집인원</span>
+								<span>{selected.capacity}</span>
+							</div>
+							<div className={styles.row}>
+								<span>모집기간</span>
+								<span>{selected.recruitPeriod}</span>
+							</div>
+							<div className={styles.row}>
+								<span>교육기간</span>
+								<span>{selected.eduPeriod}</span>
+							</div>
+							<div className={styles.row}>
+								<span>교육시간</span>
+								<span>{selected.eduHours}</span>
+							</div>
+							<div className={styles.row}>
+								<span>교육장소</span>
+								<span>{selected.location}</span>
+							</div>
+						</div>
+						{selected.note && <p className={styles.note}>* {selected.note}</p>}
+					</>
+				) : (
+					<div className={styles.schedulePreview}>
+						<div className={styles.miniHead}>
+							<button
+								type="button"
+								className={styles.miniNavBtn}
+								onClick={() => shiftPreviewMonth(-1)}
+								aria-label="이전 달"
+							>
+								<i className="fas fa-chevron-left" />
+							</button>
+							<span>
+								{previewMonth.year}년 {previewMonth.month + 1}월
+							</span>
+							<button
+								type="button"
+								className={styles.miniNavBtn}
+								onClick={() => shiftPreviewMonth(1)}
+								aria-label="다음 달"
+							>
+								<i className="fas fa-chevron-right" />
+							</button>
+						</div>
+
+						<div className={styles.miniGrid}>
+							{WEEKDAY_LABELS.map((w) => (
+								<span className={styles.miniWeekday} key={w}>
+									{w}
+								</span>
+							))}
+							{previewWeeks.flat().map(({ date, inMonth }) => {
+								const key = toDateKey(date);
+								const hasEvents = cohortEvents.some((e) =>
+									isDateInRange(key, e.startDate, e.endDate),
+								);
+								return (
+									<button
+										type="button"
+										key={key}
+										className={`${styles.miniDay} ${!inMonth ? styles.miniDayOut : ""} ${
+											key === todayKey ? styles.miniDayToday : ""
+										} ${previewDate === key ? styles.miniDaySelected : ""}`}
+										onClick={() => setPreviewDate(key)}
+									>
+										<span>{date.getDate()}</span>
+										{hasEvents && <span className={styles.miniDot} />}
+									</button>
+								);
+							})}
+						</div>
+
+						<div className={styles.previewPanel}>
+							<strong className={styles.previewHead}>
+								{previewDate
+									? `${parseDateKey(previewDate).getMonth() + 1}월 ${parseDateKey(previewDate).getDate()}일`
+									: "날짜를 선택하세요"}
+							</strong>
+							{previewDate && previewDateEvents.length === 0 && (
+								<p className={styles.note}>등록된 일정이 없습니다.</p>
+							)}
+							{previewDate && previewDateEvents.length > 0 && (
+								<div className={styles.previewList}>
+									{previewDateEvents.map((event) => (
+										<div className={styles.previewRow} key={event.id}>
+											<span className={styles.previewTime}>{formatEventTime(event)}</span>
+											<span className={styles.previewTitle}>{event.title}</span>
+										</div>
+									))}
+								</div>
+							)}
+						</div>
+
+						<button
+							type="button"
+							className={styles.detailBtn}
+							onClick={() => goToSchedule(selected.id, previewDate ?? undefined)}
+						>
+							자세히 보기
+							<i className="fas fa-chevron-right" />
+						</button>
 					</div>
-					<div className={styles.row}>
-						<span>모집기간</span>
-						<span>{selected.recruitPeriod}</span>
-					</div>
-					<div className={styles.row}>
-						<span>교육기간</span>
-						<span>{selected.eduPeriod}</span>
-					</div>
-					<div className={styles.row}>
-						<span>교육시간</span>
-						<span>{selected.eduHours}</span>
-					</div>
-					<div className={styles.row}>
-						<span>교육장소</span>
-						<span>{selected.location}</span>
-					</div>
-				</div>
-				{selected.note && <p className={styles.note}>* {selected.note}</p>}
+				)}
 			</div>
 
 			<div className={`${styles.card} ${styles.stepsCard}`}>

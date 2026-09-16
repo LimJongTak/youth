@@ -29,7 +29,6 @@ export function TargetChecklist() {
 	return (
 		<section className="section" id="target">
 			<SectionHead
-				eyebrow="RECRUIT TARGET"
 				title={
 					<>
 						나도 신청할 수 있을까? <br />

@@ -37,7 +37,6 @@ export function Curriculum() {
 	return (
 		<section className="section" id="curriculum">
 			<SectionHead
-				eyebrow="CURRICULUM"
 				title="공통과정 + 선택 트랙"
 				description="공통과정 이수 후, 3가지 트랙 중 하나를 선택해 심화 학습합니다."
 			/>

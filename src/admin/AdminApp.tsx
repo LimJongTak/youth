@@ -6,6 +6,7 @@ import { CohortForm } from "./CohortForm";
 import { AccountManagement } from "./AccountManagement";
 import { ContentEditor } from "./ContentEditor";
 import { AnalyticsPanel } from "./AnalyticsPanel";
+import { ScheduleManager } from "./ScheduleManager";
 import styles from "./AdminApp.module.scss";
 
 const badgeClass: Record<string, string> = {
@@ -20,7 +21,7 @@ interface AdminAppProps {
 	onLogout: () => void;
 }
 
-type Tab = "cohorts" | "content" | "analytics" | "accounts";
+type Tab = "cohorts" | "content" | "schedule" | "analytics" | "accounts";
 
 export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 	const { cohorts, addCohort, updateCohort, removeCohort, setFeatured } = useCohorts();
@@ -91,6 +92,12 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 						콘텐츠 관리
 					</button>
 					<button
+						className={`${styles.tabBtn} ${tab === "schedule" ? styles.tabActive : ""}`}
+						onClick={() => setTab("schedule")}
+					>
+						일정 관리
+					</button>
+					<button
 						className={`${styles.tabBtn} ${tab === "analytics" ? styles.tabActive : ""}`}
 						onClick={() => setTab("analytics")}
 					>
@@ -110,6 +117,8 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 					<AccountManagement />
 				) : tab === "content" ? (
 					<ContentEditor />
+				) : tab === "schedule" ? (
+					<ScheduleManager />
 				) : tab === "analytics" ? (
 					<AnalyticsPanel />
 				) : (

@@ -11,17 +11,8 @@ export function ProgramTab() {
 			<div className={styles.switcher} role="tablist">
 				<span
 					className={styles.switcherThumb}
-					style={{ transform: programSubTab === "curriculum" ? "translateX(100%)" : "translateX(0)" }}
+					style={{ transform: programSubTab === "about" ? "translateX(100%)" : "translateX(0)" }}
 				/>
-				<button
-					type="button"
-					role="tab"
-					aria-selected={programSubTab === "about"}
-					className={`${styles.switchBtn} ${programSubTab === "about" ? styles.active : ""}`}
-					onClick={() => setProgramSubTab("about")}
-				>
-					프로그램 소개
-				</button>
 				<button
 					type="button"
 					role="tab"
@@ -30,6 +21,15 @@ export function ProgramTab() {
 					onClick={() => setProgramSubTab("curriculum")}
 				>
 					커리큘럼
+				</button>
+				<button
+					type="button"
+					role="tab"
+					aria-selected={programSubTab === "about"}
+					className={`${styles.switchBtn} ${programSubTab === "about" ? styles.active : ""}`}
+					onClick={() => setProgramSubTab("about")}
+				>
+					프로그램 소개
 				</button>
 			</div>
 

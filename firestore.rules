@@ -32,6 +32,14 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
+    // Cohort training schedule (class sessions / general events). Same
+    // public-read / signed-in-write shape as cohorts — the public site
+    // reads the calendar, only a signed-in admin/manager edits it.
+    match /schedules/{eventId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
     // Account profiles (role assignment). A signed-in user may read the
     // list (needed for the admin's account-management screen and for
     // looking up their own role). A brand-new account may create its own

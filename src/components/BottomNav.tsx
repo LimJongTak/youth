@@ -4,7 +4,7 @@ import { InstallButton } from "./InstallButton";
 import styles from "./BottomNav.module.scss";
 
 export function BottomNav() {
-	const { tab, setTab } = useNavigation();
+	const { tab, setTab, goToProgram } = useNavigation();
 
 	return (
 		<nav className={styles.bottomnav}>
@@ -14,7 +14,7 @@ export function BottomNav() {
 						<button
 							type="button"
 							className={`${styles.link} ${tab === item.id ? styles.active : ""}`}
-							onClick={() => setTab(item.id)}
+							onClick={() => (item.id === "program" ? goToProgram() : setTab(item.id))}
 						>
 							<i className={`fas ${item.icon}`} />
 							{item.label}

@@ -5,6 +5,7 @@ import { Hero } from "./Hero";
 import { CohortBanner } from "./CohortBanner";
 import { TargetChecklist } from "./TargetChecklist";
 import { ProgramTab } from "./ProgramTab";
+import { Schedule } from "./Schedule";
 import { Benefits } from "./Benefits";
 import { Journey } from "./Journey";
 import { Contact } from "./Contact";
@@ -46,6 +47,7 @@ function Shell() {
 						</>
 					)}
 					{tab === "program" && <ProgramTab />}
+					{tab === "schedule" && <Schedule />}
 					{tab === "benefit" && (
 						<>
 							<Benefits />

@@ -52,7 +52,6 @@ export function Journey() {
 	return (
 		<section className="section" id="journey">
 			<SectionHead
-				eyebrow="JOURNEY"
 				title="참여 여정"
 				description="신청부터 채용연계까지, 전 과정을 함께합니다."
 				action={

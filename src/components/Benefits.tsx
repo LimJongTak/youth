@@ -8,7 +8,6 @@ export function Benefits() {
 	return (
 		<section className="section" id="benefit">
 			<SectionHead
-				eyebrow="BENEFIT"
 				title="참여 혜택"
 				description="교육부터 취업까지, 든든하게 지원합니다."
 			/>

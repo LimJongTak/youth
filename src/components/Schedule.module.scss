@@ -1,0 +1,187 @@
+@use "../styles/tokens" as t;
+
+.chipRow {
+	display: flex;
+	gap: 8px;
+	overflow-x: auto;
+	padding-bottom: 4px;
+	margin-bottom: 18px;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.chip {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	border: 1px solid t.$border;
+	background: #fff;
+	border-radius: 999px;
+	padding: 9px 15px;
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: t.$text-mute;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+	&.active {
+		background: t.$ink;
+		border-color: t.$ink;
+		color: #fff;
+	}
+}
+
+.calendarHead {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	margin-bottom: 12px;
+
+	strong {
+		font-size: 1rem;
+		min-width: 96px;
+		text-align: center;
+	}
+}
+
+.navBtn {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: none;
+	background: t.$bg;
+	color: t.$text-mute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 0.76rem;
+
+	&:active {
+		background: t.$border;
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 3px;
+	margin-bottom: 16px;
+}
+
+.weekday {
+	text-align: center;
+	font-size: 0.66rem;
+	font-weight: 800;
+	color: t.$text-faint;
+	padding-bottom: 4px;
+}
+
+.day {
+	position: relative;
+	aspect-ratio: 1;
+	border: none;
+	background: transparent;
+	border-radius: t.$radius-sm;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 3px;
+	font-size: 0.8rem;
+	color: t.$text;
+	cursor: pointer;
+}
+
+.dayOut {
+	color: t.$text-faint;
+}
+
+.dayToday {
+	font-weight: 800;
+	color: t.$teal-dark;
+}
+
+.daySelected {
+	background: t.$ink;
+	color: #fff;
+	font-weight: 800;
+}
+
+.dayDot {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: t.$teal;
+}
+
+.daySelected .dayDot {
+	background: #fff;
+}
+
+.dayPanel {
+	background: t.$bg;
+	border-radius: t.$radius-md;
+	padding: 14px 16px;
+
+	h4 {
+		margin: 0 0 10px;
+		font-size: 0.88rem;
+	}
+}
+
+.empty {
+	margin: 0;
+	font-size: 0.84rem;
+	color: t.$text-mute;
+}
+
+.eventList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.eventRow {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	background: #fff;
+	border-radius: t.$radius-sm;
+	padding: 10px 12px;
+}
+
+.eventTime {
+	flex: 0 0 auto;
+	min-width: 76px;
+	font-size: 0.74rem;
+	font-weight: 800;
+	color: t.$teal-dark;
+	padding-top: 1px;
+}
+
+.eventMain {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+
+	strong {
+		font-size: 0.86rem;
+	}
+
+	span {
+		font-size: 0.74rem;
+		color: t.$text-mute;
+	}
+}
+
+.memo {
+	font-style: italic;
+}
