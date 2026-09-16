@@ -16,6 +16,13 @@ export function Hero() {
 	const titleRef = useRef<HTMLHeadingElement>(null);
 	const line1Ref = useRef<HTMLSpanElement>(null);
 	const line2Ref = useRef<HTMLSpanElement>(null);
+	// Captured once from the CSS-declared size, before any JS shrink is
+	// ever applied — every measurement scales relative to this fixed
+	// reference instead of resetting the inline style to re-read it, which
+	// fought with React's bail-out when a re-measure produced the same
+	// value (the DOM was left showing the un-shrunk size even though state
+	// said otherwise — the actual bug behind titles clipping on mobile).
+	const maxFontPxRef = useRef<number | null>(null);
 	// The headline is CMS-edited free text, so instead of a hand-tuned
 	// breakpoint we measure each line's natural (nowrap) width and shrink
 	// the shared font-size just enough that the longer line still fits —
@@ -28,27 +35,50 @@ export function Hero() {
 		const line2 = line2Ref.current;
 		if (!container || !line1 || !line2) return;
 
+		if (maxFontPxRef.current === null) {
+			maxFontPxRef.current = parseFloat(window.getComputedStyle(container).fontSize);
+		}
+		const maxPx = maxFontPxRef.current;
+
 		function measure() {
 			if (!container || !line1 || !line2) return;
-			container.style.fontSize = "";
-			const maxPx = parseFloat(window.getComputedStyle(container).fontSize);
-			const containerWidth = container.clientWidth;
-			const widest = Math.max(line1.scrollWidth, line2.scrollWidth);
-			if (widest === 0 || widest <= containerWidth) {
+			// getBoundingClientRect, not scrollWidth/clientWidth — scrollWidth
+			// on an overflow:visible inline-block is unreliable on some
+			// mobile browsers (notably iOS Safari) and can silently report
+			// the clamped box size instead of the true nowrap content width,
+			// which was letting long titles overflow uncaught.
+			const currentPx = parseFloat(window.getComputedStyle(container).fontSize) || maxPx;
+			const containerWidth = container.getBoundingClientRect().width;
+			const widestNow = Math.max(
+				line1.getBoundingClientRect().width,
+				line2.getBoundingClientRect().width,
+			);
+			// Extrapolate what the width would be at the max (un-shrunk) size,
+			// so the fit check is always relative to the true default —
+			// correct whether this is the first measurement or a re-measure
+			// of an already-shrunk title.
+			const widestAtMax = (widestNow / currentPx) * maxPx;
+			if (widestAtMax === 0 || containerWidth === 0 || widestAtMax <= containerWidth) {
 				setTitleFontPx(null);
 				return;
 			}
-			const scale = containerWidth / widest;
+			const scale = containerWidth / widestAtMax;
 			setTitleFontPx(Math.max(12, Math.floor(maxPx * scale)));
 		}
 
 		measure();
 		const observer = new ResizeObserver(measure);
 		observer.observe(container);
+		window.addEventListener("resize", measure);
+		window.addEventListener("orientationchange", measure);
 		// Re-measure once the real webfont is in — metrics measured against
 		// the fallback font can be slightly off.
 		document.fonts?.ready.then(measure).catch(() => {});
-		return () => observer.disconnect();
+		return () => {
+			observer.disconnect();
+			window.removeEventListener("resize", measure);
+			window.removeEventListener("orientationchange", measure);
+		};
 	}, [hero.titleBefore, hero.titleEmphasis, hero.titleAfter]);
 
 	const recruiting = cohorts.filter((c) => c.status === "recruiting");

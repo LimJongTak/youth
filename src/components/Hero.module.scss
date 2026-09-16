@@ -13,6 +13,10 @@
 	margin-bottom: 0.5em;
 	letter-spacing: -0.01em;
 	font-weight: 700;
+	// Safety net only — the JS measurement is what actually sizes the text
+	// to fit; this just hides the sliver of overflow in the one frame
+	// before that runs (or if it ever fails to for some reason).
+	overflow: hidden;
 
 	em {
 		color: t.$teal-light;
@@ -20,12 +24,12 @@
 	}
 }
 
-// Each line is measured (via JS) against its natural nowrap width and the
-// shared font-size on .title shrinks to fit — this is what actually keeps
-// it on one line; nowrap here is the hard guarantee, not just a hint.
+// Each line is measured (via JS) against its natural, unconstrained nowrap
+// width — no max-width here, since capping the box is exactly what made
+// scrollWidth-based measurement unreliable on mobile Safari. .title above
+// clips any real overflow instead.
 .titleLine {
 	display: inline-block;
-	max-width: 100%;
 	white-space: nowrap;
 }
 
