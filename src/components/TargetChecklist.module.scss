@@ -1,51 +1,13 @@
 @use "../styles/tokens" as t;
 
-.toggle {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	border: none;
-	background: transparent;
-	padding: 0;
-	font-family: inherit;
+.heading {
+	margin: 0 0 14px;
 	font-size: 0.86rem;
 	font-weight: 700;
 	color: t.$ink;
-	cursor: pointer;
-
-	&:active {
-		opacity: 0.7;
-	}
-}
-
-.chevron {
-	font-size: 0.72rem;
-	color: t.$text-mute;
-	transition: transform 0.25s ease;
-
-	&.open {
-		transform: rotate(180deg);
-	}
-}
-
-.collapse {
-	display: grid;
-	grid-template-rows: 0fr;
-	transition: grid-template-rows 0.25s ease;
-
-	&.open {
-		grid-template-rows: 1fr;
-	}
-}
-
-.collapseInner {
-	overflow: hidden;
-	min-height: 0;
 }
 
 .list {
-	padding-top: 14px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
