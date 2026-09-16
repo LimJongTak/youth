@@ -37,9 +37,11 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	flex-wrap: wrap;
 
 	input {
-		flex: 1;
+		flex: 1 1 150px;
+		min-width: 0;
 		border: 1px solid t.$border;
 		border-radius: t.$radius-sm;
 		padding: 9px 12px;
@@ -53,6 +55,16 @@
 			outline-offset: 1px;
 		}
 	}
+}
+
+.dateRow .timeInput {
+	flex: 1 1 108px;
+}
+
+.timeSep {
+	flex: 0 0 auto;
+	color: t.$text-faint;
+	font-size: 0.8rem;
 }
 
 .removeDateBtn {

@@ -14,14 +14,18 @@ interface ScheduleEventFormProps {
 	onCancel: () => void;
 }
 
-type CommonFields = Omit<ScheduleEventDraft, "startDate" | "endDate">;
+type CommonFields = Omit<ScheduleEventDraft, "startDate" | "endDate" | "startTime" | "endTime">;
+
+interface MultiRow {
+	date: string;
+	startTime: string;
+	endTime: string;
+}
 
 function emptyCommon(cohortId: string): CommonFields {
 	return {
 		cohortId,
 		title: "",
-		startTime: "",
-		endTime: "",
 		location: "",
 		instructor: "",
 		memo: "",
@@ -43,8 +47,6 @@ export function ScheduleEventForm({
 			? {
 					cohortId,
 					title: initial.title,
-					startTime: initial.startTime ?? "",
-					endTime: initial.endTime ?? "",
 					location: initial.location ?? "",
 					instructor: initial.instructor ?? "",
 					memo: initial.memo ?? "",
@@ -53,28 +55,51 @@ export function ScheduleEventForm({
 	);
 	const [startDate, setStartDate] = useState(initial?.startDate ?? defaultDate ?? "");
 	const [endDate, setEndDate] = useState(initial?.endDate ?? defaultDate ?? "");
-	const [multiDates, setMultiDates] = useState<string[]>([defaultDate ?? ""]);
+	const [startTime, setStartTime] = useState(initial?.startTime ?? "");
+	const [endTime, setEndTime] = useState(initial?.endTime ?? "");
+	// Each date keeps its own time — a course rarely repeats at the exact
+	// same hour every session, so one shared time for all dates isn't
+	// enough here.
+	const [multiRows, setMultiRows] = useState<MultiRow[]>([
+		{ date: defaultDate ?? "", startTime: "", endTime: "" },
+	]);
 
-	function updateMultiDate(index: number, value: string) {
-		setMultiDates((prev) => prev.map((d, i) => (i === index ? value : d)));
+	function updateMultiRow(index: number, patch: Partial<MultiRow>) {
+		setMultiRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
 	}
-	function addMultiDateRow() {
-		setMultiDates((prev) => [...prev, ""]);
+	function addMultiRow() {
+		setMultiRows((prev) => [...prev, { date: "", startTime: "", endTime: "" }]);
 	}
-	function removeMultiDateRow(index: number) {
-		setMultiDates((prev) => prev.filter((_, i) => i !== index));
+	function removeMultiRow(index: number) {
+		setMultiRows((prev) => prev.filter((_, i) => i !== index));
 	}
 
-	const validMultiDates = Array.from(new Set(multiDates.filter(Boolean))).sort();
+	const validMultiRows = multiRows.filter((row) => row.date);
 
 	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
 		if (mode === "multi") {
-			if (validMultiDates.length === 0) return;
-			onSubmit(validMultiDates.map((date) => ({ ...common, startDate: date, endDate: date })));
+			if (validMultiRows.length === 0) return;
+			onSubmit(
+				validMultiRows.map((row) => ({
+					...common,
+					startDate: row.date,
+					endDate: row.date,
+					startTime: row.startTime || undefined,
+					endTime: row.endTime || undefined,
+				})),
+			);
 			return;
 		}
-		onSubmit([{ ...common, startDate, endDate: endDate || startDate }]);
+		onSubmit([
+			{
+				...common,
+				startDate,
+				endDate: endDate || startDate,
+				startTime: startTime || undefined,
+				endTime: endTime || undefined,
+			},
+		]);
 	}
 
 	return (
@@ -145,26 +170,62 @@ export function ScheduleEventForm({
 							onChange={(e) => setEndDate(e.target.value)}
 						/>
 					</div>
+
+					<div className={styles.field}>
+						<label htmlFor="ev-start-time">시작시간 (수업이 아니면 생략)</label>
+						<input
+							id="ev-start-time"
+							type="time"
+							value={startTime}
+							onChange={(e) => setStartTime(e.target.value)}
+						/>
+					</div>
+
+					<div className={styles.field}>
+						<label htmlFor="ev-end-time">종료시간</label>
+						<input
+							id="ev-end-time"
+							type="time"
+							value={endTime}
+							onChange={(e) => setEndTime(e.target.value)}
+						/>
+					</div>
 				</>
 			) : (
 				<div className={`${styles.field} ${styles.wide}`}>
 					<label>
-						날짜 목록 <span>(같은 제목·시간·장소로 여러 날짜에 한 번에 등록해요)</span>
+						날짜·시간 목록{" "}
+						<span>(같은 제목·장소로 등록하되, 날짜마다 시간은 다르게 지정할 수 있어요)</span>
 					</label>
 					<div className={formStyles.dateList}>
-						{multiDates.map((date, index) => (
+						{multiRows.map((row, index) => (
 							<div className={formStyles.dateRow} key={index}>
 								<input
 									type="date"
 									required
-									value={date}
-									onChange={(e) => updateMultiDate(index, e.target.value)}
+									value={row.date}
+									onChange={(e) => updateMultiRow(index, { date: e.target.value })}
 								/>
-								{multiDates.length > 1 && (
+								<input
+									type="time"
+									className={formStyles.timeInput}
+									aria-label="시작시간"
+									value={row.startTime}
+									onChange={(e) => updateMultiRow(index, { startTime: e.target.value })}
+								/>
+								<span className={formStyles.timeSep}>~</span>
+								<input
+									type="time"
+									className={formStyles.timeInput}
+									aria-label="종료시간"
+									value={row.endTime}
+									onChange={(e) => updateMultiRow(index, { endTime: e.target.value })}
+								/>
+								{multiRows.length > 1 && (
 									<button
 										type="button"
 										className={formStyles.removeDateBtn}
-										onClick={() => removeMultiDateRow(index)}
+										onClick={() => removeMultiRow(index)}
 										aria-label="이 날짜 삭제"
 									>
 										<i className="fas fa-times" />
@@ -173,32 +234,12 @@ export function ScheduleEventForm({
 							</div>
 						))}
 					</div>
-					<button type="button" className={formStyles.addDateBtn} onClick={addMultiDateRow}>
+					<button type="button" className={formStyles.addDateBtn} onClick={addMultiRow}>
 						<i className="fas fa-plus" />
 						날짜 추가
 					</button>
 				</div>
 			)}
-
-			<div className={styles.field}>
-				<label htmlFor="ev-start-time">시작시간 (수업이 아니면 생략)</label>
-				<input
-					id="ev-start-time"
-					type="time"
-					value={common.startTime ?? ""}
-					onChange={(e) => setCommon((c) => ({ ...c, startTime: e.target.value }))}
-				/>
-			</div>
-
-			<div className={styles.field}>
-				<label htmlFor="ev-end-time">종료시간</label>
-				<input
-					id="ev-end-time"
-					type="time"
-					value={common.endTime ?? ""}
-					onChange={(e) => setCommon((c) => ({ ...c, endTime: e.target.value }))}
-				/>
-			</div>
 
 			<div className={styles.field}>
 				<label htmlFor="ev-location">강의장소</label>
@@ -239,12 +280,12 @@ export function ScheduleEventForm({
 				<button
 					type="submit"
 					className={styles.btnPrimary}
-					disabled={mode === "multi" && validMultiDates.length === 0}
+					disabled={mode === "multi" && validMultiRows.length === 0}
 				>
 					{initial
 						? "저장"
 						: mode === "multi"
-							? `${validMultiDates.length || ""}개 날짜에 추가`
+							? `${validMultiRows.length || ""}개 날짜에 추가`
 							: "일정 추가"}
 				</button>
 			</div>

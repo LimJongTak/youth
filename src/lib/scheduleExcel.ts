@@ -10,15 +10,17 @@ const EXAMPLE_ROWS = [
 	["공통(교양)", "2026-10-06", "2026-10-06", "10:00", "13:00", "광양 커뮤니티센터", "홍길동 교수", ""],
 	// 같은 과목이 여러 날짜에 반복될 때는 시작일 칸에 콤마로 구분해 날짜를
 	// 나열하면 한 행으로 여러 일정을 한 번에 등록할 수 있다 (종료일은 무시됨).
+	// 시작시간/종료시간도 같은 개수로 콤마 나열하면 날짜마다 다른 시간을
+	// 지정할 수 있고, 하나만 적으면 모든 날짜에 그 시간이 똑같이 적용된다.
 	[
 		"AI와 코딩",
 		"2026-09-10, 2026-09-17, 2026-09-21",
 		"",
-		"14:00",
-		"17:00",
+		"14:00, 10:00, 18:00",
+		"17:00, 13:00, 21:00",
 		"국립순천대학교",
 		"김철수 교수",
-		"같은 제목으로 여러 날짜를 한 번에 등록하려면 이렇게 시작일에 콤마로 나열하세요",
+		"같은 제목으로 여러 날짜(시간도 각각)를 한 번에 등록하려면 이렇게 콤마로 나열하세요",
 	],
 ];
 
@@ -116,6 +118,22 @@ function cellToTime(value: unknown): string | undefined {
 	return undefined;
 }
 
+// Companion to cellToDateKeys — a multi-date row rarely repeats at the same
+// hour every time, so 시작시간/종료시간 can hold their own comma-separated
+// list lined up with the dates. A single value still applies to every date
+// (the common case where the time really doesn't change).
+function cellToTimeList(value: unknown): (string | undefined)[] {
+	if (value instanceof Date || typeof value === "number") {
+		return [cellToTime(value)];
+	}
+	if (typeof value === "string") {
+		const trimmed = value.trim();
+		if (!trimmed) return [];
+		return trimmed.split(/[,\n、]+/).map((token) => cellToTime(token));
+	}
+	return [];
+}
+
 function cellToText(value: unknown): string | undefined {
 	if (value === null || value === undefined) return undefined;
 	const text = String(value).trim();
@@ -153,8 +171,6 @@ export async function parseScheduleExcel(file: File, cohortId: string): Promise<
 		const common = {
 			cohortId,
 			title,
-			startTime: cellToTime(row["시작시간"]),
-			endTime: cellToTime(row["종료시간"]),
 			location: cellToText(row["강의장소"]),
 			instructor: cellToText(row["교수/강사"]),
 			memo: cellToText(row["비고"]),
@@ -164,14 +180,30 @@ export async function parseScheduleExcel(file: File, cohortId: string): Promise<
 			// A single date — 종료일 still means what it always has (a
 			// range), including a blank cell falling back to the start date.
 			const endDate = cellToDateKey(row["종료일"]) ?? dateKeys[0];
-			drafts.push({ ...common, startDate: dateKeys[0], endDate });
+			drafts.push({
+				...common,
+				startDate: dateKeys[0],
+				endDate,
+				startTime: cellToTime(row["시작시간"]),
+				endTime: cellToTime(row["종료시간"]),
+			});
 		} else {
 			// Several comma-separated dates in one row — each becomes its
 			// own single-day event with the same content; 종료일 doesn't
-			// apply to a set of discrete dates, so it's ignored here.
-			for (const date of dateKeys) {
-				drafts.push({ ...common, startDate: date, endDate: date });
-			}
+			// apply to a set of discrete dates, so it's ignored here. Times
+			// line up with the dates by position; if only one time was
+			// given, it's reused for every date.
+			const startTimes = cellToTimeList(row["시작시간"]);
+			const endTimes = cellToTimeList(row["종료시간"]);
+			dateKeys.forEach((date, i) => {
+				drafts.push({
+					...common,
+					startDate: date,
+					endDate: date,
+					startTime: startTimes.length === dateKeys.length ? startTimes[i] : startTimes[0],
+					endTime: endTimes.length === dateKeys.length ? endTimes[i] : endTimes[0],
+				});
+			});
 		}
 	});
 
