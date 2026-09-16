@@ -32,6 +32,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 20px;
+	overflow-y: auto;
 	background: rgba(16, 20, 30, 0.62);
 	backdrop-filter: blur(2px);
 	animation: aboutOverlayIn 0.2s ease;
@@ -40,10 +41,10 @@
 .viewerCard {
 	position: relative;
 	width: 100%;
-	max-width: 400px;
+	max-width: 1300px;
 	background: t.$card;
 	border-radius: t.$radius-lg;
-	padding: 18px 16px 16px;
+	padding: 20px 20px 18px;
 	box-shadow: t.$shadow-lg;
 	animation: aboutCardIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -70,96 +71,47 @@
 }
 
 .viewerStage {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	margin-top: 24px;
-	border-radius: t.$radius-md;
-	background: t.$bg;
-	padding: 10px;
 }
 
 .viewerTrack {
 	position: relative;
+	flex: 1 1 auto;
+	min-width: 0;
 	overflow: hidden;
-	border-radius: t.$radius-sm;
+	border-radius: t.$radius-md;
 	box-shadow: t.$shadow-md;
-	perspective: 1600px;
 	background: #fff;
 }
 
-.viewerPage {
-	position: relative;
+.viewerImg {
+	display: block;
+	width: 100%;
+	max-height: 92vh;
+	object-fit: contain;
+	background: #fff;
 }
 
-.viewerPageFlip {
-	position: absolute;
-	inset: 0;
-	z-index: 2;
-	transform-origin: left center;
-	backface-visibility: hidden;
-	animation: aboutPageFlip 0.5s ease-in forwards;
-	box-shadow: t.$shadow-lg;
-
-	&::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 45%);
-		animation: aboutPageShade 0.5s ease-in forwards;
-	}
-}
-
-@keyframes aboutPageFlip {
-	from {
-		transform: rotateY(0deg);
-	}
-	to {
-		transform: rotateY(-100deg);
-	}
-}
-
-@keyframes aboutPageShade {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-// Two pages shown side by side, like an open book.
-.viewerSpread {
+.viewerArrow {
+	flex: 0 0 auto;
 	display: flex;
-}
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: none;
+	background: t.$bg;
+	color: t.$text-mute;
+	box-shadow: t.$shadow-sm;
+	cursor: pointer;
 
-.viewerLeaf {
-	flex: 1 1 50%;
-	min-width: 0;
-
-	img {
-		display: block;
-		width: 100%;
-		max-height: 48vh;
-		object-fit: contain;
-		background: #fff;
+	&:active {
+		background: t.$border;
 	}
-}
-
-// The center gutter/crease of the open book.
-.viewerSpine {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 50%;
-	width: 10px;
-	transform: translateX(-50%);
-	z-index: 3;
-	pointer-events: none;
-	background: linear-gradient(
-		to right,
-		rgba(0, 0, 0, 0.1),
-		rgba(0, 0, 0, 0.02) 30%,
-		rgba(0, 0, 0, 0.02) 70%,
-		rgba(0, 0, 0, 0.1)
-	);
 }
 
 .viewerDots {
@@ -167,14 +119,17 @@
 	align-items: center;
 	justify-content: center;
 	gap: 6px;
-	margin: 14px 0 12px;
+	margin: 14px 0 2px;
 }
 
 .dot {
 	width: 6px;
 	height: 6px;
+	padding: 0;
+	border: none;
 	border-radius: 50%;
 	background: t.$border;
+	cursor: pointer;
 	transition: width 0.25s ease, background 0.25s ease;
 }
 
@@ -184,15 +139,82 @@
 	background: t.$teal;
 }
 
-.viewerNext {
-	@include t.btn;
+// Mobile: both photos open full-screen, stacked, scrollable — no card
+// chrome, no pager. This is the actual device viewport, not the
+// desktop mockup column, so it should fill it edge-to-edge.
+.mobileOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	overflow-y: auto;
+	background: #000;
+	animation: aboutOverlayIn 0.2s ease;
+}
+
+.mobileGallery {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 16px;
+	padding: 56px 0 24px;
+}
+
+.mobileImg {
+	display: block;
 	width: 100%;
+	height: auto;
+}
+
+.mobileNav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 0 16px;
+}
+
+.mobileNavBtn {
+	display: flex;
+	align-items: center;
 	gap: 6px;
-	background: t.$teal-tint;
-	color: t.$teal-dark;
+	padding: 10px 16px;
+	border: none;
+	border-radius: t.$radius-md;
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
 	font-size: 0.88rem;
+	font-weight: 700;
+	cursor: pointer;
 
 	i {
-		font-size: 0.7rem;
+		font-size: 0.75rem;
+	}
+
+	&:active {
+		background: rgba(255, 255, 255, 0.22);
 	}
 }
+
+.mobileClose {
+	position: fixed;
+	top: calc(env(safe-area-inset-top, 0px) + 12px);
+	right: 12px;
+	z-index: 51;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	border: none;
+	background: rgba(255, 255, 255, 0.92);
+	color: t.$ink;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: t.$shadow-md;
+	cursor: pointer;
+
+	&:active {
+		background: #fff;
+	}
+}
+
