@@ -18,6 +18,136 @@
 	}
 }
 
+.chartCard {
+	background: t.$card;
+	border: 1px solid t.$border;
+	border-radius: t.$radius-md;
+	padding: 18px 20px 12px;
+	box-shadow: t.$shadow-xs;
+	margin-bottom: 20px;
+}
+
+.chartHead {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 18px;
+
+	h3 {
+		margin: 0;
+		font-size: 0.92rem;
+	}
+}
+
+.periodTabs {
+	display: flex;
+	gap: 4px;
+	background: t.$bg;
+	padding: 3px;
+	border-radius: 999px;
+}
+
+.periodTab {
+	border: none;
+	background: transparent;
+	padding: 6px 13px;
+	border-radius: 999px;
+	font-weight: 800;
+	font-size: 0.74rem;
+	color: t.$text-mute;
+	cursor: pointer;
+}
+
+.periodTabActive {
+	background: t.$ink;
+	color: #fff;
+}
+
+.plotArea {
+	display: flex;
+	align-items: flex-end;
+	gap: 4px;
+	height: 140px;
+}
+
+.barCol {
+	flex: 1;
+	min-width: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	position: relative;
+}
+
+.barValue {
+	font-size: 0.7rem;
+	font-weight: 800;
+	color: t.$ink;
+	margin-bottom: 4px;
+	font-variant-numeric: tabular-nums;
+}
+
+.barHit {
+	position: relative;
+	width: 100%;
+	max-width: 24px;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	background: t.$teal;
+	border-radius: 4px 4px 0 0;
+	transition: background-color 0.15s ease;
+
+	&:hover,
+	&:focus-visible {
+		background: t.$teal-dark;
+	}
+}
+
+.tooltip {
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 50%;
+	transform: translateX(-50%);
+	background: t.$ink;
+	color: #fff;
+	font-size: 0.68rem;
+	font-weight: 700;
+	white-space: nowrap;
+	padding: 4px 9px;
+	border-radius: 6px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.12s ease;
+	z-index: 2;
+}
+
+.barHit:hover .tooltip,
+.barHit:focus-visible .tooltip {
+	opacity: 1;
+}
+
+.axisLabels {
+	display: flex;
+	gap: 4px;
+	margin-top: 8px;
+}
+
+.axisLabel {
+	flex: 1;
+	min-width: 0;
+	text-align: center;
+	font-size: 0.62rem;
+	color: t.$text-faint;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .statGrid {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -91,8 +221,17 @@
 	color: t.$text-mute;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
 	.statGrid {
 		grid-template-columns: 1fr;
+	}
+
+	.axisLabel {
+		font-size: 0.56rem;
+	}
+
+	.chartHead {
+		flex-direction: column;
+		align-items: flex-start;
 	}
 }

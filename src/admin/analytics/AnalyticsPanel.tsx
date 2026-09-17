@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { collection, limit, onSnapshot, orderBy, query, Timestamp } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+import { EmptyState } from "../../components/common/EmptyState";
+import { buildBuckets, PERIOD_CONFIG, type Period } from "./dateBuckets";
 import styles from "./AnalyticsPanel.module.scss";
 
 interface AnalyticsEvent {
@@ -38,14 +40,29 @@ function formatDate(ts: Timestamp | null) {
 	});
 }
 
+// Round up to a "clean" axis max (1/2/5 × 10^n) instead of the raw peak, so
+// the one tick label we show is a number a reader can anchor on.
+function niceCeil(value: number): number {
+	if (value <= 0) return 1;
+	const exp = Math.floor(Math.log10(value));
+	const base = 10 ** exp;
+	const fraction = value / base;
+	const niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+	return niceFraction * base;
+}
+
 export function AnalyticsPanel() {
 	const [events, setEvents] = useState<AnalyticsEvent[]>([]);
 	const [auditLog, setAuditLog] = useState<AuditEntry[]>([]);
 	const [usernames, setUsernames] = useState<Record<string, string>>({});
+	const [period, setPeriod] = useState<Period>("day");
 
 	useEffect(() => {
+		// A pragmatic cap, not a real paginated query: fine for this site's
+		// traffic today. If that ever changes, this needs a server-side
+		// date-range query instead of "last N, bucketed on the client."
 		const unsubEvents = onSnapshot(
-			query(collection(db, "analyticsEvents"), orderBy("at", "desc"), limit(500)),
+			query(collection(db, "analyticsEvents"), orderBy("at", "desc"), limit(3000)),
 			(snap) => setEvents(snap.docs.map((d) => d.data() as AnalyticsEvent)),
 		);
 		const unsubAudit = onSnapshot(
@@ -66,14 +83,49 @@ export function AnalyticsPanel() {
 		};
 	}, []);
 
-	const counts = events.reduce<Record<string, number>>((acc, event) => {
+	const buckets = useMemo(() => buildBuckets(period), [period]);
+
+	const series = useMemo(
+		() =>
+			buckets.map((bucket) => {
+				const count = events.filter((e) => {
+					if (e.name !== "page_view" || !e.at) return false;
+					const at = e.at.toDate();
+					return at >= bucket.start && at < bucket.end;
+				}).length;
+				return { ...bucket, count };
+			}),
+		[buckets, events],
+	);
+
+	const maxCount = Math.max(1, ...series.map((s) => s.count));
+	const axisMax = niceCeil(maxCount);
+	const peakIndex = series.reduce(
+		(best, s, i) => (s.count > series[best].count ? i : best),
+		0,
+	);
+
+	// Stat cards scope to the same window the chart is currently showing,
+	// so the numbers on screen always agree with each other.
+	const windowStart = buckets[0].start;
+	const windowEnd = buckets[buckets.length - 1].end;
+	const windowEvents = useMemo(
+		() =>
+			events.filter((e) => {
+				if (!e.at) return false;
+				const at = e.at.toDate();
+				return at >= windowStart && at < windowEnd;
+			}),
+		[events, windowStart, windowEnd],
+	);
+	const counts = windowEvents.reduce<Record<string, number>>((acc, event) => {
 		acc[event.name] = (acc[event.name] ?? 0) + 1;
 		return acc;
 	}, {});
-
 	const pageViews = counts.page_view ?? 0;
 	const applyClicks = counts.apply_click ?? 0;
 	const kakaoClicks = counts.kakao_click ?? 0;
+	const hasAnyEvents = events.length > 0;
 
 	return (
 		<div>
@@ -81,22 +133,77 @@ export function AnalyticsPanel() {
 				<i className="fas fa-info-circle" />
 				<span>
 					외부 서비스 없이 사이트 자체(Firestore)에 기록되는 최소한의 방문·클릭
-					통계입니다. 최근 최대 500건 기준입니다.
+					통계입니다. 최근 최대 3,000건 기준입니다.
 				</span>
+			</div>
+
+			<div className={styles.chartCard}>
+				<div className={styles.chartHead}>
+					<h3>기간별 방문 추이</h3>
+					<div className={styles.periodTabs} role="tablist">
+						{(Object.keys(PERIOD_CONFIG) as Period[]).map((p) => (
+							<button
+								key={p}
+								type="button"
+								role="tab"
+								aria-selected={period === p}
+								className={`${styles.periodTab} ${period === p ? styles.periodTabActive : ""}`}
+								onClick={() => setPeriod(p)}
+							>
+								{PERIOD_CONFIG[p].label}
+							</button>
+						))}
+					</div>
+				</div>
+
+				{hasAnyEvents ? (
+					<>
+						<div className={styles.plotArea}>
+							{series.map((bucket, i) => {
+								const heightPct = (bucket.count / axisMax) * 100;
+								return (
+									<div className={styles.barCol} key={bucket.label + i}>
+										{i === peakIndex && bucket.count > 0 && (
+											<span className={styles.barValue}>{bucket.count.toLocaleString()}</span>
+										)}
+										<button
+											type="button"
+											className={styles.barHit}
+											style={{ height: `${Math.max(heightPct, 1.5)}%` }}
+										>
+											<span className={styles.tooltip}>
+												{bucket.label} · {bucket.count.toLocaleString()}건
+											</span>
+										</button>
+									</div>
+								);
+							})}
+						</div>
+						<div className={styles.axisLabels}>
+							{series.map((bucket, i) => (
+								<span className={styles.axisLabel} key={bucket.label + i}>
+									{bucket.label}
+								</span>
+							))}
+						</div>
+					</>
+				) : (
+					<EmptyState icon="calendar" message="아직 기록된 방문 데이터가 없습니다." />
+				)}
 			</div>
 
 			<div className={styles.statGrid}>
 				<div className={styles.statCard}>
-					<strong>{pageViews}</strong>
-					<span>방문 (page_view)</span>
+					<strong>{pageViews.toLocaleString()}</strong>
+					<span>{PERIOD_CONFIG[period].rangeLabel} 방문</span>
 				</div>
 				<div className={styles.statCard}>
-					<strong>{applyClicks}</strong>
-					<span>신청 버튼 클릭</span>
+					<strong>{applyClicks.toLocaleString()}</strong>
+					<span>{PERIOD_CONFIG[period].rangeLabel} 신청 버튼 클릭</span>
 				</div>
 				<div className={styles.statCard}>
-					<strong>{kakaoClicks}</strong>
-					<span>카카오톡 문의 클릭</span>
+					<strong>{kakaoClicks.toLocaleString()}</strong>
+					<span>{PERIOD_CONFIG[period].rangeLabel} 카카오톡 클릭</span>
 				</div>
 				<div className={styles.statCard}>
 					<strong>{pageViews > 0 ? `${Math.round((applyClicks / pageViews) * 100)}%` : "-"}</strong>
@@ -114,7 +221,7 @@ export function AnalyticsPanel() {
 						<span className={styles.when}>{formatDate(entry.at)}</span>
 					</div>
 				))}
-				{auditLog.length === 0 && <p className={styles.empty}>변경 이력이 없습니다.</p>}
+				{auditLog.length === 0 && <EmptyState icon="book-open" message="변경 이력이 없습니다." />}
 			</div>
 		</div>
 	);
