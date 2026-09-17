@@ -48,8 +48,8 @@ export function Contact() {
 					<Icon name="chevron-right" className={styles.chevron} />
 				</a>
 				<a className={styles.row} href={`mailto:${contact.email}`}>
-					<span className={styles.icon}>
-						<Icon name="envelope" />
+					<span className={`${styles.icon} ${styles.imgIcon}`}>
+						<img src="/assets/icons/gmail-favicon.ico" alt="" width={26} height={26} />
 					</span>
 					<span>
 						<span className={styles.label}>이메일</span>
@@ -63,8 +63,8 @@ export function Contact() {
 					rel="noopener noreferrer"
 					onClick={openKakaoMap}
 				>
-					<span className={styles.icon}>
-						<Icon name="map-marker" />
+					<span className={`${styles.icon} ${styles.imgIcon}`}>
+						<img src="/assets/icons/kakaomap-favicon.ico" alt="" width={26} height={26} />
 					</span>
 					<span>
 						<span className={styles.label}>주소</span>

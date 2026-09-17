@@ -16,15 +16,12 @@ export type IconName =
 	| "plus-square"
 	| "paper-plane"
 	| "download"
-	| "comment"
 	| "share-square"
-	| "map-marker"
 	| "layers"
 	| "headset"
 	| "gift"
 	| "expand"
 	| "warning"
-	| "envelope"
 	| "ellipsis-vertical"
 	| "dot"
 	| "book-open"
@@ -88,21 +85,12 @@ function paths(name: IconName) {
 					<line x1="5" y1="21" x2="19" y2="21" />
 				</>
 			);
-		case "comment":
-			return <path d="M4 4h16a1 1 0 011 1v11a1 1 0 01-1 1H9l-5 4V6a1 1 0 011-1z" />;
 		case "share-square":
 			return (
 				<>
 					<polyline points="8 7 12 3 16 7" />
 					<line x1="12" y1="3" x2="12" y2="14" />
 					<path d="M4 14v5a2 2 0 002 2h12a2 2 0 002-2v-5" />
-				</>
-			);
-		case "map-marker":
-			return (
-				<>
-					<path d="M12 21s-7-7.1-7-12a7 7 0 0114 0c0 4.9-7 12-7 12z" />
-					<circle cx="12" cy="9" r="2.4" />
 				</>
 			);
 		case "layers":
@@ -146,13 +134,6 @@ function paths(name: IconName) {
 					<path d="M10.3 3.9L1.9 18a2 2 0 001.7 3h16.9a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" />
 					<line x1="12" y1="9" x2="12" y2="13" />
 					<line x1="12" y1="17" x2="12.01" y2="17" />
-				</>
-			);
-		case "envelope":
-			return (
-				<>
-					<rect x="2" y="4" width="20" height="16" rx="2" />
-					<polyline points="22 6 12 13 2 6" />
 				</>
 			);
 		case "ellipsis-vertical":
