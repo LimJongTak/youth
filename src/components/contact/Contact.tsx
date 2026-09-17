@@ -32,7 +32,7 @@ export function Contact() {
 			<SectionHead title="문의처" description={contact.org} />
 			<div className={styles.list}>
 				<a
-					className={`${styles.row} ${styles.kakaoRow}`}
+					className={styles.row}
 					href={contact.kakaoUrl}
 					onClick={() => logEvent("kakao_click", { source: "contact" })}
 					target="_blank"
