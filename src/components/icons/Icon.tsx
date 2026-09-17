@@ -30,7 +30,8 @@ export type IconName =
 	| "book-open"
 	| "calendar"
 	| "home"
-	| "graduation-cap";
+	| "graduation-cap"
+	| "kakao";
 
 type IconProps = Omit<SVGProps<SVGSVGElement>, "viewBox" | "children"> & {
 	name: IconName;
@@ -194,6 +195,15 @@ function paths(name: IconName) {
 					<path d="M6 11.5V17c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5" />
 					<path d="M22 9v6" />
 				</>
+			);
+		// 카카오톡 말풍선 모양 — 채워진 도형이라 stroke가 아니라 fill로 그린다.
+		case "kakao":
+			return (
+				<path
+					fill="currentColor"
+					stroke="none"
+					d="M12 4C6.9 4 3 7.2 3 11.1c0 2.5 1.6 4.7 4 6l-1 3.4c-.1.3.2.6.5.4l3.9-2.3c.5.1 1.1.1 1.6.1 5.1 0 9-3.2 9-7.1S17.1 4 12 4z"
+				/>
 			);
 	}
 }

@@ -311,7 +311,7 @@ export function CohortBanner() {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<Icon name="comment" />
+					<Icon name="kakao" />
 					카카오톡 문의하기
 				</a>
 			</div>

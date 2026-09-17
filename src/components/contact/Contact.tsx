@@ -39,7 +39,7 @@ export function Contact() {
 					rel="noopener noreferrer"
 				>
 					<span className={`${styles.icon} ${styles.kakaoIcon}`}>
-						<Icon name="comment" />
+						<Icon name="kakao" />
 					</span>
 					<span>
 						<span className={styles.label}>카카오톡</span>
