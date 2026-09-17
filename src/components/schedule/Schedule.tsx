@@ -8,14 +8,9 @@ import {
 	toDateKey,
 	WEEKDAY_LABELS,
 } from "../../lib/calendar";
-import { formatEventTime, getDayEvents } from "../../lib/schedule";
+import { DEFAULT_DOT_COLOR, formatEventTime, getDayDotColors, getDayEvents } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import styles from "./Schedule.module.scss";
-
-// How many events a calendar cell lists before collapsing the rest into a
-// "+N" badge — enough to be useful without blowing out row height on a busy
-// day.
-const MAX_DAY_EVENTS = 3;
 
 export function Schedule() {
 	const { cohorts, selected } = useCohorts();
@@ -66,6 +61,22 @@ export function Schedule() {
 		[cohortEvents, selectedDate],
 	);
 
+	// The legend below the calendar: one entry per distinct event title
+	// visible this month, so a dot's color can be read at a glance instead
+	// of tapping every day to find out what it means.
+	const monthLegend = useMemo(() => {
+		const monthStart = toDateKey(new Date(year, month, 1));
+		const monthEnd = toDateKey(new Date(year, month + 1, 0));
+		const colorByTitle = new Map<string, string>();
+		for (const event of cohortEvents) {
+			if (event.endDate < monthStart || event.startDate > monthEnd) continue;
+			if (!colorByTitle.has(event.title)) {
+				colorByTitle.set(event.title, event.color || DEFAULT_DOT_COLOR);
+			}
+		}
+		return Array.from(colorByTitle, ([title, color]) => ({ title, color }));
+	}, [cohortEvents, year, month]);
+
 	return (
 		<section className="section" id="schedule">
 			<SectionHead
@@ -112,42 +123,44 @@ export function Schedule() {
 				))}
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
-					const dayEvents = getDayEvents(key, cohortEvents);
+					const dotColors = getDayDotColors(key, cohortEvents);
 					const isToday = key === toDateKey(today);
-					const shown = dayEvents.slice(0, MAX_DAY_EVENTS);
-					const hiddenCount = dayEvents.length - shown.length;
 					return (
 						<button
 							type="button"
 							key={key}
 							className={`${styles.day} ${!inMonth ? styles.dayOut : ""} ${
 								selectedDate === key ? styles.daySelected : ""
-							} ${isToday ? styles.dayToday : ""} ${
-								dayEvents.length > 0 ? styles.dayHasEvents : ""
-							}`}
+							} ${isToday ? styles.dayToday : ""}`}
 							onClick={() => setSelectedDate(key)}
 						>
-							<span className={styles.dayNum}>{date.getDate()}</span>
-							{shown.length > 0 && (
-								<span className={styles.dayEvents}>
-									{shown.map((event) => (
-										<span className={styles.dayEventChip} key={event.id}>
-											<span
-												className={styles.dayEventDot}
-												style={{ background: event.color || undefined }}
-											/>
-											<span className={styles.dayEventLabel}>{event.title}</span>
-										</span>
+							<span>{date.getDate()}</span>
+							{dotColors.length > 0 && (
+								<span className={styles.dayDots}>
+									{dotColors.slice(0, 4).map((color, i) => (
+										<span
+											key={i}
+											className={styles.dayDot}
+											style={{ background: color }}
+										/>
 									))}
-									{hiddenCount > 0 && (
-										<span className={styles.dayEventMore}>+{hiddenCount}</span>
-									)}
 								</span>
 							)}
 						</button>
 					);
 				})}
 			</div>
+
+			{monthLegend.length > 0 && (
+				<div className={styles.legend}>
+					{monthLegend.map((item) => (
+						<span className={styles.legendItem} key={item.title}>
+							<span className={styles.legendDot} style={{ background: item.color }} />
+							{item.title}
+						</span>
+					))}
+				</div>
+			)}
 
 			<div className={styles.dayPanel}>
 				<h4>
