@@ -24,7 +24,7 @@ interface AdminAppProps {
 type Tab = "cohorts" | "content" | "schedule" | "analytics" | "accounts";
 
 export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
-	const { cohorts, addCohort, updateCohort, removeCohort, setFeatured } = useCohorts();
+	const { cohorts, addCohort, updateCohort, removeCohort, setFeatured, setScheduleDefault } = useCohorts();
 	const [tab, setTab] = useState<Tab>("cohorts");
 	const [editing, setEditing] = useState<Cohort | null>(null);
 	const [creating, setCreating] = useState(false);
@@ -162,6 +162,9 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 											{cohort.featured && (
 												<span className={styles.featuredTag}>기본 노출</span>
 											)}
+											{cohort.scheduleDefault && (
+												<span className={styles.scheduleTag}>일정 기본</span>
+											)}
 											<span className={styles.meta}>
 												{cohort.recruitPeriod} · {cohort.capacity}
 											</span>
@@ -174,6 +177,15 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 													onClick={() => setFeatured(cohort.id)}
 												>
 													<i className="fas fa-star" />
+												</button>
+											)}
+											{!cohort.scheduleDefault && (
+												<button
+													className={styles.iconBtn}
+													title="일정 탭 기본 기수로 설정"
+													onClick={() => setScheduleDefault(cohort.id)}
+												>
+													<i className="fas fa-calendar-check" />
 												</button>
 											)}
 											<button

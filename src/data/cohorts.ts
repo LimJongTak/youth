@@ -21,6 +21,7 @@ export const seedCohorts: Cohort[] = [
 		applyUrl:
 			"https://www.scnu.ac.kr/scnuai/cm/cntnts/cntntsView.do?mi=10310&cntntsId=5768",
 		featured: false,
+		scheduleDefault: true,
 	},
 	{
 		id: "gen-2",

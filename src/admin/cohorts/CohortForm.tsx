@@ -21,6 +21,7 @@ function emptyDraft(): Omit<Cohort, "id"> {
 		note: "",
 		applyUrl: "",
 		featured: false,
+		scheduleDefault: false,
 	};
 }
 
@@ -156,6 +157,15 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					onChange={(e) => setDraft((d) => ({ ...d, featured: e.target.checked }))}
 				/>
 				공개 사이트의 기본 노출 기수로 설정
+			</label>
+
+			<label className={styles.checkboxRow}>
+				<input
+					type="checkbox"
+					checked={draft.scheduleDefault ?? false}
+					onChange={(e) => setDraft((d) => ({ ...d, scheduleDefault: e.target.checked }))}
+				/>
+				일정 탭에서 처음에 보여줄 기수로 설정
 			</label>
 
 			<div className={styles.actions}>

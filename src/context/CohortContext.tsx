@@ -24,6 +24,7 @@ interface CohortContextValue {
 	updateCohort: (cohort: Cohort) => Promise<void>;
 	removeCohort: (id: string) => Promise<void>;
 	setFeatured: (id: string) => Promise<void>;
+	setScheduleDefault: (id: string) => Promise<void>;
 }
 
 const CohortContext = createContext<CohortContextValue | null>(null);
@@ -89,6 +90,14 @@ export function CohortProvider({ children }: { children: ReactNode }) {
 				const batch = writeBatch(db);
 				snapshot.docs.forEach((d) => {
 					batch.update(d.ref, { featured: d.id === id });
+				});
+				await batch.commit();
+			},
+			setScheduleDefault: async (id) => {
+				const snapshot = await getDocs(collection(db, COLLECTION));
+				const batch = writeBatch(db);
+				snapshot.docs.forEach((d) => {
+					batch.update(d.ref, { scheduleDefault: d.id === id });
 				});
 				await batch.commit();
 			},

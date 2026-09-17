@@ -25,8 +25,14 @@ export function Schedule() {
 
 	// AppShell only mounts this tab's content while it's active, so these
 	// initial values are all that's needed to land on the cohort/day the
-	// 홈 탭's 일정 preview was showing.
-	const [cohortId, setCohortId] = useState(() => scheduleCohortId ?? selected?.id ?? "");
+	// 홈 탭's 일정 preview was showing. Absent an explicit admin choice, the
+	// oldest cohort (lowest generation) opens first rather than the site-wide
+	// `featured` cohort, since that's usually the one with real schedule data.
+	const scheduleDefaultCohortId = cohorts.find((c) => c.scheduleDefault)?.id;
+	const oldestCohortId = sortedCohorts[sortedCohorts.length - 1]?.id;
+	const [cohortId, setCohortId] = useState(
+		() => scheduleCohortId ?? scheduleDefaultCohortId ?? oldestCohortId ?? selected?.id ?? "",
+	);
 
 	const activeCohortId = cohorts.some((c) => c.id === cohortId) ? cohortId : sortedCohorts[0]?.id ?? "";
 	const activeCohort = cohorts.find((c) => c.id === activeCohortId);
