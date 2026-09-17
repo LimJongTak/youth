@@ -1,25 +1,24 @@
-/** One row on the training calendar — a class session or a general event
- * (OT, field trip, graduation, etc). The same shape covers both: a general
- * event just leaves the class-only fields (time/location/instructor) empty.
+/** 교육 캘린더의 일정 한 건 — 수업(강의)이거나 OT/현장학습/수료식 같은
+ * 일반 일정. 두 경우 모두 같은 모양을 쓰며, 일반 일정은 수업 전용 필드
+ * (시간/장소/강사)를 비워두면 된다.
  */
 export interface ScheduleEvent {
 	id: string;
 	cohortId: string;
-	/** 강의명 for a class, or the event's own title (e.g. "수료식"). */
+	/** 수업이면 강의명, 아니면 일정 자체의 제목(예: "수료식"). */
 	title: string;
 	/** YYYY-MM-DD */
 	startDate: string;
-	/** YYYY-MM-DD — same as startDate for a single-day item. */
+	/** YYYY-MM-DD — 하루짜리 일정이면 startDate와 동일. */
 	endDate: string;
-	/** HH:MM, 24h. Omitted for an all-day/multi-day event. */
+	/** HH:MM, 24시간제. 종일/기간 일정이면 생략. */
 	startTime?: string;
 	endTime?: string;
 	location?: string;
 	instructor?: string;
 	memo?: string;
-	/** Hex color (e.g. "#14b8a6") for this event's calendar dot. Falls back
-	 * to the default teal when unset — events created before this field
-	 * existed just render with that same default. */
+	/** 캘린더 점 색상용 HEX 값(예: "#14b8a6"). 지정 안 하면 기본 teal 색으로
+	 * 표시 — 이 필드가 생기기 전에 만들어진 일정도 그냥 기본색으로 보임. */
 	color?: string;
 }
 

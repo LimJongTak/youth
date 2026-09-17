@@ -12,6 +12,9 @@ import { db } from "../lib/firebase";
 import { seedCohorts } from "../data/cohorts";
 import type { Cohort } from "../types/cohort";
 
+// 기수(회차) 데이터를 Firestore와 실시간 동기화하는 컨텍스트 — 공개
+// 사이트(기수 안내, 신청, 일정 기본값)와 관리자 화면(기수 관리)이 모두
+// 이 컨텍스트를 통해 기수 목록을 읽고 쓴다.
 const COLLECTION = "cohorts";
 
 interface CohortContextValue {
@@ -34,11 +37,11 @@ function pickDefaultId(cohorts: Cohort[]): string {
 }
 
 export function CohortProvider({ children }: { children: ReactNode }) {
-	// Falls back to the bundled seed data (e.g. while Firestore is still
-	// loading, or if it's genuinely empty) so the public site always has
-	// something to render. Seeding real data into Firestore is a one-time
-	// admin/CLI operation (see scripts/seed-cohorts.mjs) — public visitors
-	// are never signed in, so they can't and shouldn't be able to write.
+	// Firestore 로딩 중이거나 정말로 비어 있을 때는 내장 시드 데이터로
+	// 대체해서 공개 사이트가 항상 뭔가는 보여줄 수 있게 한다. 실제 데이터를
+	// Firestore에 넣는 건 최초 1회 관리자/CLI 작업이고(scripts/seed-cohorts.mjs
+	// 참고) — 공개 방문자는 로그인 상태가 아니므로 쓰기 권한이 없고, 있어서도
+	// 안 된다.
 	const [cohorts, setCohorts] = useState<Cohort[]>(seedCohorts);
 	const [loading, setLoading] = useState(true);
 	const [selectedId, setSelectedId] = useState("");
@@ -85,6 +88,8 @@ export function CohortProvider({ children }: { children: ReactNode }) {
 			removeCohort: async (id) => {
 				await deleteDoc(doc(db, COLLECTION, id));
 			},
+			// 공개 사이트에서 기본으로 보여줄 기수를 하나로 지정 — 다른 기수는
+			// 전부 false로 함께 내려서 항상 하나만 featured가 되도록 보장.
 			setFeatured: async (id) => {
 				const snapshot = await getDocs(collection(db, COLLECTION));
 				const batch = writeBatch(db);
@@ -93,6 +98,8 @@ export function CohortProvider({ children }: { children: ReactNode }) {
 				});
 				await batch.commit();
 			},
+			// 일정 탭에서 기본으로 보여줄 기수를 하나로 지정 — 위 setFeatured와
+			// 같은 방식이지만 별도 필드라 featured와는 독립적으로 고를 수 있다.
 			setScheduleDefault: async (id) => {
 				const snapshot = await getDocs(collection(db, COLLECTION));
 				const batch = writeBatch(db);

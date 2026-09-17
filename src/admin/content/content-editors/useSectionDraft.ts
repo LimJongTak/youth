@@ -3,11 +3,10 @@ import { useSiteContent } from "../../../context/SiteContentContext";
 import type { SiteContent } from "../../../types/siteContent";
 
 /**
- * Local editable draft for one SiteContent section, plus a save() that
- * writes it back to Firestore. Keeping the draft local (rather than
- * editing `content` directly) means an admin can type freely without
- * every keystroke round-tripping to the database, and only commits on
- * an explicit "저장" click.
+ * SiteContent의 한 섹션을 편집할 로컬 임시본(draft)과, 그걸 Firestore에
+ * 저장하는 save() 함수를 제공. `content`를 바로 수정하지 않고 로컬에
+ * 임시본을 두는 이유는, 관리자가 타이핑할 때마다 DB를 왕복하지 않고
+ * 자유롭게 입력한 뒤 "저장" 버튼을 눌렀을 때만 실제로 반영되게 하기 위함.
  */
 export function useSectionDraft<K extends keyof SiteContent>(section: K) {
 	const { content, updateSection } = useSiteContent();

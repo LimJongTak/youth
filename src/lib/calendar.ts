@@ -1,5 +1,7 @@
-/** Local-date (not UTC) YYYY-MM-DD — avoids the timezone-shift bugs that
- * `Date#toISOString()` causes for anything but UTC+0.
+// 캘린더 관련 공통 유틸 — 일정 탭, 홈 미리보기, 관리자 일정 관리에서 공용으로 사용.
+
+/** 로컬 기준(UTC 아님) YYYY-MM-DD 문자열로 변환 — `Date#toISOString()`을
+ * 쓰면 UTC+0이 아닌 지역에서 날짜가 하루씩 밀리는 버그가 생기는 걸 피한다.
  */
 export function toDateKey(date: Date): string {
 	const y = date.getFullYear();
@@ -8,13 +10,14 @@ export function toDateKey(date: Date): string {
 	return `${y}-${m}-${d}`;
 }
 
+// "YYYY-MM-DD" 문자열을 다시 Date 객체로.
 export function parseDateKey(key: string): Date {
 	const [y, m, d] = key.split("-").map(Number);
 	return new Date(y, (m ?? 1) - 1, d ?? 1);
 }
 
-/** True if `key` falls within [startKey, endKey] (both inclusive), as plain
- * YYYY-MM-DD string comparison — safe because the format is fixed-width.
+/** `key`가 [startKey, endKey] 범위(양 끝 포함) 안에 있는지 — 고정 자릿수
+ * 형식이라 문자열 비교만으로도 안전하게 날짜 비교가 된다.
  */
 export function isDateInRange(key: string, startKey: string, endKey: string): boolean {
 	return key >= startKey && key <= endKey;
@@ -22,8 +25,8 @@ export function isDateInRange(key: string, startKey: string, endKey: string): bo
 
 export const WEEKDAY_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
 
-/** A 6x7 grid (weeks x weekdays) covering the given month, padded with the
- * trailing days of the previous/next month so every week is a full row.
+/** 해당 월을 덮는 6주×7일 그리드 — 각 주가 항상 꽉 채워지도록 이전/다음
+ * 달의 날짜로 앞뒤를 채운다.
  */
 export function getMonthGrid(year: number, month: number): { date: Date; inMonth: boolean }[][] {
 	const first = new Date(year, month, 1);

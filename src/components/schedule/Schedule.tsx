@@ -15,6 +15,9 @@ import { EmptyState } from "../common/EmptyState";
 import { Skeleton } from "../common/Skeleton";
 import styles from "./Schedule.module.scss";
 
+// 공개 사이트 "스케줄" 탭 — 기수를 고르고 달력에서 날짜를 눌러 그날의
+// 시간표를 확인한다. 좌우 스와이프/화살표로 월 이동, 이번 달이 아닐 땐
+// "오늘" 바로가기, 달력 아래엔 이번 달 일정 제목-색상 범례를 보여준다.
 export function Schedule() {
 	const { cohorts, selected } = useCohorts();
 	const { events, loading: scheduleLoading } = useSchedule();
@@ -25,11 +28,11 @@ export function Schedule() {
 		[cohorts],
 	);
 
-	// AppShell only mounts this tab's content while it's active, so these
-	// initial values are all that's needed to land on the cohort/day the
-	// 홈 탭's 일정 preview was showing. Absent an explicit admin choice, the
-	// oldest cohort (lowest generation) opens first rather than the site-wide
-	// `featured` cohort, since that's usually the one with real schedule data.
+	// AppShell은 이 탭이 활성화됐을 때만 내용을 마운트하므로, 아래 초기값만
+	// 설정해두면 홈 탭의 일정 미리보기가 보여주던 기수/날짜로 그대로 이어서
+	// 열린다. 관리자가 명시적으로 지정하지 않았다면, 사이트 전체의
+	// `featured` 기수 대신 가장 오래된(가장 낮은 기수) 기수를 먼저 연다 —
+	// 보통 그쪽에 실제 일정 데이터가 있기 때문.
 	const scheduleDefaultCohortId = cohorts.find((c) => c.scheduleDefault)?.id;
 	const oldestCohortId = sortedCohorts[sortedCohorts.length - 1]?.id;
 	const [cohortId, setCohortId] = useState(
@@ -67,8 +70,8 @@ export function Schedule() {
 		setSelectedDate(toDateKey(today));
 	}
 
-	// Swipe left/right anywhere on the grid moves a month, same as tapping
-	// the chevrons — a touch-screen visitor reaches for this instinctively.
+	// 달력 그리드 어디서든 좌우로 스와이프하면 화살표를 누른 것과 똑같이
+	// 월이 이동한다 — 터치 화면 사용자가 본능적으로 시도하는 동작.
 	const touchStartX = useRef<number | null>(null);
 	function handleTouchStart(event: TouchEvent) {
 		touchStartX.current = event.touches[0].clientX;
@@ -87,9 +90,8 @@ export function Schedule() {
 		[cohortEvents, selectedDate],
 	);
 
-	// The legend below the calendar: one entry per distinct event title
-	// visible this month, so a dot's color can be read at a glance instead
-	// of tapping every day to find out what it means.
+	// 달력 아래에 보여줄 범례: 이번 달에 보이는 일정 제목마다 하나씩 —
+	// 매번 날짜를 눌러보지 않아도 점 색깔이 무슨 의미인지 한눈에 알 수 있게.
 	const monthLegend = useMemo(() => {
 		const monthStart = toDateKey(new Date(year, month, 1));
 		const monthEnd = toDateKey(new Date(year, month + 1, 0));

@@ -6,6 +6,9 @@ import type { AppUser, Role } from "../../types/user";
 import { roleLabel } from "../../types/user";
 import styles from "./AccountManagement.module.scss";
 
+// 관리자 "계정 관리" 탭 — 관리자만 접근 가능. 새 관리자/매니저 계정을
+// 만들고 기존 계정 목록을 확인한다.
+
 const roleTagClass: Record<Role, string> = {
 	admin: styles.roleAdmin,
 	manager: styles.roleManager,
@@ -39,10 +42,10 @@ export function AccountManagement() {
 		setSubmitting(true);
 		try {
 			const apiKey = import.meta.env.VITE_FIREBASE_API_KEY as string;
-			// A raw REST call — deliberately NOT the Firebase Auth SDK's
-			// createUserWithEmailAndPassword, which would sign the browser in
-			// as the newly created account and kick the current admin out of
-			// their own session. This keeps the admin's session untouched.
+			// Firebase Auth SDK의 createUserWithEmailAndPassword를 안 쓰고
+			// REST API를 직접 호출 — SDK를 쓰면 새로 만든 계정으로 브라우저가
+			// 자동 로그인되면서 지금 작업 중인 관리자 본인의 세션이 끊긴다.
+			// REST 호출은 관리자의 로그인 세션을 그대로 유지해준다.
 			const res = await fetch(
 				`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
 				{

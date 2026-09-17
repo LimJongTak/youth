@@ -12,6 +12,10 @@ import { Icon } from "../icons/Icon";
 import { Skeleton } from "../common/Skeleton";
 import styles from "./CohortBanner.module.scss";
 
+// 홈 탭의 "기수 안내 및 신청" 섹션 — 기수 선택 칩, 교육 안내/일정 미리보기
+// 탭 카드, 모집대상 체크리스트, 신청 CTA, 신청 방법 안내까지 한 섹션에
+// 모아 보여준다. 일정 탭에서 날짜를 누르면 "자세히 보기"로 스케줄 탭까지
+// 이어진다(goToSchedule).
 type CardTab = "info" | "schedule";
 
 const dotClass: Record<string, string> = {
@@ -71,6 +75,7 @@ export function CohortBanner() {
 		<section className="section" id="cohort">
 			<SectionHead title="기수 안내 및 신청" />
 
+			{/* 기수 선택 칩 — 여러 기수 중 하나를 골라 아래 카드 내용을 전환 */}
 			<div className={styles.chipRow} role="tablist">
 				{cohorts
 					.slice()
@@ -147,6 +152,7 @@ export function CohortBanner() {
 						{selected.note && <p className={styles.note}>* {selected.note}</p>}
 					</>
 				) : (
+					// 미니 캘린더 + 선택한 날짜의 일정 미리보기 (일정 탭의 축소판)
 					<div className={styles.schedulePreview}>
 						<div className={styles.miniHead}>
 							<button
@@ -243,6 +249,7 @@ export function CohortBanner() {
 				)}
 			</div>
 
+			{/* 모집대상 자가 체크리스트 — CMS의 checklist 항목을 그대로 렌더링 */}
 			<div className={styles.checklistBlock}>
 				<SectionHead
 					title={
@@ -279,6 +286,7 @@ export function CohortBanner() {
 				</span>
 			</div>
 
+			{/* 신청하기 / 카카오톡 문의 CTA — 모집중이 아니면 신청 버튼 대신 안내 문구 */}
 			<div className={styles.ctaCard}>
 				{canApply ? (
 					<a

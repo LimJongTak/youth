@@ -4,6 +4,8 @@ import { StringList } from "./StringList";
 import type { BenefitCard } from "../../../types/siteContent";
 import styles from "./shared.module.scss";
 
+// "참여 혜택" 섹션(홈 화면 혜택 카드들) 편집 폼. icon 필드는 Font Awesome
+// 클래스명을 관리자가 직접 텍스트로 입력한다(예: fa-briefcase).
 function emptyBenefit(): BenefitCard {
 	return {
 		icon: "fa-star",

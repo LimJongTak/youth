@@ -4,6 +4,7 @@ import { RepeatableList } from "./RepeatableList";
 import type { Track } from "../../../types/siteContent";
 import styles from "./shared.module.scss";
 
+// 커리큘럼의 초급/중급/고급 트랙별 상세 내용(과목, 시간 등) 편집 폼.
 const levelOptions: { value: Track["id"]; label: string; badgeClass: string }[] = [
 	{ value: "basic", label: "초급", badgeClass: "lvBasic" },
 	{ value: "mid", label: "중급", badgeClass: "lvMid" },

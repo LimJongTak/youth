@@ -11,8 +11,8 @@ export function ApplyStepsEditor() {
 			<RepeatableList
 				items={draft}
 				onChange={(items) =>
-					// Keep step numbers in sync with their position so the
-					// numbered badges on the public site always read 1, 2, 3...
+					// 순서가 바뀌어도 단계 번호가 그 위치와 항상 일치하도록 —
+					// 공개 사이트의 번호 배지가 늘 1, 2, 3... 순서로 보이게 함.
 					setDraft(items.map((item, i) => ({ ...item, num: i + 1 })))
 				}
 				fields={[

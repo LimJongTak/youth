@@ -1,3 +1,5 @@
+// 관리자 통계 탭의 일별/주별/월별/년별 기간 그래프를 만들기 위한 날짜
+// 구간(버킷) 계산 유틸.
 export type Period = "day" | "week" | "month" | "year";
 
 export const PERIOD_CONFIG: Record<Period, { label: string; count: number; rangeLabel: string }> = {
@@ -11,7 +13,8 @@ function startOfDay(d: Date) {
 	return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
-// Monday-start week, matching how 모집기간/교육기간 dates read elsewhere in the app.
+// 월요일 시작 기준 주 — 앱의 다른 곳(모집기간/교육기간)에서 날짜를 읽는
+// 방식과 맞춤.
 function startOfWeek(d: Date) {
 	const day = (d.getDay() + 6) % 7;
 	return startOfDay(new Date(d.getFullYear(), d.getMonth(), d.getDate() - day));
@@ -61,8 +64,8 @@ export interface Bucket {
 	label: string;
 }
 
-/** N consecutive buckets of `period`, oldest first, ending at the bucket that
- * contains "now" — the fixed x-axis every period view renders against.
+/** `period` 단위로 연속된 N개 구간을 오래된 순서로 반환 — 마지막 구간은
+ * "지금"이 속한 구간이다. 각 기간 뷰가 그리는 그래프의 x축 값이 된다.
  */
 export function buildBuckets(period: Period, now: Date = new Date()): Bucket[] {
 	const { count } = PERIOD_CONFIG[period];

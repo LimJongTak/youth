@@ -1,8 +1,7 @@
 @use "../../styles/tokens" as t;
 
-// Inline pager — the guide images shown directly on the page now that the
-// program/curriculum split lives in its own tab, no button needed to reveal
-// them.
+// 인라인 페이저 — 프로그램/커리큘럼이 각자 탭으로 분리된 지금은 안내
+// 이미지를 페이지에 바로 보여주며, 따로 버튼을 눌러 열 필요가 없다.
 .pager {
 	margin-top: 14px;
 }
@@ -207,9 +206,9 @@
 	background: t.$teal;
 }
 
-// Mobile: both photos open full-screen, stacked, scrollable — no card
-// chrome, no pager. This is the actual device viewport, not the
-// desktop mockup column, so it should fill it edge-to-edge.
+// 모바일: 두 사진 모두 전체화면으로, 세로로 쌓여 스크롤되게 열림 — 카드
+// 장식도, 페이저도 없음. 이건 데스크톱 목업 컬럼이 아니라 실제 기기
+// 뷰포트라서 화면 끝까지 꽉 채워야 한다.
 .mobileOverlay {
 	position: fixed;
 	inset: 0;

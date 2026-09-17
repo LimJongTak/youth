@@ -3,6 +3,7 @@ import { SaveBar } from "./Field";
 import { RepeatableList } from "./RepeatableList";
 import styles from "./shared.module.scss";
 
+// "모집대상 확인" 자가 체크리스트 항목 편집 폼.
 export function ChecklistEditor() {
 	const { draft, setDraft, save, saving, success, error } = useSectionDraft("checklist");
 

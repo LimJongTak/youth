@@ -40,8 +40,8 @@ function formatDate(ts: Timestamp | null) {
 	});
 }
 
-// Round up to a "clean" axis max (1/2/5 × 10^n) instead of the raw peak, so
-// the one tick label we show is a number a reader can anchor on.
+// 그래프 최고값을 그대로 쓰지 않고 "깔끔한" 값(1/2/5 × 10^n)으로 올림 —
+// 유일하게 표시하는 눈금 라벨이 읽기 편한 숫자가 되도록.
 function niceCeil(value: number): number {
 	if (value <= 0) return 1;
 	const exp = Math.floor(Math.log10(value));
@@ -57,10 +57,13 @@ export function AnalyticsPanel() {
 	const [usernames, setUsernames] = useState<Record<string, string>>({});
 	const [period, setPeriod] = useState<Period>("day");
 
+	// 방문 통계(analyticsEvents)와 콘텐츠 변경 이력(auditLog)을 Firestore와
+	// 실시간 동기화. 이 통계 탭 하나가 관리자 화면의 "주요 기능" 중 하나다.
 	useEffect(() => {
-		// A pragmatic cap, not a real paginated query: fine for this site's
-		// traffic today. If that ever changes, this needs a server-side
-		// date-range query instead of "last N, bucketed on the client."
+		// 진짜 페이지네이션이 아니라 실용적인 상한선일 뿐 — 지금 트래픽
+		// 수준에서는 문제없다. 나중에 방문자가 훨씬 늘어나면 "최근 N건을
+		// 가져와 클라이언트에서 구간 나누기" 대신 서버 쪽 날짜 범위 쿼리로
+		// 바꿔야 한다.
 		const unsubEvents = onSnapshot(
 			query(collection(db, "analyticsEvents"), orderBy("at", "desc"), limit(3000)),
 			(snap) => setEvents(snap.docs.map((d) => d.data() as AnalyticsEvent)),
@@ -85,6 +88,8 @@ export function AnalyticsPanel() {
 
 	const buckets = useMemo(() => buildBuckets(period), [period]);
 
+	// 선택한 기간(일/주/월/년)의 각 구간마다 방문(page_view) 수를 집계 —
+	// 방문 추이 막대그래프에 쓰이는 데이터.
 	const series = useMemo(
 		() =>
 			buckets.map((bucket) => {
@@ -105,8 +110,8 @@ export function AnalyticsPanel() {
 		0,
 	);
 
-	// Stat cards scope to the same window the chart is currently showing,
-	// so the numbers on screen always agree with each other.
+	// 통계 카드들도 그래프가 지금 보여주는 것과 같은 기간 범위로 계산 —
+	// 화면에 보이는 숫자들이 항상 서로 일치하도록.
 	const windowStart = buckets[0].start;
 	const windowEnd = buckets[buckets.length - 1].end;
 	const windowEvents = useMemo(

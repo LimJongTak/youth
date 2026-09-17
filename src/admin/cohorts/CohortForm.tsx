@@ -3,6 +3,8 @@ import type { Cohort, CohortStatus } from "../../types/cohort";
 import { statusLabel } from "../../types/cohort";
 import styles from "./CohortForm.module.scss";
 
+// 기수(회차) 추가/수정 폼 — 관리자 "기수 관리" 탭에서 사용.
+
 interface CohortFormProps {
 	initial: Cohort | null;
 	onSubmit: (cohort: Cohort) => void;

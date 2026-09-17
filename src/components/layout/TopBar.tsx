@@ -3,6 +3,7 @@ import { logEvent } from "../../lib/analytics";
 import { Icon } from "../icons/Icon";
 import styles from "./TopBar.module.scss";
 
+// 상단 고정 바 — 사이트명과 문의 탭 바로가기 버튼.
 export function TopBar() {
 	const { tab, goToContact } = useNavigation();
 

@@ -7,6 +7,8 @@ import { SectionHead } from "../layout/SectionHead";
 import { Icon } from "../icons/Icon";
 import styles from "./Curriculum.module.scss";
 
+// 커리큘럼 섹션 — 공통과정 안내와 초급/중급/고급 트랙 탭, "자세히"를 누르면
+// 공통+트랙 과목 전체 목록을 모달로 보여준다.
 export function Curriculum() {
 	const { content } = useSiteContent();
 	const { commonCourse, tracks } = content;
@@ -14,17 +16,17 @@ export function Curriculum() {
 	const [detailOpen, setDetailOpen] = useState(false);
 	const activeTrack = tracks.find((track) => track.id === activeTab) ?? tracks[0];
 
-	// Firestore content saved before the "이수 과목" field existed won't have
-	// it yet — fall back to the matching seed track so the detail card still
-	// has something to show until an admin fills it in via the CMS.
+	// "이수 과목" 필드가 생기기 전에 저장된 Firestore 콘텐츠에는 이 값이
+	// 없을 수 있음 — 관리자가 CMS에서 채워 넣기 전까지는 대응하는 시드
+	// 트랙 값으로 대체해서 상세 카드가 비어 보이지 않게 한다.
 	const trackCourses =
 		activeTrack?.courses && activeTrack.courses.length > 0
 			? activeTrack.courses
 			: defaultSiteContent.tracks.find((t) => t.id === activeTrack?.id)?.courses ?? [];
 
-	// commonCourse.desc is written as "과목A · 과목B" — split it back out so
-	// the detail card can list the 2 common subjects individually alongside
-	// the track's own subjects.
+	// commonCourse.desc는 "과목A · 과목B" 형태로 저장돼 있음 — 상세 카드에서
+	// 트랙 자체 과목들과 함께 공통 과목 2개를 각각 따로 나열할 수 있도록
+	// 다시 분리한다.
 	const commonSubjects = commonCourse.desc
 		.split("·")
 		.map((subject) => subject.trim())

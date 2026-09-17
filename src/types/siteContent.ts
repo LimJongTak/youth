@@ -1,3 +1,5 @@
+// 관리자 CMS(콘텐츠 관리)에서 편집하는 공개 사이트 문구/데이터 타입 모음.
+// Firestore의 siteContent 문서 구조와 1:1로 대응된다.
 export interface HeroContent {
 	titleBefore: string;
 	titleEmphasis: string;
@@ -19,7 +21,7 @@ export interface HourChip {
 
 export interface TrackCourse {
 	name: string;
-	/** e.g. "전문과정" or "몰입과정" — shown as a small tag next to the name. */
+	/** 예: "전문과정", "몰입과정" — 과목명 옆에 작은 태그로 표시됨. */
 	kind: string;
 }
 
@@ -32,9 +34,8 @@ export interface Track {
 	subtitle: string;
 	hours: HourChip[];
 	total: string;
-	/** This track's own subjects, shown in the "자세히" detail card (the
-	 * shared 공통과정 subjects are shown alongside them, parsed from
-	 * `commonCourse.desc`). */
+	/** 이 트랙만의 과목 목록 — "자세히" 상세 카드에 표시됨 (공통과정 과목은
+	 * `commonCourse.desc`에서 파싱해 함께 보여줌). */
 	courses: TrackCourse[];
 }
 

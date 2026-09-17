@@ -1,5 +1,7 @@
 import styles from "./shared.module.scss";
 
+// "혜택 목록"처럼 단순 문자열 여러 개를 추가/수정/삭제하는 입력 컴포넌트.
+
 interface StringListProps {
 	label: string;
 	items: string[];

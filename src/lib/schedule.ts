@@ -1,9 +1,11 @@
 import { isDateInRange } from "./calendar";
 import type { ScheduleEvent } from "../types/schedule";
 
-/** How an event's time reads on the calendar: a time range for a class
- * slot, "종일" for a single day with no time set, or the date span itself
- * for a multi-day event (a time range wouldn't mean much there).
+// 일정(Schedule) 관련 표시용 유틸 — 공개 사이트 일정 탭, 홈 미리보기,
+// 관리자 일정 관리 화면에서 공용으로 사용.
+
+/** 캘린더에 표시할 일정 시간 문구: 수업이면 시간 범위, 시간이 없으면
+ * "종일", 여러 날에 걸친 일정이면 기간 자체(시간 범위는 의미가 없으므로).
  */
 export function formatEventTime(event: ScheduleEvent): string {
 	if (event.startDate !== event.endDate) return "기간 일정";
@@ -11,16 +13,15 @@ export function formatEventTime(event: ScheduleEvent): string {
 	return "종일";
 }
 
-// Matches tokens.scss's $teal — the dot color an event gets when nobody
-// picked one (including every event created before this field existed).
+// tokens.scss의 $teal과 동일한 값 — 색상을 지정하지 않은 일정(이 필드가
+// 생기기 전에 만든 일정 포함)이 캘린더에서 갖는 기본 점 색상.
 export const DEFAULT_DOT_COLOR = "#14b8a6";
 
 type ColorableRange = Pick<ScheduleEvent, "startDate" | "endDate" | "color">;
 
-/** The colored dots a calendar cell should show for one day — one dot per
- * event that covers that date (a multi-day event contributes a dot on
- * every day it spans, not just its first), each tinted with that event's
- * own color.
+/** 하루치 캘린더 칸에 표시할 색상 점 목록 — 그날에 걸쳐 있는 일정마다 점
+ * 하나씩(여러 날짜에 걸친 일정이면 그 기간의 모든 날짜에 점이 찍힘),
+ * 각 일정 고유 색으로 표시.
  */
 export function getDayDotColors(key: string, events: ColorableRange[]): string[] {
 	return events
@@ -28,8 +29,8 @@ export function getDayDotColors(key: string, events: ColorableRange[]): string[]
 		.map((e) => e.color || DEFAULT_DOT_COLOR);
 }
 
-/** Every event covering a given day, earliest start time first — used to
- * render each day's own schedule inline on the calendar, not just a dot.
+/** 해당 날짜에 걸쳐 있는 모든 일정을 시작 시간 순으로 반환 — 날짜를
+ * 선택했을 때 그날의 상세 일정 목록을 보여주는 데 사용.
  */
 export function getDayEvents<T extends ColorableRange & { startTime?: string }>(
 	key: string,

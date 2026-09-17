@@ -2,6 +2,7 @@ import { useSectionDraft } from "./useSectionDraft";
 import { TextField, SaveBar } from "./Field";
 import styles from "./shared.module.scss";
 
+// 문의처(기관명/이메일/주소/카카오톡·공식 페이지 링크) 편집 폼.
 export function ContactEditor() {
 	const { draft, setDraft, save, saving, success, error } = useSectionDraft("contact");
 

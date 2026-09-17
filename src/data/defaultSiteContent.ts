@@ -1,6 +1,6 @@
 import type { SiteContent } from "../types/siteContent";
 
-/** Fallback copy shown while Firestore loads (or if a section is missing). */
+/** Firestore 로딩 중이거나(또는 특정 섹션이 없을 때) 보여줄 대체 문구. */
 export const defaultSiteContent: SiteContent = {
 	hero: {
 		titleBefore: "AI·첨단산업 분야 취업을 꿈꾸는 청년을 위한",

@@ -14,6 +14,9 @@ import { ScheduleEventForm } from "./ScheduleEventForm";
 import { EmptyState } from "../../components/common/EmptyState";
 import styles from "./ScheduleManager.module.scss";
 
+// 관리자 "일정 관리" 탭 — 기수별 캘린더로 일정을 조회하고, 개별 추가/수정/
+// 삭제는 물론 엑셀 양식 다운로드·업로드·내보내기로 대량 등록도 지원한다.
+
 function formatEventTime(event: ScheduleEvent): string {
 	if (event.startDate !== event.endDate) {
 		return `${event.startDate.slice(5).replace("-", ".")} ~ ${event.endDate.slice(5).replace("-", ".")}`;
@@ -93,6 +96,8 @@ export function ScheduleManager() {
 		}
 	}
 
+	// 엑셀 파일 선택 시 바로 저장하지 않고 파싱 결과(성공/오류)를 미리보기로
+	// 보여준 뒤, 관리자가 확인하고 "가져오기"를 눌러야 실제로 저장된다.
 	async function handleFileChange(fileEvent: React.ChangeEvent<HTMLInputElement>) {
 		const file = fileEvent.target.files?.[0];
 		fileEvent.target.value = "";

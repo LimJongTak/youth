@@ -1,24 +1,23 @@
-// Design tokens.
+// 디자인 토큰.
 //
-// Direction: restrained, flat "premium Korean fintech app" style (Toss /
-// Kakaobank-influenced) rather than the gradient-heavy, badge-everywhere,
-// glowing-blob look that reads as generic AI-generated landing page.
-// Concretely that means: one accent color used sparingly (not four),
-// flat fills instead of gradients on buttons/icons, hairline borders
-// instead of heavy drop shadows, and hierarchy built from type size/weight
-// rather than colored pill badges.
+// 방향성: 그라디언트 범벅에 배지가 여기저기 붙고 은은하게 빛나는 방울
+// 같은, 흔히 "AI가 만든 것 같은" 랜딩페이지 느낌 대신 — 절제되고 납작한
+// "프리미엄 한국 핀테크 앱" 스타일(토스/카카오뱅크 영향)을 지향한다.
+// 구체적으로는: 포인트 컬러 하나만 아껴 쓰기(네 개가 아니라), 버튼/아이콘은
+// 그라디언트 대신 단색 채우기, 진한 그림자 대신 실선 테두리, 색이 있는
+// 알약 배지 대신 글자 크기/굵기로 위계를 표현하는 것을 의미한다.
 
-$ink: #191f28; // near-black, primary text — not navy-blue
-$ink-2: #232933; // flat dark surface (hero/topbar) — no gradients on this
+$ink: #191f28; // 거의 검정, 기본 텍스트 색 — 남색 계열 아님
+$ink-2: #232933; // 단색의 어두운 표면(히어로/상단바) — 그라디언트 없음
 $ink-3: #2e3542;
 
 $teal: #14b8a6;
 $teal-dark: #0d9488;
-$teal-light: #5eead4; // for text/icons on dark surfaces only
-$teal-tint: #e6f7f5; // light accent fill for icons/badges on white
+$teal-light: #5eead4; // 어두운 배경 위의 텍스트/아이콘 전용
+$teal-tint: #e6f7f5; // 흰 배경 위 아이콘/배지용 옅은 포인트 색
 
-$amber: #f5a623; // status/semantic use only — never decorative
-$coral: #ef4444; // status/semantic use only — never decorative
+$amber: #f5a623; // 상태 표시 전용 — 장식용으로 쓰지 않음
+$coral: #ef4444; // 상태 표시 전용 — 장식용으로 쓰지 않음
 $blue: #3b82f6;
 
 $bg: #f2f4f6;
@@ -38,11 +37,11 @@ $font: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
 $font-head: #{$font};
 $font-body: #{$font};
 
-// Breakpoint: below this the phone-frame collapses into a plain
-// full-width mobile page (the device IS already a phone).
+// 브레이크포인트: 이 값 아래에서는 폰 프레임 목업이 그냥 전체 너비의
+// 모바일 페이지로 바뀐다(실제 기기가 이미 휴대폰이므로).
 $bp-desktop: 431px;
 
-// Shadows are used sparingly and are flatter than a typical "AI SaaS" look.
+// 그림자는 아껴 쓰고, 흔한 "AI SaaS" 느낌보다 더 납작하게 사용한다.
 $shadow-xs: 0 1px 2px rgba(16, 20, 30, 0.04);
 $shadow-sm: 0 1px 3px rgba(16, 20, 30, 0.06);
 $shadow-md: 0 8px 20px -10px rgba(16, 20, 30, 0.16);
@@ -56,8 +55,8 @@ $shadow-lg: 0 16px 36px -14px rgba(16, 20, 30, 0.28);
 	box-shadow: $shadow-xs;
 }
 
-// A plain small-caps label — no pill background, no dot. Hierarchy comes
-// from letter-spacing/weight/color, not a badge shape.
+// 담백한 라벨 — 알약 배경도, 점도 없음. 위계는 배지 모양이 아니라
+// 자간/굵기/색상으로 표현한다.
 @mixin eyebrow($fg: $text-mute) {
 	display: block;
 	font-size: 0.72rem;

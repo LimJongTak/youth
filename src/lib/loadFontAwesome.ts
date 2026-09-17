@@ -1,8 +1,8 @@
-// The public site itself uses inline SVG icons now, but two spots still need
-// the full Font Awesome set: admin screens, and the CMS-editable "참여 혜택"
-// cards (an admin can type any Font Awesome class name as that card's icon,
-// so it can't be a fixed SVG). Both call this instead of loading the
-// stylesheet eagerly for every visitor via index.html.
+// 공개 사이트 자체는 이제 인라인 SVG 아이콘을 쓰지만, Font Awesome 전체
+// 세트가 여전히 필요한 곳이 두 군데 있다: 관리자 화면, 그리고 CMS에서
+// 편집하는 "참여 혜택" 카드(관리자가 아무 Font Awesome 클래스명이나
+// 입력할 수 있어서 고정 SVG로 대체할 수 없음). 두 곳 모두 index.html에서
+// 모든 방문자에게 무조건 로드하는 대신 이 함수를 호출해서 필요할 때만 불러온다.
 let loaded = false;
 
 export function ensureFontAwesomeLoaded() {

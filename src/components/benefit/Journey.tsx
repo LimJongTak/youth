@@ -5,9 +5,12 @@ import { SectionHead } from "../layout/SectionHead";
 import { Icon } from "../icons/Icon";
 import styles from "./Journey.module.scss";
 
-// Some content saved before "no numbering" was the design (Firestore may
-// still hold titles like "① 신청 · 접수") — strip a leading circled number
-// so the timeline never shows it, regardless of what's stored.
+// "참여 여정" 타임라인 — 요약 타임라인과, "자세히 보기"를 누르면 열리는
+// 아코디언 상세 모달로 구성.
+
+// "번호 없이" 표시하기로 하기 전에 저장된 콘텐츠는 Firestore에 아직
+// "① 신청 · 접수" 같은 제목이 남아있을 수 있음 — 저장된 값이 뭐든 앞의
+// 동그라미 숫자를 떼어내서 타임라인에는 절대 안 보이게 한다.
 function stripNumbering(title: string) {
 	return title.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, "");
 }
@@ -19,8 +22,8 @@ export function Journey() {
 	const [revealed, setRevealed] = useState(false);
 	const timelineRef = useRef<HTMLDivElement>(null);
 
-	// Play the timeline's stagger-in animation once, the first time it
-	// scrolls into view, instead of on every render.
+	// 타임라인이 스크롤로 처음 화면에 들어올 때 딱 한 번만 순차 등장
+	// 애니메이션을 재생 — 렌더링될 때마다가 아니라.
 	useEffect(() => {
 		const el = timelineRef.current;
 		if (!el) return;

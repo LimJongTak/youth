@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import styles from "./shared.module.scss";
 
+// 모든 콘텐츠 편집 폼이 공유하는 기본 입력 필드·저장 버튼 컴포넌트.
+
 interface TextFieldProps {
 	label: string;
 	value: string;

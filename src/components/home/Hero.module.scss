@@ -13,9 +13,9 @@
 	margin-bottom: 0.5em;
 	letter-spacing: -0.01em;
 	font-weight: 700;
-	// Safety net only — the JS measurement is what actually sizes the text
-	// to fit; this just hides the sliver of overflow in the one frame
-	// before that runs (or if it ever fails to for some reason).
+	// 어디까지나 안전장치일 뿐 — 실제로 글자 크기를 맞추는 건 JS 측정
+	// 로직이고, 이건 그게 실행되기 전 한 프레임(또는 어떤 이유로 실패했을
+	// 때) 살짝 넘치는 부분을 그냥 가려주는 역할.
 	overflow: hidden;
 
 	em {
@@ -24,10 +24,10 @@
 	}
 }
 
-// Each line is measured (via JS) against its natural, unconstrained nowrap
-// width — no max-width here, since capping the box is exactly what made
-// scrollWidth-based measurement unreliable on mobile Safari. .title above
-// clips any real overflow instead.
+// 각 줄은 JS로 원래(줄바꿈 없는) 제약 없는 너비를 기준으로 측정됨 —
+// 여기에 max-width를 두지 않는 이유는, 박스를 제한하는 것 자체가 모바일
+// Safari에서 scrollWidth 기반 측정을 신뢰할 수 없게 만든 원인이었기
+// 때문. 실제 넘침은 위의 .title이 잘라낸다.
 .titleLine {
 	display: inline-block;
 	white-space: nowrap;
@@ -39,9 +39,9 @@
 	line-height: 1.55;
 	margin-bottom: 0;
 	white-space: pre-line;
-	// Korean line-breaking defaults to breaking between any two
-	// characters — keep-all restricts breaks to word gaps (spaces) so a
-	// wrap never lands mid-word (e.g. splitting "실무").
+	// 한글 줄바꿈은 기본적으로 아무 글자 사이에서나 끊기는데 — keep-all은
+	// 띄어쓰기(단어 사이)에서만 끊기게 제한해서 "실무" 같은 단어가 중간에
+	// 잘리는 일이 없게 한다.
 	word-break: keep-all;
 }
 
@@ -59,8 +59,8 @@
 	}
 }
 
-// Three equal-width columns so the row always fills edge-to-edge — no
-// leftover gap on the right the way content-sized buttons left one.
+// 항상 가로 전체를 꽉 채우도록 동일한 너비의 3칸 — 버튼 크기가 내용에
+// 맞춰지던 방식처럼 오른쪽에 여백이 남지 않게 함.
 .ctaRow {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);

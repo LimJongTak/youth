@@ -1,11 +1,11 @@
 import type { Cohort } from "../types/cohort";
 
 /**
- * Seed data. 1기 is sourced from the official SCNU announcement page; 2기 is
- * sourced from the "2기교육생모집.pptx" recruiting flyer. Once the app runs,
- * these are only the *initial* values — an administrator can add, edit, or
- * remove cohorts from the admin screen, and their changes are persisted to
- * the browser (see useCohorts / useLocalStorage).
+ * 초기 시드 데이터. 1기는 순천대 공식 공지 페이지, 2기는 "2기교육생모집.pptx"
+ * 모집 안내문에서 가져온 값이다. 앱이 실제로 동작할 땐 이 값들은 *초기값*일
+ * 뿐이고, 관리자가 관리자 화면에서 기수를 추가/수정/삭제하면 그 내용이
+ * Firestore에 저장돼 실시간으로 반영된다(CohortContext 참고). Firestore가
+ * 아직 로딩 중이거나 비어 있을 때 화면에 뭔가는 보이도록 하는 fallback 용도.
  */
 export const seedCohorts: Cohort[] = [
 	{

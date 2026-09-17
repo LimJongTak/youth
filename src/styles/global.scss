@@ -7,21 +7,21 @@
 }
 
 html {
-	// Force light mode regardless of the OS/browser dark mode setting, so
-	// colors never get auto-inverted or re-tinted by the browser.
+	// OS/브라우저의 다크모드 설정과 무관하게 라이트 모드로 강제 — 브라우저가
+	// 색을 자동으로 반전시키거나 다시 물들이는 일이 없게 한다.
 	color-scheme: light only;
 
-	// Animate in-page anchor jumps (bottom nav, drawer, hero buttons) instead
-	// of snapping instantly to the target section.
+	// 페이지 내 앵커 이동(하단 내비, 드로어, 히어로 버튼)을 순간이동 대신
+	// 부드럽게 애니메이션.
 	scroll-behavior: smooth;
 
-	// Fluid root type scale: every `rem` value in the app scales smoothly
-	// with the real device width between 320px (small phones) and 430px
-	// (our mobile/desktop-mockup breakpoint) — so proportions stay
-	// consistent across phone sizes instead of feeling cramped or
-	// oversized at the extremes. Above 430px real viewport width (desktop,
-	// where the phone-frame mockup takes over) this clamps to the max, i.e.
-	// always the "large phone" scale, which is what the mockup represents.
+	// 유동적인 루트 타입 스케일: 앱의 모든 `rem` 값이 실제 기기 너비
+	// 320px(작은 휴대폰)~430px(모바일/데스크톱 목업 브레이크포인트) 사이에서
+	// 부드럽게 스케일된다 — 그래서 휴대폰 크기가 달라져도 비율이 일관되게
+	// 유지되고, 양 극단에서 너무 답답하거나 너무 커 보이지 않는다. 실제
+	// 뷰포트 너비가 430px를 넘으면(데스크톱, 폰 프레임 목업이 나타나는 지점)
+	// 최대값으로 고정되어 항상 "큰 휴대폰" 스케일을 유지하는데, 이게 바로
+	// 목업이 표현하는 크기다.
 	font-size: clamp(15px, calc(15px + (100vw - 320px) * (2 / 110)), 17px);
 }
 
@@ -69,10 +69,9 @@ button {
 	font-family: inherit;
 }
 
-// A brand-colored focus ring for keyboard navigation only — :focus-visible
-// skips it for mouse/touch clicks, so it never shows as a stray blue
-// rectangle after tapping a button, only when someone's actually tabbing
-// through the page.
+// 키보드 탐색 전용 브랜드 컬러 포커스 링 — :focus-visible은 마우스/터치
+// 클릭에는 적용되지 않으므로, 버튼을 탭했을 때 뜬금없는 파란 사각형이
+// 뜨는 일 없이 실제로 Tab 키로 이동할 때만 보인다.
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -129,9 +128,8 @@ body {
 	padding: 30px 20px;
 }
 
-// Every section is a same-page anchor target; without this, jumping to one
-// lands its top edge directly under the sticky status bar + top bar and
-// hides the heading.
+// 모든 섹션은 페이지 내 앵커 이동 대상임; 이게 없으면 이동했을 때 섹션
+// 윗부분이 고정된 상태바+상단바 바로 밑에 가려져서 제목이 안 보이게 된다.
 [id] {
 	scroll-margin-top: 68px;
 }

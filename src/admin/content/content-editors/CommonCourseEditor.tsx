@@ -2,6 +2,7 @@ import { useSectionDraft } from "./useSectionDraft";
 import { TextField, SaveBar } from "./Field";
 import styles from "./shared.module.scss";
 
+// 커리큘럼의 "공통과정" 안내 문구(제목/설명) 편집 폼.
 export function CommonCourseEditor() {
 	const { draft, setDraft, save, saving, success, error } = useSectionDraft("commonCourse");
 

@@ -3,13 +3,15 @@ import { createPortal } from "react-dom";
 import { Icon } from "../icons/Icon";
 import styles from "./About.module.scss";
 
+// 프로그램 소개 이미지 뷰어 — 안내 이미지를 페이저로 넘겨보고, 클릭하면
+// 전체화면 모달(데스크톱은 좌우 화살표, 모바일은 전용 갤러리)로 확대해서 본다.
 const PAGES = [
 	{ src: "/assets/img/about/guide-1.jpg", alt: "청년도약 인재양성 부트캠프 프로그램 안내 이미지 1" },
 	{ src: "/assets/img/about/guide-2.jpg", alt: "청년도약 인재양성 부트캠프 프로그램 안내 이미지 2" },
 ];
 
-// Below this width the device is a phone: skip the desktop card/pager and
-// show one photo at a time full-screen, with prev/next below it.
+// 이 너비 이하면 휴대폰으로 간주 — 데스크톱용 카드/페이저 대신 사진을
+// 한 장씩 전체화면으로 보여주고, 아래에 이전/다음을 둔다.
 const MOBILE_BREAKPOINT = 480;
 const AUTO_ADVANCE_MS = 30000;
 
@@ -46,9 +48,9 @@ export function About() {
 		}, AUTO_ADVANCE_MS);
 	}
 
-	// The 30s auto-advance runs continuously while this page is mounted;
-	// any manual prev/next/dot interaction restarts the countdown instead
-	// of stacking with the timer already running.
+	// 이 화면이 떠 있는 동안 30초 자동 넘김이 계속 돌아간다; 이전/다음/점을
+	// 수동으로 조작하면 이미 돌아가던 타이머와 겹치지 않도록 카운트다운을
+	// 다시 시작한다.
 	useEffect(() => {
 		restartTimer();
 		return () => window.clearInterval(timerRef.current);

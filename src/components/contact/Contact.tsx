@@ -5,15 +5,17 @@ import { logEvent } from "../../lib/analytics";
 import { Icon } from "../icons/Icon";
 import styles from "./Contact.module.scss";
 
+// "문의처" 탭 — 카카오톡 문의, 이메일, 지도(카카오맵) 링크 목록.
 const KAKAO_MAP_WEB_URL = "https://place.map.kakao.com/2091779575";
 const KAKAO_MAP_APP_URL = "kakaomap://place?id=2091779575";
 
+// 카카오맵 앱이 설치돼 있으면 앱으로, 없으면 웹페이지로 열리게 시도한다.
 function openKakaoMap(event: MouseEvent) {
 	event.preventDefault();
 	const openedAt = Date.now();
 	window.location.href = KAKAO_MAP_APP_URL;
-	// If the app-scheme link didn't get intercepted by an installed KakaoMap
-	// app within ~1.2s, the browser is still here — fall back to the web page.
+	// 앱 스킴 링크가 약 1.2초 안에 설치된 카카오맵 앱에 가로채지지 않았다면
+	// 아직 브라우저에 남아있는 것 — 이땐 웹페이지로 대체 이동시킨다.
 	setTimeout(() => {
 		if (Date.now() - openedAt < 2000 && !document.hidden) {
 			window.open(KAKAO_MAP_WEB_URL, "_blank", "noopener,noreferrer");
@@ -27,7 +29,7 @@ export function Contact() {
 
 	return (
 		<section className="section" id="contact">
-			<SectionHead eyebrow="CONTACT" title="문의처" description={contact.org} />
+			<SectionHead title="문의처" description={contact.org} />
 			<div className={styles.list}>
 				<a
 					className={`${styles.row} ${styles.kakaoRow}`}

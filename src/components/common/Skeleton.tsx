@@ -7,9 +7,9 @@ interface SkeletonProps {
 	className?: string;
 }
 
-/** A pulsing placeholder block — stands in for content still loading from
- * Firestore so a visitor sees "this is loading" instead of a false "there's
- * nothing here" for the brief window before the first snapshot arrives.
+/** 깜빡이는(pulse) 회색 자리표시 블록 — Firestore에서 아직 로딩 중인
+ * 콘텐츠 자리에 대신 보여줘서, 첫 스냅샷이 도착하기 전 짧은 순간 동안
+ * "여기 아무것도 없음"으로 잘못 보이는 대신 "로딩 중"임을 알려준다.
  */
 export function Skeleton({ width = "100%", height = 14, className }: SkeletonProps) {
 	const style: CSSProperties = { width, height };

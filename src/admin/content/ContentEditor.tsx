@@ -10,6 +10,9 @@ import { ApplyStepsEditor } from "./content-editors/ApplyStepsEditor";
 import { ContactEditor } from "./content-editors/ContactEditor";
 import styles from "./ContentEditor.module.scss";
 
+// 관리자 "콘텐츠 관리" 탭 — 공개 사이트의 문구/데이터를 섹션별 아코디언
+// 목록으로 편집한다. 각 섹션은 아래 sections 배열에 등록된 자기만의 편집
+// 컴포넌트를 갖는다.
 const sections: { id: string; title: string; hint: string; render: () => ReactNode }[] = [
 	{ id: "hero", title: "히어로 (첫 화면)", hint: "제목, 소개 문구, 상단 통계 카드", render: () => <HeroEditor /> },
 	{

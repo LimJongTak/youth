@@ -55,10 +55,9 @@
 	@include t.card;
 }
 
-// Segmented switcher inside the cohort card — 교육 안내 shows the existing
-// detail rows, 일정 swaps in a short upcoming-schedule preview with a link
-// out to the full 스케줄 tab. Same flat pill language as Curriculum's track
-// tabs.
+// 기수 카드 안의 구간 스위처 — 교육 안내는 기존 상세 행들을 보여주고,
+// 일정은 짧은 일정 미리보기와 스케줄 탭 전체로 가는 링크로 바뀐다.
+// Curriculum의 트랙 탭과 같은 납작한 알약 스타일을 사용.
 .cardSwitcher {
 	display: flex;
 	gap: 6px;
@@ -163,9 +162,9 @@
 	font-weight: 800;
 }
 
-// One dot per event covering that day (getDayDotColors), each tinted with
-// that event's own color — a ring keeps a dot visible regardless of its
-// color against either the today (dark) or normal cell background.
+// 그날에 걸쳐 있는 일정마다 점 하나씩(getDayDotColors), 각 일정 고유
+// 색상으로 표시 — 링(ring)을 둘러서 오늘(어두운 배경)이든 일반 칸이든
+// 점이 항상 잘 보이게 한다.
 .miniDots {
 	display: flex;
 	gap: 1px;
@@ -183,8 +182,8 @@
 	box-shadow: inset 0 0 0 2px t.$teal;
 }
 
-// The tapped date's schedule, shown right in the 홈 탭 card — this is the
-// "미리보기" (topic + time only); full details live behind 자세히 보기.
+// 선택한 날짜의 일정을 홈 탭 카드 안에서 바로 보여줌 — 이건 "미리보기"라
+// 제목과 시간만 보여주고, 전체 상세 내용은 자세히 보기 뒤에 있다.
 .previewPanel {
 	background: t.$bg;
 	border-radius: t.$radius-sm;
@@ -328,8 +327,8 @@
 	color: t.$text-mute;
 }
 
-// The "나도 신청할 수 있을까?" checklist block, relocated here (between the
-// cohort card and the CTA buttons) from its own former section.
+// "나도 신청할 수 있을까?" 체크리스트 블록 — 원래 자기만의 섹션이었다가
+// 지금은 기수 카드와 CTA 버튼 사이 이 위치로 옮겨짐.
 .checklistBlock {
 	margin-top: 28px;
 }
@@ -369,8 +368,8 @@
 	box-shadow: t.$shadow-xs;
 	animation: checklistItemIn 0.3s ease backwards;
 
-	// A tasteful stagger — each row settles in slightly after the last
-	// instead of every checkmark popping in at once.
+	// 은은한 순차 등장 — 체크마크가 한꺼번에 팝업되는 대신 각 행이 이전
+	// 행보다 살짝 늦게 자리 잡는다.
 	@for $i from 1 through 6 {
 		&:nth-child(#{$i}) {
 			animation-delay: #{($i - 1) * 60}ms;

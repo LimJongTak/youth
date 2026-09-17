@@ -3,6 +3,7 @@ import { SaveBar } from "./Field";
 import { RepeatableList } from "./RepeatableList";
 import styles from "./shared.module.scss";
 
+// "참여 여정" 타임라인 단계 편집 폼.
 export function JourneyEditor() {
 	const { draft, setDraft, save, saving, success, error } = useSectionDraft("journey");
 

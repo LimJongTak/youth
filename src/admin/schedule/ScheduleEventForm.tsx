@@ -1,18 +1,18 @@
 import { useState, type FormEvent } from "react";
 import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
 import { DEFAULT_DOT_COLOR } from "../../lib/schedule";
-// Reuses the cohort form's field/button styling so admin forms look
-// consistent without duplicating the same CSS in every feature folder.
+// 기수 등록 폼의 필드/버튼 스타일을 그대로 재사용 — 관리자 폼마다 같은
+// CSS를 중복 작성하지 않고도 화면들이 통일된 느낌을 유지한다.
 import styles from "../cohorts/CohortForm.module.scss";
 import formStyles from "./ScheduleEventForm.module.scss";
 
 interface ScheduleEventFormProps {
 	cohortId: string;
 	initial: ScheduleEvent | null;
-	/** Pre-fills the date when adding from a calendar-day click. */
+	/** 캘린더의 날짜를 클릭해서 추가할 때 그 날짜로 미리 채워줌. */
 	defaultDate?: string;
-	/** Always an array — one entry when editing or adding a single/range
-	 * event, several when adding the same content on multiple dates. */
+	/** 항상 배열로 전달됨 — 수정이거나 하루/기간 일정 추가면 원소 1개,
+	 * 같은 내용을 여러 날짜에 추가하면 여러 개. */
 	onSubmit: (events: ScheduleEventDraft[]) => void;
 	onCancel: () => void;
 }
@@ -43,8 +43,8 @@ export function ScheduleEventForm({
 	onSubmit,
 	onCancel,
 }: ScheduleEventFormProps) {
-	// Editing always targets one existing document, so only a fresh "add"
-	// offers the multi-date shortcut.
+	// 수정은 항상 기존 문서 하나만 대상으로 하므로, 새로 "추가"할 때만
+	// 여러 날짜 한 번에 등록 옵션을 보여준다.
 	const [mode, setMode] = useState<"single" | "multi">("single");
 	const [common, setCommon] = useState<CommonFields>(
 		initial
@@ -62,9 +62,8 @@ export function ScheduleEventForm({
 	const [endDate, setEndDate] = useState(initial?.endDate ?? defaultDate ?? "");
 	const [startTime, setStartTime] = useState(initial?.startTime ?? "");
 	const [endTime, setEndTime] = useState(initial?.endTime ?? "");
-	// Each date keeps its own time — a course rarely repeats at the exact
-	// same hour every session, so one shared time for all dates isn't
-	// enough here.
+	// 날짜마다 각자 시간을 가짐 — 수업이 매번 정확히 같은 시간에 반복되는
+	// 경우는 드물어서, 모든 날짜에 시간 하나만 공유하는 걸로는 부족하다.
 	const [multiRows, setMultiRows] = useState<MultiRow[]>([
 		{ date: defaultDate ?? "", startTime: "", endTime: "" },
 	]);

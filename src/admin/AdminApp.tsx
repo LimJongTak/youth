@@ -11,9 +11,12 @@ import { EmptyState } from "../components/common/EmptyState";
 import { ensureFontAwesomeLoaded } from "../lib/loadFontAwesome";
 import styles from "./AdminApp.module.scss";
 
-// Admin screens still use Font Awesome — load it here, when this lazy chunk
-// first evaluates, instead of in index.html where every visitor would pay
-// for it upfront.
+// 관리자 화면 전체 셸(Shell) — 왼쪽 사이드바 메뉴 + 오른쪽 콘텐츠 영역으로
+// 구성되며, 기수/콘텐츠/일정/통계/계정 5개 관리 탭을 이 컴포넌트가 라우팅한다.
+
+// 관리자 화면은 여전히 Font Awesome을 사용 — 이 지연 로드(lazy) 청크가
+// 처음 평가될 때(=관리자 화면에 처음 들어올 때) 불러오고, 모든 방문자가
+// 무조건 받는 index.html에는 넣지 않는다.
 ensureFontAwesomeLoaded();
 
 const badgeClass: Record<string, string> = {
@@ -48,6 +51,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 	const showForm = creating || editing !== null;
 	const isAdmin = profile.role === "admin";
 
+	// 기수 추가/수정 폼 제출 — 새 기수인지 기존 기수 수정인지에 따라 분기.
 	function handleSubmit(cohort: Cohort) {
 		if (editing) {
 			updateCohort(cohort);
@@ -58,6 +62,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 		setCreating(false);
 	}
 
+	// 기수 삭제 — 실수 방지를 위해 확인창을 한 번 거친다.
 	function handleDelete(cohort: Cohort) {
 		if (window.confirm(`${cohort.generation}기 정보를 삭제할까요?`)) {
 			removeCohort(cohort.id);
@@ -129,6 +134,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 						<AnalyticsPanel />
 					) : (
 						<>
+							{/* 기수 목록을 하나하나 훑지 않아도 모집 현황을 한눈에 볼 수 있는 요약 */}
 							{!showForm && cohorts.length > 0 && (
 								<div className={styles.summaryStrip}>
 									<span>

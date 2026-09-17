@@ -5,16 +5,17 @@ import { logEvent } from "../../lib/analytics";
 import { Icon } from "../icons/Icon";
 import styles from "./InstallButton.module.scss";
 
+// 하단 내비게이션의 "설치" 버튼 — PWA 홈 화면 추가를 안드로이드는 네이티브
+// 프롬프트로, iOS는 수동 안내(공유 → 홈 화면에 추가)로 도와준다.
 export function InstallButton() {
 	const { installed, canPrompt, isIos, promptInstall } = useInstallPrompt();
 	const [showGuide, setShowGuide] = useState(false);
-	// Not a real page like the other tabs, so there's no "current tab" to
-	// stay highlighted — it's just pressed-feedback for as long as the
-	// install prompt/guide is open, then back to gray once that's done,
-	// whether the visitor installed or cancelled.
+	// 다른 탭들과 달리 실제 페이지가 아니라서 계속 강조 표시될 "현재 탭"이
+	// 없음 — 설치 프롬프트/안내가 열려 있는 동안만 눌린 상태로 보여주고,
+	// 설치했든 취소했든 닫히면 다시 회색으로 돌아간다.
 	const [pressed, setPressed] = useState(false);
 
-	// Already running as an installed app — nothing left to offer.
+	// 이미 설치된 앱으로 실행 중이면 — 더 보여줄 게 없음.
 	if (installed) return null;
 
 	function closeGuide() {

@@ -1,11 +1,11 @@
 import type { SVGProps } from "react";
 
-// Hand-drawn line icons replacing the Font Awesome webfont on the public
-// site — same visual weight everywhere (24x24 viewBox, 2px stroke), crisper
-// at small sizes than a font glyph, and it drops one large CSS+webfont
-// request from the page every visitor pays for. Admin screens still use
-// Font Awesome (loaded only when the admin bundle mounts); this set only
-// covers the icons the public components actually use.
+// 공개 사이트에서 Font Awesome 웹폰트 대신 쓰는 손그림 라인 아이콘 세트 —
+// 어디서든 동일한 두께(24x24 뷰박스, 2px 선)를 유지하고, 폰트 글리프보다
+// 작은 크기에서 더 또렷하며, 모든 방문자가 부담하던 큰 CSS+웹폰트 요청을
+// 하나 없애준다. 관리자 화면은 여전히 Font Awesome을 사용(관리자 번들이
+// 마운트될 때만 로드); 이 세트는 공개 사이트 컴포넌트가 실제로 쓰는
+// 아이콘만 포함한다.
 export type IconName =
 	| "chevron-left"
 	| "chevron-right"

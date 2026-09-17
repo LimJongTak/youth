@@ -62,7 +62,7 @@
 	}
 }
 
-// --- Excel import preview ---------------------------------------------
+// --- 엑셀 가져오기 미리보기 ---------------------------------------------
 
 .importPanel {
 	background: t.$card;
@@ -132,7 +132,7 @@
 	font-weight: 600;
 }
 
-// --- Calendar ------------------------------------------------------------
+// --- 캘린더 ------------------------------------------------------------
 
 .calendarHead {
 	display: flex;
@@ -207,8 +207,8 @@
 	padding: 0 3px;
 }
 
-// One dot per event covering that day (getDayDotColors), each tinted with
-// that event's own color.
+// 그날에 걸쳐 있는 일정마다 점 하나씩(getDayDotColors), 각 일정 고유
+// 색상으로 표시.
 .dayDots {
 	position: absolute;
 	z-index: 1;
@@ -225,7 +225,7 @@
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
-// --- Selected-day panel ---------------------------------------------------
+// --- 선택한 날짜 패널 ---------------------------------------------------
 
 .dayPanel {
 	background: t.$card;
@@ -348,7 +348,7 @@
 	margin: 0;
 }
 
-// --- Add/edit modal --------------------------------------------------------
+// --- 추가/수정 모달 --------------------------------------------------------
 
 .modalOverlay {
 	position: fixed;

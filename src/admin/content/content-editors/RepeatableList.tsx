@@ -1,5 +1,8 @@
 import styles from "./shared.module.scss";
 
+// 체크리스트/여정/신청단계처럼 "같은 모양의 항목이 여러 개" 있는 콘텐츠를
+// 필드 스펙만 넘겨주면 추가·수정·삭제 UI를 공통으로 만들어주는 컴포넌트.
+
 interface FieldSpec<T> {
 	key: keyof T;
 	label: string;

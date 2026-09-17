@@ -1,8 +1,8 @@
 @use "../../styles/tokens" as t;
 
-// Matches BottomNav's .link exactly — this button sits inside the same
-// <ul>, right after 혜택, so it must look like one of the tabs even though
-// it triggers an action instead of switching one.
+// BottomNav의 .link와 정확히 똑같이 맞춤 — 이 버튼은 혜택 바로 뒤,
+// 같은 <ul> 안에 있어서 탭 전환이 아니라 동작을 실행하는 것이어도
+// 다른 탭들과 똑같이 생겨야 한다.
 .link {
 	display: flex;
 	flex-direction: column;

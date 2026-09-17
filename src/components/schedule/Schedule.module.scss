@@ -147,12 +147,11 @@
 	font-weight: 800;
 }
 
-// Multi-day events used to render as a connecting bar; now every event —
-// single or multi-day — is just a dot on each day it covers, colored per
-// event (getDayDotColors). A thin ring keeps a dot visible regardless of
-// its own color against either the normal or the selected (dark) cell
-// background, since the color itself is admin-chosen and can't be
-// guaranteed to contrast.
+// 예전에는 여러 날짜에 걸친 일정을 이어진 막대로 표시했지만, 지금은
+// 하루짜리든 여러 날짜든 걸쳐 있는 모든 날짜에 점 하나씩만 찍힌다
+// (getDayDotColors). 색상은 관리자가 직접 고르는 값이라 배경과의 대비를
+// 보장할 수 없으므로, 얇은 링을 둘러서 일반 칸이든 선택된(어두운) 칸이든
+// 점이 항상 잘 보이게 한다.
 .dayDots {
 	display: flex;
 	gap: 2px;
@@ -166,9 +165,9 @@
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
-// The color-to-title key sitting between the calendar and the day panel —
-// one row per distinct event title visible this month, so a dot's color
-// can be read at a glance instead of tapping every day to find out.
+// 캘린더와 날짜 상세 패널 사이에 있는 색상-제목 범례 — 이번 달에 보이는
+// 일정 제목마다 한 줄씩, 매번 날짜를 눌러보지 않아도 점 색깔의 의미를
+// 한눈에 알 수 있게 해준다.
 .legend {
 	display: flex;
 	flex-wrap: wrap;

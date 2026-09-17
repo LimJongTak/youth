@@ -3,6 +3,7 @@ import { About } from "./About";
 import { Curriculum } from "./Curriculum";
 import styles from "./ProgramTab.module.scss";
 
+// "프로그램" 탭 — 커리큘럼/프로그램 소개 두 서브탭을 슬라이딩 스위처로 전환.
 export function ProgramTab() {
 	const { programSubTab, setProgramSubTab } = useNavigation();
 
