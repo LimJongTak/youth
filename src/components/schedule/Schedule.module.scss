@@ -84,25 +84,49 @@
 
 .day {
 	position: relative;
-	aspect-ratio: 1;
+	min-height: 86px;
 	border: none;
 	background: transparent;
 	border-radius: t.$radius-sm;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 3px;
+	align-items: stretch;
+	gap: 4px;
+	padding: 7px 3px 5px;
 	font-size: 0.8rem;
 	color: t.$text;
 	cursor: pointer;
+	text-align: left;
+	transition: background-color 0.15s ease;
+
+	&:active {
+		background: t.$bg;
+	}
+}
+
+// A quiet gray fill (same token .dayPanel uses) marks days that actually
+// have something on them, so a glance at the grid tells you which days
+// matter before you tap one.
+.dayHasEvents {
+	background: t.$bg;
+}
+
+.dayNum {
+	flex: 0 0 auto;
+	align-self: center;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
 }
 
 .dayOut {
 	color: t.$text-faint;
 }
 
-.dayToday {
+.dayToday .dayNum {
 	font-weight: 800;
 	color: t.$teal-dark;
 }
@@ -111,25 +135,71 @@
 	background: t.$ink;
 	color: #fff;
 	font-weight: 800;
+
+	&:active {
+		background: t.$ink;
+	}
 }
 
-// Multi-day events used to render as a connecting bar; now every event —
-// single or multi-day — is just a dot on each day it covers, colored per
-// event (getDayDotColors). A thin ring keeps a dot visible regardless of
-// its own color against either the normal or the selected (dark) cell
-// background, since the color itself is admin-chosen and can't be
-// guaranteed to contrast.
-.dayDots {
+.daySelected .dayNum {
+	color: #fff;
+}
+
+// Each event a day covers gets its own line — a colored dot (admin-chosen,
+// so a ring keeps it visible against either the normal or the selected/dark
+// cell background) plus a truncated title. Busy days collapse past
+// MAX_DAY_EVENTS into a "+N" badge instead of growing the row further.
+.dayEvents {
+	flex: 1;
 	display: flex;
+	flex-direction: column;
 	gap: 2px;
+	min-width: 0;
+	overflow: hidden;
 }
 
-.dayDot {
+.dayEventChip {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	min-width: 0;
+	font-size: 0.6rem;
+	font-weight: 600;
+	line-height: 1.3;
+	color: t.$text-mute;
+}
+
+.daySelected .dayEventChip {
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.dayEventDot {
+	flex: 0 0 auto;
 	width: 5px;
 	height: 5px;
 	border-radius: 50%;
 	background: t.$teal;
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.daySelected .dayEventDot {
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.dayEventLabel {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dayEventMore {
+	font-size: 0.58rem;
+	font-weight: 700;
+	color: t.$text-faint;
+}
+
+.daySelected .dayEventMore {
+	color: rgba(255, 255, 255, 0.7);
 }
 
 .dayPanel {

@@ -4,14 +4,18 @@ import { useSchedule } from "../../context/ScheduleContext";
 import { useNavigation } from "../../context/NavigationContext";
 import {
 	getMonthGrid,
-	isDateInRange,
 	parseDateKey,
 	toDateKey,
 	WEEKDAY_LABELS,
 } from "../../lib/calendar";
-import { formatEventTime, getDayDotColors } from "../../lib/schedule";
+import { formatEventTime, getDayEvents } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import styles from "./Schedule.module.scss";
+
+// How many events a calendar cell lists before collapsing the rest into a
+// "+N" badge — enough to be useful without blowing out row height on a busy
+// day.
+const MAX_DAY_EVENTS = 3;
 
 export function Schedule() {
 	const { cohorts, selected } = useCohorts();
@@ -57,12 +61,10 @@ export function Schedule() {
 		setSelectedDate(null);
 	}
 
-	const selectedDateEvents = useMemo(() => {
-		if (!selectedDate) return [];
-		return cohortEvents
-			.filter((e) => isDateInRange(selectedDate, e.startDate, e.endDate))
-			.sort((a, b) => (a.startTime ?? "").localeCompare(b.startTime ?? ""));
-	}, [cohortEvents, selectedDate]);
+	const selectedDateEvents = useMemo(
+		() => (selectedDate ? getDayEvents(selectedDate, cohortEvents) : []),
+		[cohortEvents, selectedDate],
+	);
 
 	return (
 		<section className="section" id="schedule">
@@ -110,27 +112,36 @@ export function Schedule() {
 				))}
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
-					const dotColors = getDayDotColors(key, cohortEvents);
+					const dayEvents = getDayEvents(key, cohortEvents);
 					const isToday = key === toDateKey(today);
+					const shown = dayEvents.slice(0, MAX_DAY_EVENTS);
+					const hiddenCount = dayEvents.length - shown.length;
 					return (
 						<button
 							type="button"
 							key={key}
 							className={`${styles.day} ${!inMonth ? styles.dayOut : ""} ${
 								selectedDate === key ? styles.daySelected : ""
-							} ${isToday ? styles.dayToday : ""}`}
+							} ${isToday ? styles.dayToday : ""} ${
+								dayEvents.length > 0 ? styles.dayHasEvents : ""
+							}`}
 							onClick={() => setSelectedDate(key)}
 						>
-							<span>{date.getDate()}</span>
-							{dotColors.length > 0 && (
-								<span className={styles.dayDots}>
-									{dotColors.slice(0, 4).map((color, i) => (
-										<span
-											key={i}
-											className={styles.dayDot}
-											style={{ background: color }}
-										/>
+							<span className={styles.dayNum}>{date.getDate()}</span>
+							{shown.length > 0 && (
+								<span className={styles.dayEvents}>
+									{shown.map((event) => (
+										<span className={styles.dayEventChip} key={event.id}>
+											<span
+												className={styles.dayEventDot}
+												style={{ background: event.color || undefined }}
+											/>
+											<span className={styles.dayEventLabel}>{event.title}</span>
+										</span>
 									))}
+									{hiddenCount > 0 && (
+										<span className={styles.dayEventMore}>+{hiddenCount}</span>
+									)}
 								</span>
 							)}
 						</button>

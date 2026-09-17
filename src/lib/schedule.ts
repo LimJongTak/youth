@@ -27,3 +27,15 @@ export function getDayDotColors(key: string, events: ColorableRange[]): string[]
 		.filter((e) => isDateInRange(key, e.startDate, e.endDate))
 		.map((e) => e.color || DEFAULT_DOT_COLOR);
 }
+
+/** Every event covering a given day, earliest start time first — used to
+ * render each day's own schedule inline on the calendar, not just a dot.
+ */
+export function getDayEvents<T extends ColorableRange & { startTime?: string }>(
+	key: string,
+	events: T[],
+): T[] {
+	return events
+		.filter((e) => isDateInRange(key, e.startDate, e.endDate))
+		.sort((a, b) => (a.startTime ?? "").localeCompare(b.startTime ?? ""));
+}
