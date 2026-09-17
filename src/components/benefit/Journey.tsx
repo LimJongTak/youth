@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { SectionHead } from "../layout/SectionHead";
+import { Icon } from "../icons/Icon";
 import styles from "./Journey.module.scss";
 
 // Some content saved before "no numbering" was the design (Firestore may
@@ -57,7 +58,7 @@ export function Journey() {
 				action={
 					<button type="button" className={styles.detailBtn} onClick={() => setDetailOpen(true)}>
 						자세히 보기
-						<i className="fas fa-chevron-right" />
+						<Icon name="chevron-right" />
 					</button>
 				}
 			/>
@@ -83,7 +84,7 @@ export function Journey() {
 								onClick={() => setDetailOpen(false)}
 								aria-label="닫기"
 							>
-								<i className="fas fa-times" />
+								<Icon name="times" />
 							</button>
 							<h4 className={styles.detailTitle}>참여 여정 상세</h4>
 							<p className={styles.detailDesc}>각 단계를 눌러 자세한 내용을 확인하세요.</p>
@@ -100,10 +101,9 @@ export function Journey() {
 												onClick={() => toggleStep(index)}
 											>
 												<span>{stripNumbering(step.title)}</span>
-												<i
-													className={`fas fa-chevron-down ${styles.accordionChevron} ${
-														open ? styles.open : ""
-													}`}
+												<Icon
+													name="chevron-down"
+													className={`${styles.accordionChevron} ${open ? styles.open : ""}`}
 												/>
 											</button>
 											<div

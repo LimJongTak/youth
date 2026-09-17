@@ -1,6 +1,7 @@
 import { bottomNav } from "../../data/content";
 import { useNavigation } from "../../context/NavigationContext";
 import { InstallButton } from "./InstallButton";
+import { Icon } from "../icons/Icon";
 import styles from "./BottomNav.module.scss";
 
 export function BottomNav() {
@@ -16,7 +17,7 @@ export function BottomNav() {
 							className={`${styles.link} ${tab === item.id ? styles.active : ""}`}
 							onClick={() => (item.id === "program" ? goToProgram() : setTab(item.id))}
 						>
-							<i className={`fas ${item.icon}`} />
+							<Icon name={item.icon} />
 							{item.label}
 						</button>
 					</li>

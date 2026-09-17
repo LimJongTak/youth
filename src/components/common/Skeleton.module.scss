@@ -1,0 +1,18 @@
+@use "../../styles/tokens" as t;
+
+@keyframes skeletonPulse {
+	0%,
+	100% {
+		opacity: 0.6;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+.skeleton {
+	display: block;
+	background: t.$border;
+	border-radius: t.$radius-sm;
+	animation: skeletonPulse 1.3s ease-in-out infinite;
+}

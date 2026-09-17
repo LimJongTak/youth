@@ -11,6 +11,7 @@ import {
 } from "../../lib/scheduleExcel";
 import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
 import { ScheduleEventForm } from "./ScheduleEventForm";
+import { EmptyState } from "../../components/common/EmptyState";
 import styles from "./ScheduleManager.module.scss";
 
 function formatEventTime(event: ScheduleEvent): string {
@@ -309,7 +310,7 @@ export function ScheduleManager() {
 				{selectedDate && (
 					<div className={styles.eventList}>
 						{selectedDateEvents.length === 0 && (
-							<p className={styles.empty}>등록된 일정이 없습니다.</p>
+							<EmptyState message="등록된 일정이 없습니다." />
 						)}
 						{selectedDateEvents.map((event) => (
 							<div className={styles.eventRow} key={event.id}>

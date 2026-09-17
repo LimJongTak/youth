@@ -33,7 +33,7 @@
 	box-shadow: 0 4px 12px -4px rgba(25, 31, 40, 0.4);
 	transition: transform 0.15s ease, opacity 0.15s ease;
 
-	i {
+	svg {
 		font-size: 0.82rem;
 		color: t.$teal-light;
 	}
@@ -47,7 +47,7 @@
 .contactBtnActive {
 	background: t.$teal-dark;
 
-	i {
+	svg {
 		color: #fff;
 	}
 }

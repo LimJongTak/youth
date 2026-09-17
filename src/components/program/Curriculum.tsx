@@ -4,6 +4,7 @@ import { useSiteContent } from "../../context/SiteContentContext";
 import { defaultSiteContent } from "../../data/defaultSiteContent";
 import type { Track } from "../../types/siteContent";
 import { SectionHead } from "../layout/SectionHead";
+import { Icon } from "../icons/Icon";
 import styles from "./Curriculum.module.scss";
 
 export function Curriculum() {
@@ -42,7 +43,7 @@ export function Curriculum() {
 			/>
 
 			<div className={styles.commonStrip}>
-				<i className="fas fa-book-open" />
+				<Icon name="book-open" />
 				<div>
 					<strong>{commonCourse.title}</strong>
 					<span>{commonCourse.desc}</span>
@@ -71,7 +72,7 @@ export function Curriculum() {
 						</span>
 						<button type="button" className={styles.detailBtn} onClick={() => setDetailOpen(true)}>
 							자세히
-							<i className="fas fa-chevron-right" />
+							<Icon name="chevron-right" />
 						</button>
 					</div>
 					<h4 className={styles.trackTitle}>{activeTrack.title}</h4>
@@ -102,7 +103,7 @@ export function Curriculum() {
 								onClick={() => setDetailOpen(false)}
 								aria-label="닫기"
 							>
-								<i className="fas fa-times" />
+								<Icon name="times" />
 							</button>
 							<span className={`${styles.badge} ${styles[activeTrack.badgeClass]}`}>
 								{activeTrack.badge}
@@ -118,7 +119,7 @@ export function Curriculum() {
 							<ul className={styles.detailList}>
 								{commonSubjects.map((subject) => (
 									<li key={subject}>
-										<i className="fas fa-check-circle" />
+										<Icon name="check-circle" />
 										<span>{subject}</span>
 									</li>
 								))}
@@ -128,7 +129,7 @@ export function Curriculum() {
 							<ul className={styles.detailList}>
 								{trackCourses.map((course) => (
 									<li key={course.name}>
-										<i className="fas fa-check-circle" />
+										<Icon name="check-circle" />
 										<span>{course.name}</span>
 										{course.kind && <span className={styles.detailKind}>{course.kind}</span>}
 									</li>

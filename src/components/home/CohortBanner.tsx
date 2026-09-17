@@ -8,6 +8,8 @@ import { logEvent } from "../../lib/analytics";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
 import { formatEventTime, getDayDotColors } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
+import { Icon } from "../icons/Icon";
+import { Skeleton } from "../common/Skeleton";
 import styles from "./CohortBanner.module.scss";
 
 type CardTab = "info" | "schedule";
@@ -28,7 +30,7 @@ export function CohortBanner() {
 	const { cohorts, selected, select } = useCohorts();
 	const { content } = useSiteContent();
 	const { applySteps, contact, checklist } = content;
-	const { events } = useSchedule();
+	const { events, loading: scheduleLoading } = useSchedule();
 	const { goToSchedule } = useNavigation();
 	const [cardTab, setCardTab] = useState<CardTab>("info");
 	const todayKey = toDateKey(new Date());
@@ -153,7 +155,7 @@ export function CohortBanner() {
 								onClick={() => shiftPreviewMonth(-1)}
 								aria-label="이전 달"
 							>
-								<i className="fas fa-chevron-left" />
+								<Icon name="chevron-left" />
 							</button>
 							<span>
 								{previewMonth.year}년 {previewMonth.month + 1}월
@@ -164,7 +166,7 @@ export function CohortBanner() {
 								onClick={() => shiftPreviewMonth(1)}
 								aria-label="다음 달"
 							>
-								<i className="fas fa-chevron-right" />
+								<Icon name="chevron-right" />
 							</button>
 						</div>
 
@@ -209,10 +211,11 @@ export function CohortBanner() {
 									? `${parseDateKey(previewDate).getMonth() + 1}월 ${parseDateKey(previewDate).getDate()}일`
 									: "날짜를 선택하세요"}
 							</strong>
-							{previewDate && previewDateEvents.length === 0 && (
+							{previewDate && scheduleLoading && <Skeleton height={20} />}
+							{previewDate && !scheduleLoading && previewDateEvents.length === 0 && (
 								<p className={styles.note}>등록된 일정이 없습니다.</p>
 							)}
-							{previewDate && previewDateEvents.length > 0 && (
+							{previewDate && !scheduleLoading && previewDateEvents.length > 0 && (
 								<div className={styles.previewList}>
 									{previewDateEvents.map((event) => (
 										<div className={styles.previewRow} key={event.id}>
@@ -234,7 +237,7 @@ export function CohortBanner() {
 							onClick={() => goToSchedule(selected.id, previewDate ?? undefined)}
 						>
 							자세히 보기
-							<i className="fas fa-chevron-right" />
+							<Icon name="chevron-right" />
 						</button>
 					</div>
 				)}
@@ -256,7 +259,7 @@ export function CohortBanner() {
 						{checklist.map((item) => (
 							<div className={styles.checklistItem} key={item.title}>
 								<span className={styles.checklistBox}>
-									<i className="fas fa-check" />
+									<Icon name="check" />
 								</span>
 								<span>
 									<strong>{item.title}</strong>
@@ -269,7 +272,7 @@ export function CohortBanner() {
 			</div>
 
 			<div className={styles.warningNote}>
-				<i className="fas fa-exclamation-triangle" />
+				<Icon name="warning" />
 				<span>
 					{selected.generation}기 모집기간은 <strong>{selected.recruitPeriod}</strong>
 					이며, 선착순 모집으로 조기 마감될 수 있습니다.
@@ -284,7 +287,7 @@ export function CohortBanner() {
 						rel="noopener"
 						onClick={() => logEvent("apply_click", { source: "cohort_banner" })}
 					>
-						<i className="fas fa-paper-plane" />
+						<Icon name="paper-plane" />
 						{selected.generation}기 신청하기
 					</a>
 				) : (
@@ -300,7 +303,7 @@ export function CohortBanner() {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<i className="fas fa-comment" />
+					<Icon name="comment" />
 					카카오톡 문의하기
 				</a>
 			</div>

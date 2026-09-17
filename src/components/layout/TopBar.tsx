@@ -1,5 +1,6 @@
 import { useNavigation } from "../../context/NavigationContext";
 import { logEvent } from "../../lib/analytics";
+import { Icon } from "../icons/Icon";
 import styles from "./TopBar.module.scss";
 
 export function TopBar() {
@@ -21,7 +22,7 @@ export function TopBar() {
 				className={`${styles.contactBtn} ${tab === "contact" ? styles.contactBtnActive : ""}`}
 				onClick={handleContactClick}
 			>
-				<i className="fas fa-headset" />
+				<Icon name="headset" />
 				문의
 			</button>
 		</header>

@@ -2,6 +2,7 @@ import type { MouseEvent } from "react";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { SectionHead } from "../layout/SectionHead";
 import { logEvent } from "../../lib/analytics";
+import { Icon } from "../icons/Icon";
 import styles from "./Contact.module.scss";
 
 const KAKAO_MAP_WEB_URL = "https://place.map.kakao.com/2091779575";
@@ -36,17 +37,17 @@ export function Contact() {
 					rel="noopener noreferrer"
 				>
 					<span className={`${styles.icon} ${styles.kakaoIcon}`}>
-						<i className="fas fa-comment" />
+						<Icon name="comment" />
 					</span>
 					<span>
 						<span className={styles.label}>카카오톡</span>
 						<span className={styles.value}>실시간 문의하기</span>
 					</span>
-					<i className={`fas fa-chevron-right ${styles.chevron}`} />
+					<Icon name="chevron-right" className={styles.chevron} />
 				</a>
 				<a className={styles.row} href={`mailto:${contact.email}`}>
 					<span className={styles.icon}>
-						<i className="fas fa-envelope" />
+						<Icon name="envelope" />
 					</span>
 					<span>
 						<span className={styles.label}>이메일</span>
@@ -61,13 +62,13 @@ export function Contact() {
 					onClick={openKakaoMap}
 				>
 					<span className={styles.icon}>
-						<i className="fas fa-map-marker-alt" />
+						<Icon name="map-marker" />
 					</span>
 					<span>
 						<span className={styles.label}>주소</span>
 						<span className={styles.value}>{contact.address}</span>
 					</span>
-					<i className={`fas fa-chevron-right ${styles.chevron}`} />
+					<Icon name="chevron-right" className={styles.chevron} />
 				</a>
 			</div>
 		</section>

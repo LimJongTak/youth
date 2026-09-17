@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, type TouchEvent } from "react";
 import { useCohorts } from "../../context/CohortContext";
 import { useSchedule } from "../../context/ScheduleContext";
 import { useNavigation } from "../../context/NavigationContext";
@@ -10,11 +10,14 @@ import {
 } from "../../lib/calendar";
 import { DEFAULT_DOT_COLOR, formatEventTime, getDayDotColors, getDayEvents } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
+import { Icon } from "../icons/Icon";
+import { EmptyState } from "../common/EmptyState";
+import { Skeleton } from "../common/Skeleton";
 import styles from "./Schedule.module.scss";
 
 export function Schedule() {
 	const { cohorts, selected } = useCohorts();
-	const { events } = useSchedule();
+	const { events, loading: scheduleLoading } = useSchedule();
 	const { scheduleCohortId, scheduleDate } = useNavigation();
 
 	const sortedCohorts = useMemo(
@@ -54,6 +57,29 @@ export function Schedule() {
 		setYear(next.getFullYear());
 		setMonth(next.getMonth());
 		setSelectedDate(null);
+	}
+
+	const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+
+	function goToToday() {
+		setYear(today.getFullYear());
+		setMonth(today.getMonth());
+		setSelectedDate(toDateKey(today));
+	}
+
+	// Swipe left/right anywhere on the grid moves a month, same as tapping
+	// the chevrons — a touch-screen visitor reaches for this instinctively.
+	const touchStartX = useRef<number | null>(null);
+	function handleTouchStart(event: TouchEvent) {
+		touchStartX.current = event.touches[0].clientX;
+	}
+	function handleTouchEnd(event: TouchEvent) {
+		if (touchStartX.current === null) return;
+		const delta = event.changedTouches[0].clientX - touchStartX.current;
+		touchStartX.current = null;
+		const SWIPE_THRESHOLD = 48;
+		if (delta > SWIPE_THRESHOLD) changeMonth(-1);
+		else if (delta < -SWIPE_THRESHOLD) changeMonth(1);
 	}
 
 	const selectedDateEvents = useMemo(
@@ -105,17 +131,29 @@ export function Schedule() {
 
 			<div className={styles.calendarHead}>
 				<button type="button" className={styles.navBtn} onClick={() => changeMonth(-1)} aria-label="이전 달">
-					<i className="fas fa-chevron-left" />
+					<Icon name="chevron-left" />
 				</button>
-				<strong>
-					{year}년 {month + 1}월
-				</strong>
+				<div className={styles.calendarHeadCenter}>
+					<strong>
+						{year}년 {month + 1}월
+					</strong>
+					{!isCurrentMonth && (
+						<button type="button" className={styles.todayBtn} onClick={goToToday}>
+							오늘
+						</button>
+					)}
+				</div>
 				<button type="button" className={styles.navBtn} onClick={() => changeMonth(1)} aria-label="다음 달">
-					<i className="fas fa-chevron-right" />
+					<Icon name="chevron-right" />
 				</button>
 			</div>
 
-			<div className={styles.grid}>
+			<div
+				className={styles.grid}
+				key={`${year}-${month}`}
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleTouchEnd}
+			>
 				{WEEKDAY_LABELS.map((w) => (
 					<div className={styles.weekday} key={w}>
 						{w}
@@ -171,11 +209,18 @@ export function Schedule() {
 						: "날짜를 선택하세요"}
 				</h4>
 
-				{selectedDate && selectedDateEvents.length === 0 && (
-					<p className={styles.empty}>등록된 일정이 없습니다.</p>
+				{selectedDate && scheduleLoading && (
+					<div className={styles.eventList}>
+						<Skeleton height={52} />
+						<Skeleton height={52} />
+					</div>
 				)}
 
-				{selectedDate && selectedDateEvents.length > 0 && (
+				{selectedDate && !scheduleLoading && selectedDateEvents.length === 0 && (
+					<EmptyState message="등록된 일정이 없습니다." />
+				)}
+
+				{selectedDate && !scheduleLoading && selectedDateEvents.length > 0 && (
 					<div className={styles.eventList}>
 						{selectedDateEvents.map((event) => (
 							<div className={styles.eventRow} key={event.id}>

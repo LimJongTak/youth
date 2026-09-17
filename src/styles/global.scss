@@ -69,6 +69,21 @@ button {
 	font-family: inherit;
 }
 
+// A brand-colored focus ring for keyboard navigation only — :focus-visible
+// skips it for mouse/touch clicks, so it never shows as a stray blue
+// rectangle after tapping a button, only when someone's actually tabbing
+// through the page.
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid t.$teal;
+	outline-offset: 2px;
+	border-radius: t.$radius-sm;
+}
+
 img {
 	max-width: 100%;
 	display: block;

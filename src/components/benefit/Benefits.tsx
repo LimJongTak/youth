@@ -1,9 +1,19 @@
+import { useEffect } from "react";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { SectionHead } from "../layout/SectionHead";
+import { ensureFontAwesomeLoaded } from "../../lib/loadFontAwesome";
 import styles from "./Benefits.module.scss";
 
 export function Benefits() {
 	const { content } = useSiteContent();
+
+	// benefit.icon is a free-typed Font Awesome class name from the CMS
+	// (an admin can put in any icon), so it can't be one of the fixed SVG
+	// icons the rest of the site uses — load the icon font only now, the
+	// first time a visitor actually opens this tab.
+	useEffect(() => {
+		ensureFontAwesomeLoaded();
+	}, []);
 
 	return (
 		<section className="section" id="benefit">

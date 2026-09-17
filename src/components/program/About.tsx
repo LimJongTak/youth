@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Icon } from "../icons/Icon";
 import styles from "./About.module.scss";
 
 const PAGES = [
@@ -68,9 +69,15 @@ export function About() {
 					onClick={() => setOpen(true)}
 					aria-label="전체화면으로 크게 보기"
 				>
-					<img className={styles.pagerImg} src={PAGES[pageIndex].src} alt={PAGES[pageIndex].alt} />
+					<img
+						className={styles.pagerImg}
+						src={PAGES[pageIndex].src}
+						alt={PAGES[pageIndex].alt}
+						width={3508}
+						height={2480}
+					/>
 					<span className={styles.expandHint}>
-						<i className="fas fa-expand" />
+						<Icon name="expand" />
 					</span>
 				</button>
 
@@ -81,7 +88,7 @@ export function About() {
 						onClick={() => handleNav(pageIndex - 1)}
 						aria-label="이전 이미지"
 					>
-						<i className="fas fa-chevron-left" />
+						<Icon name="chevron-left" />
 						이전
 					</button>
 					<div className={styles.viewerDots}>
@@ -102,7 +109,7 @@ export function About() {
 						aria-label="다음 이미지"
 					>
 						다음
-						<i className="fas fa-chevron-right" />
+						<Icon name="chevron-right" />
 					</button>
 				</div>
 			</div>
@@ -117,13 +124,15 @@ export function About() {
 								onClick={() => setOpen(false)}
 								aria-label="닫기"
 							>
-								<i className="fas fa-times" />
+								<Icon name="times" />
 							</button>
 							<div className={styles.mobileGallery}>
 								<img
 									className={styles.mobileImg}
 									src={PAGES[pageIndex].src}
 									alt={PAGES[pageIndex].alt}
+									width={3508}
+									height={2480}
 								/>
 								<div className={styles.mobileNav}>
 									<button
@@ -132,7 +141,7 @@ export function About() {
 										onClick={() => handleNav(pageIndex - 1)}
 										aria-label="이전 페이지"
 									>
-										<i className="fas fa-chevron-left" />
+										<Icon name="chevron-left" />
 										이전
 									</button>
 									<div className={styles.viewerDots}>
@@ -153,7 +162,7 @@ export function About() {
 										aria-label="다음 페이지"
 									>
 										다음
-										<i className="fas fa-chevron-right" />
+										<Icon name="chevron-right" />
 									</button>
 								</div>
 							</div>
@@ -167,7 +176,7 @@ export function About() {
 									onClick={() => setOpen(false)}
 									aria-label="닫기"
 								>
-									<i className="fas fa-times" />
+									<Icon name="times" />
 								</button>
 
 								<div className={styles.viewerStage}>
@@ -177,7 +186,7 @@ export function About() {
 										onClick={() => handleNav(pageIndex - 1)}
 										aria-label="이전 페이지"
 									>
-										<i className="fas fa-chevron-left" />
+										<Icon name="chevron-left" />
 									</button>
 
 									<div className={styles.viewerTrack}>
@@ -185,6 +194,8 @@ export function About() {
 											className={styles.viewerImg}
 											src={PAGES[pageIndex].src}
 											alt={PAGES[pageIndex].alt}
+											width={3508}
+											height={2480}
 										/>
 									</div>
 
@@ -194,7 +205,7 @@ export function About() {
 										onClick={() => handleNav(pageIndex + 1)}
 										aria-label="다음 페이지"
 									>
-										<i className="fas fa-chevron-right" />
+										<Icon name="chevron-right" />
 									</button>
 								</div>
 

@@ -4,6 +4,7 @@ import { useSiteContent } from "../../context/SiteContentContext";
 import { useNavigation } from "../../context/NavigationContext";
 import { statusLabel } from "../../types/cohort";
 import { logEvent } from "../../lib/analytics";
+import { Icon } from "../icons/Icon";
 import styles from "./Hero.module.scss";
 
 export function Hero() {
@@ -117,7 +118,7 @@ export function Hero() {
 			</h1>
 			<p className={styles.lead}>{hero.lead}</p>
 			<a href="#cohort" className={styles.cohortPing}>
-				<i className="fas fa-circle" />
+				<Icon name="dot" />
 				교육생 {statusLabel[selected.status]}({selected.generation}기) · {selected.recruitPeriod}
 			</a>
 			<div className={styles.ctaRow}>
@@ -126,7 +127,7 @@ export function Hero() {
 					href={applyHref}
 					onClick={handleApplyClick}
 				>
-					<i className="fas fa-paper-plane" />
+					<Icon name="paper-plane" />
 					지금 신청하기
 				</a>
 				<button
@@ -134,7 +135,7 @@ export function Hero() {
 					className={`btn btn-ghost ${styles.ctaBtn}`}
 					onClick={() => goToProgram("curriculum")}
 				>
-					<i className="fas fa-layer-group" />
+					<Icon name="layers" />
 					커리큘럼
 				</button>
 				<button
@@ -142,7 +143,7 @@ export function Hero() {
 					className={`btn btn-ghost ${styles.ctaBtn}`}
 					onClick={() => setTab("benefit")}
 				>
-					<i className="fas fa-gift" />
+					<Icon name="gift" />
 					참여 혜택
 				</button>
 			</div>

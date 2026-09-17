@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useInstallPrompt } from "../../hooks/useInstallPrompt";
 import { logEvent } from "../../lib/analytics";
+import { Icon } from "../icons/Icon";
 import styles from "./InstallButton.module.scss";
 
 export function InstallButton() {
@@ -41,7 +42,7 @@ export function InstallButton() {
 					className={`${styles.link} ${pressed ? styles.active : ""}`}
 					onClick={handleClick}
 				>
-					<i className="fas fa-download" />
+					<Icon name="download" />
 					설치
 				</button>
 			</li>
@@ -56,7 +57,7 @@ export function InstallButton() {
 								onClick={closeGuide}
 								aria-label="닫기"
 							>
-								<i className="fas fa-times" />
+								<Icon name="times" />
 							</button>
 
 							<h4 className={styles.title}>홈 화면에 추가하기</h4>
@@ -66,7 +67,7 @@ export function InstallButton() {
 
 							{canPrompt && (
 								<button type="button" className={styles.installCta} onClick={handleInstallNow}>
-									<i className="fas fa-download" />
+									<Icon name="download" />
 									앱 설치하기
 								</button>
 							)}
@@ -76,19 +77,19 @@ export function InstallButton() {
 									<ol className={styles.steps}>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-share-square" />
+												<Icon name="share-square" />
 											</span>
 											<span>Safari 하단의 공유 버튼을 눌러주세요.</span>
 										</li>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-plus-square" />
+												<Icon name="plus-square" />
 											</span>
 											<span>메뉴에서 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
 										</li>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-check" />
+												<Icon name="check" />
 											</span>
 											<span>오른쪽 위 &lsquo;추가&rsquo;를 누르면 완료돼요.</span>
 										</li>
@@ -97,19 +98,19 @@ export function InstallButton() {
 									<ol className={styles.steps}>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-ellipsis-v" />
+												<Icon name="ellipsis-vertical" />
 											</span>
 											<span>브라우저 메뉴(⋮)를 열어주세요.</span>
 										</li>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-plus-square" />
+												<Icon name="plus-square" />
 											</span>
 											<span>&lsquo;앱 설치&rsquo; 또는 &lsquo;홈 화면에 추가&rsquo;를 선택해주세요.</span>
 										</li>
 										<li>
 											<span className={styles.stepIcon}>
-												<i className="fas fa-check" />
+												<Icon name="check" />
 											</span>
 											<span>안내에 따라 추가를 완료해주세요.</span>
 										</li>

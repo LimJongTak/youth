@@ -1,0 +1,21 @@
+@use "../../styles/tokens" as t;
+
+.empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	padding: 22px 16px;
+	text-align: center;
+
+	p {
+		margin: 0;
+		font-size: 0.82rem;
+		color: t.$text-mute;
+	}
+}
+
+.icon {
+	font-size: 1.6rem;
+	color: t.$text-faint;
+}
