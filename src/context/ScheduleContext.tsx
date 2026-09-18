@@ -38,6 +38,14 @@ function chunk<T>(items: T[], size: number): T[][] {
 	return chunks;
 }
 
+// 시작/종료 시간을 비워둔 종일 일정은 startTime/endTime이 undefined로
+// 넘어오는데, Firestore는 값이 undefined인 필드가 있으면 setDoc/batch.set
+// 자체를 거부한다 — 로그인과 무관한 오류인데도 저장 실패로 이어지므로,
+// 쓰기 전에 undefined 필드를 모두 제거한다.
+function stripUndefined<T extends object>(value: T): T {
+	return Object.fromEntries(Object.entries(value).filter(([, v]) => v !== undefined)) as T;
+}
+
 export function ScheduleProvider({ children }: { children: ReactNode }) {
 	const [events, setEvents] = useState<ScheduleEvent[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -59,10 +67,10 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 			loading,
 			addEvent: async (draft) => {
 				const id = doc(collection(db, COLLECTION)).id;
-				await setDoc(doc(db, COLLECTION, id), { ...draft, id });
+				await setDoc(doc(db, COLLECTION, id), stripUndefined({ ...draft, id }));
 			},
 			updateEvent: async (event) => {
-				await setDoc(doc(db, COLLECTION, event.id), event);
+				await setDoc(doc(db, COLLECTION, event.id), stripUndefined(event));
 			},
 			removeEvent: async (id) => {
 				await deleteDoc(doc(db, COLLECTION, id));
@@ -72,7 +80,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 					const batch = writeBatch(db);
 					for (const draft of group) {
 						const id = doc(collection(db, COLLECTION)).id;
-						batch.set(doc(db, COLLECTION, id), { ...draft, id });
+						batch.set(doc(db, COLLECTION, id), stripUndefined({ ...draft, id }));
 					}
 					await batch.commit();
 				}
