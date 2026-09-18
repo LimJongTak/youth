@@ -6,7 +6,7 @@ import { useNavigation } from "../../context/NavigationContext";
 import { statusLabel } from "../../types/cohort";
 import { logEvent } from "../../lib/analytics";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
-import { formatEventTime, getDayDotColors } from "../../lib/schedule";
+import { formatEventTime, getDayIndicators } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import { Icon } from "../icons/Icon";
 import { Skeleton } from "../common/Skeleton";
@@ -184,7 +184,7 @@ export function CohortBanner() {
 							))}
 							{previewWeeks.flat().map(({ date, inMonth }) => {
 								const key = toDateKey(date);
-								const dotColors = getDayDotColors(key, cohortEvents);
+								const { dots, bars } = getDayIndicators(key, date.getDay(), cohortEvents);
 								return (
 									<button
 										type="button"
@@ -195,9 +195,18 @@ export function CohortBanner() {
 										onClick={() => setPreviewDate(key)}
 									>
 										<span>{date.getDate()}</span>
-										{dotColors.length > 0 && (
+										{bars.map((bar, i) => (
+											<span
+												key={i}
+												className={`${styles.miniBar} ${bar.leftConnect ? styles.miniBarLeftConnect : ""} ${
+													bar.rightConnect ? styles.miniBarRightConnect : ""
+												}`}
+												style={{ background: bar.color, bottom: `${2 + i * 4}px` }}
+											/>
+										))}
+										{dots.length > 0 && (
 											<span className={styles.miniDots}>
-												{dotColors.slice(0, 3).map((color, i) => (
+												{dots.slice(0, 3).map((color, i) => (
 													<span
 														key={i}
 														className={styles.miniDot}

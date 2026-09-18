@@ -225,6 +225,29 @@
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
+// "막대"로 표시하기로 고른 기간 일정 — 이어지는 칸들이 하나로 붙어
+// 보이도록, 그 방향의 칸 바깥(그리드 간격)까지 배경을 늘린다.
+.dayBar {
+	position: absolute;
+	left: 4px;
+	right: 4px;
+	height: 4px;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.barLeftConnect {
+	left: -2px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.barRightConnect {
+	right: -2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 // --- 선택한 날짜 패널 ---------------------------------------------------
 
 .dayPanel {

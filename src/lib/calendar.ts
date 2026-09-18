@@ -16,6 +16,15 @@ export function parseDateKey(key: string): Date {
 	return new Date(y, (m ?? 1) - 1, d ?? 1);
 }
 
+/** `key`에서 days일만큼 이동한 날짜를 다시 YYYY-MM-DD로 — 막대 표시에서
+ * 이웃 날짜(전날/다음날)에도 같은 일정이 이어지는지 확인할 때 쓴다.
+ */
+export function shiftDateKey(key: string, days: number): string {
+	const date = parseDateKey(key);
+	date.setDate(date.getDate() + days);
+	return toDateKey(date);
+}
+
 /** `key`가 [startKey, endKey] 범위(양 끝 포함) 안에 있는지 — 고정 자릿수
  * 형식이라 문자열 비교만으로도 안전하게 날짜 비교가 된다.
  */

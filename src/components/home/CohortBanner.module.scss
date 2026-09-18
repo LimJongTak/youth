@@ -178,6 +178,29 @@
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
+// "막대"로 표시하기로 고른 기간 일정 — 이어지는 칸들이 하나로 붙어
+// 보이도록, 그 방향의 칸 바깥(그리드 간격)까지 배경을 늘린다.
+.miniBar {
+	position: absolute;
+	left: 2px;
+	right: 2px;
+	height: 3px;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.miniBarLeftConnect {
+	left: -1px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.miniBarRightConnect {
+	right: -1px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 .miniDaySelected {
 	box-shadow: inset 0 0 0 2px t.$teal;
 }

@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { useCohorts } from "../../context/CohortContext";
 import { useSchedule } from "../../context/ScheduleContext";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
-import { getDayDotColors } from "../../lib/schedule";
+import { getDayIndicators } from "../../lib/schedule";
 import {
 	downloadScheduleTemplate,
 	exportScheduleToExcel,
@@ -267,7 +267,7 @@ export function ScheduleManager() {
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
 					const count = cohortEvents.filter((e) => isDateInRange(key, e.startDate, e.endDate)).length;
-					const dotColors = getDayDotColors(key, cohortEvents);
+					const { dots, bars } = getDayIndicators(key, date.getDay(), cohortEvents);
 					return (
 						<button
 							type="button"
@@ -279,9 +279,18 @@ export function ScheduleManager() {
 						>
 							<span>{date.getDate()}</span>
 							{count > 0 && <span className={styles.dayCount}>{count}</span>}
-							{dotColors.length > 0 && (
+							{bars.map((bar, i) => (
+								<span
+									key={i}
+									className={`${styles.dayBar} ${bar.leftConnect ? styles.barLeftConnect : ""} ${
+										bar.rightConnect ? styles.barRightConnect : ""
+									}`}
+									style={{ background: bar.color, bottom: `${4 + i * 5}px` }}
+								/>
+							))}
+							{dots.length > 0 && (
 								<span className={styles.dayDots}>
-									{dotColors.slice(0, 5).map((color, i) => (
+									{dots.slice(0, 5).map((color, i) => (
 										<span key={i} className={styles.dayDot} style={{ background: color }} />
 									))}
 								</span>

@@ -147,11 +147,10 @@
 	font-weight: 800;
 }
 
-// 예전에는 여러 날짜에 걸친 일정을 이어진 막대로 표시했지만, 지금은
-// 하루짜리든 여러 날짜든 걸쳐 있는 모든 날짜에 점 하나씩만 찍힌다
-// (getDayDotColors). 색상은 관리자가 직접 고르는 값이라 배경과의 대비를
-// 보장할 수 없으므로, 얇은 링을 둘러서 일반 칸이든 선택된(어두운) 칸이든
-// 점이 항상 잘 보이게 한다.
+// 색상은 관리자가 직접 고르는 값이라 배경과의 대비를 보장할 수 없으므로,
+// 얇은 링을 둘러서 일반 칸이든 선택된(어두운) 칸이든 점이 항상 잘 보이게
+// 한다. 하루짜리 일정, 그리고 "점"으로 표시하기로 고른 기간 일정이 여기
+// 해당한다.
 .dayDots {
 	display: flex;
 	gap: 2px;
@@ -163,6 +162,30 @@
 	border-radius: 50%;
 	background: t.$teal;
 	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+// "막대"로 표시하기로 고른 기간 일정(예: 신청기간) — 여러 날짜에 걸친
+// 칸들이 하나로 이어진 막대처럼 보이도록, 그 일정이 계속되는 방향의
+// 칸 바깥(그리드 간격)까지 배경을 늘리고 그쪽 모서리를 각지게 만든다.
+.dayBar {
+	position: absolute;
+	left: 4px;
+	right: 4px;
+	height: 4px;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.barLeftConnect {
+	left: -2px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.barRightConnect {
+	right: -2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 // 캘린더와 날짜 상세 패널 사이에 있는 색상-제목 범례 — 이번 달에 보이는

@@ -8,7 +8,7 @@ import {
 	toDateKey,
 	WEEKDAY_LABELS,
 } from "../../lib/calendar";
-import { DEFAULT_DOT_COLOR, formatEventTime, getDayDotColors, getDayEvents } from "../../lib/schedule";
+import { DEFAULT_DOT_COLOR, formatEventTime, getDayEvents, getDayIndicators } from "../../lib/schedule";
 import { SectionHead } from "../layout/SectionHead";
 import { Icon } from "../icons/Icon";
 import { EmptyState } from "../common/EmptyState";
@@ -163,7 +163,7 @@ export function Schedule() {
 				))}
 				{weeks.flat().map(({ date, inMonth }) => {
 					const key = toDateKey(date);
-					const dotColors = getDayDotColors(key, cohortEvents);
+					const { dots, bars } = getDayIndicators(key, date.getDay(), cohortEvents);
 					const isToday = key === toDateKey(today);
 					return (
 						<button
@@ -175,9 +175,18 @@ export function Schedule() {
 							onClick={() => setSelectedDate(key)}
 						>
 							<span>{date.getDate()}</span>
-							{dotColors.length > 0 && (
+							{bars.map((bar, i) => (
+								<span
+									key={i}
+									className={`${styles.dayBar} ${bar.leftConnect ? styles.barLeftConnect : ""} ${
+										bar.rightConnect ? styles.barRightConnect : ""
+									}`}
+									style={{ background: bar.color, bottom: `${3 + i * 5}px` }}
+								/>
+							))}
+							{dots.length > 0 && (
 								<span className={styles.dayDots}>
-									{dotColors.slice(0, 4).map((color, i) => (
+									{dots.slice(0, 4).map((color, i) => (
 										<span
 											key={i}
 											className={styles.dayDot}

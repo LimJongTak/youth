@@ -33,6 +33,7 @@ function emptyCommon(cohortId: string): CommonFields {
 		instructor: "",
 		memo: "",
 		color: DEFAULT_DOT_COLOR,
+		displayStyle: "dot",
 	};
 }
 
@@ -55,6 +56,7 @@ export function ScheduleEventForm({
 					instructor: initial.instructor ?? "",
 					memo: initial.memo ?? "",
 					color: initial.color ?? DEFAULT_DOT_COLOR,
+					displayStyle: initial.displayStyle ?? "dot",
 				}
 			: emptyCommon(cohortId),
 	);
@@ -84,9 +86,12 @@ export function ScheduleEventForm({
 		event.preventDefault();
 		if (mode === "multi") {
 			if (validMultiRows.length === 0) return;
+			// 여러 날짜 등록은 날짜마다 별개의 하루짜리 일정이라 "막대"가
+			// 의미 없으므로(이어지는 기간이 아님) 항상 점으로 표시한다.
 			onSubmit(
 				validMultiRows.map((row) => ({
 					...common,
+					displayStyle: "dot",
 					startDate: row.date,
 					endDate: row.date,
 					startTime: row.startTime || undefined,
@@ -95,11 +100,16 @@ export function ScheduleEventForm({
 			);
 			return;
 		}
+		const resolvedEndDate = endDate || startDate;
 		onSubmit([
 			{
 				...common,
+				// 기간이 아닌 하루짜리 일정은 막대로 표시할 게 없으므로 항상
+				// 점으로 저장 — 폼에서 기간이었다가 종료일을 지워 하루짜리로
+				// 바뀐 경우까지 포함.
+				displayStyle: resolvedEndDate !== startDate ? common.displayStyle : "dot",
 				startDate,
-				endDate: endDate || startDate,
+				endDate: resolvedEndDate,
 				startTime: startTime || undefined,
 				endTime: endTime || undefined,
 			},
@@ -188,6 +198,36 @@ export function ScheduleEventForm({
 							onChange={(e) => setEndDate(e.target.value)}
 						/>
 					</div>
+
+					{endDate && endDate !== startDate && (
+						<div className={`${styles.field} ${styles.wide}`}>
+							<label>캘린더 표시 방식</label>
+							<div className={formStyles.modeToggle} role="tablist">
+								<button
+									type="button"
+									role="tab"
+									aria-selected={common.displayStyle !== "bar"}
+									className={`${formStyles.modeBtn} ${
+										common.displayStyle !== "bar" ? formStyles.active : ""
+									}`}
+									onClick={() => setCommon((c) => ({ ...c, displayStyle: "dot" }))}
+								>
+									점으로 표시
+								</button>
+								<button
+									type="button"
+									role="tab"
+									aria-selected={common.displayStyle === "bar"}
+									className={`${formStyles.modeBtn} ${
+										common.displayStyle === "bar" ? formStyles.active : ""
+									}`}
+									onClick={() => setCommon((c) => ({ ...c, displayStyle: "bar" }))}
+								>
+									막대로 표시
+								</button>
+							</div>
+						</div>
+					)}
 
 					<div className={styles.field}>
 						<label htmlFor="ev-start-time">시작시간 (수업이 아니면 생략)</label>
