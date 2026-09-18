@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { logEvent } from "../lib/analytics";
 
 // Chrome/Edge가 자체 설치 UI를 보여주기 전에 이 이벤트를 발생시킴 —
 // 이걸 가로채면 우리 버튼에서 네이티브 설치 프롬프트를 띄울 수 있다.
@@ -49,6 +50,10 @@ export function useInstallPrompt() {
 			setInstalled(true);
 			setDeferredPrompt(null);
 			window.__deferredInstallPrompt = undefined;
+			// 우리 "설치" 버튼을 거치지 않고 브라우저 자체 설치 UI로 설치한
+			// 경우까지 포함해, 실제로 설치가 완료됐을 때만 브라우저가 이
+			// 이벤트를 쏴준다 — 관리자 통계의 "설치 수"는 이 값 하나로만 센다.
+			logEvent("app_installed");
 		}
 		window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 		window.addEventListener("appinstalled", handleAppInstalled);

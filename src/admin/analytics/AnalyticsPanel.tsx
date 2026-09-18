@@ -130,6 +130,7 @@ export function AnalyticsPanel() {
 	const pageViews = counts.page_view ?? 0;
 	const applyClicks = counts.apply_click ?? 0;
 	const kakaoClicks = counts.kakao_click ?? 0;
+	const appInstalls = counts.app_installed ?? 0;
 	const hasAnyEvents = events.length > 0;
 
 	return (
@@ -213,6 +214,10 @@ export function AnalyticsPanel() {
 				<div className={styles.statCard}>
 					<strong>{pageViews > 0 ? `${Math.round((applyClicks / pageViews) * 100)}%` : "-"}</strong>
 					<span>방문 대비 신청 전환율</span>
+				</div>
+				<div className={styles.statCard}>
+					<strong>{appInstalls.toLocaleString()}</strong>
+					<span>{PERIOD_CONFIG[period].rangeLabel} 앱 설치 (Android/PC만 집계)</span>
 				</div>
 			</div>
 
