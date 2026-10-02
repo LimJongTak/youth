@@ -2,15 +2,15 @@ import { useMemo, useRef, useState } from "react";
 import { useCohorts } from "../../context/CohortContext";
 import { useSchedule } from "../../context/ScheduleContext";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
-import { getDayIndicators } from "../../lib/schedule";
+import { findEventSeries, getDayIndicators } from "../../lib/schedule";
 import {
 	downloadScheduleTemplate,
 	exportScheduleToExcel,
 	parseScheduleExcel,
 	type ParsedScheduleImport,
 } from "../../lib/scheduleExcel";
-import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
-import { ScheduleEventForm } from "./ScheduleEventForm";
+import type { ScheduleEvent } from "../../types/schedule";
+import { ScheduleEventForm, type SubmittedEvent } from "./ScheduleEventForm";
 import { EmptyState } from "../../components/common/EmptyState";
 import styles from "./ScheduleManager.module.scss";
 
@@ -27,7 +27,7 @@ function formatEventTime(event: ScheduleEvent): string {
 
 export function ScheduleManager() {
 	const { cohorts } = useCohorts();
-	const { events, addEvent, updateEvent, removeEvent, addMany } = useSchedule();
+	const { events, addEvent, updateEvent, removeEvent, addMany, saveSeries } = useSchedule();
 	const sortedCohorts = useMemo(
 		() => cohorts.slice().sort((a, b) => b.generation - a.generation),
 		[cohorts],
@@ -43,6 +43,9 @@ export function ScheduleManager() {
 	const [editing, setEditing] = useState<ScheduleEvent | null>(null);
 	const [addingDate, setAddingDate] = useState<string | null>(null);
 	const showForm = editing !== null || addingDate !== null;
+	// 수정 중인 일정과 같은 내용으로 묶인 일정 전체 — 폼 첫 렌더 때의 값만
+	// 쓰이므로, 폼이 열려 있는 동안 다른 곳에서 바뀌어도 상관없다.
+	const editingSeries = useMemo(() => (editing ? findEventSeries(editing, events) : []), [editing, events]);
 
 	const [importPreview, setImportPreview] = useState<ParsedScheduleImport | null>(null);
 	const [importing, setImporting] = useState(false);
@@ -79,14 +82,28 @@ export function ScheduleManager() {
 		}
 	}
 
-	async function handleFormSubmit(drafts: ScheduleEventDraft[]) {
+	async function handleFormSubmit(drafts: SubmittedEvent[], scope: "single" | "multi") {
 		try {
-			if (editing) {
-				await updateEvent({ ...drafts[0], id: editing.id });
+			if (editing && scope === "multi") {
+				// 묶음 전체 수정 — 예전에 등록돼 groupId가 없던 묶음도 이번에
+				// groupId를 부여해, 이후로는 내용이 달라져도 계속 묶여 있게 한다.
+				const groupId = editing.groupId ?? crypto.randomUUID();
+				const keptIds = new Set(drafts.map((d) => d.id).filter(Boolean));
+				await saveSeries({
+					updates: drafts
+						.filter((d): d is SubmittedEvent & { id: string } => !!d.id)
+						.map((d) => ({ ...d, groupId })),
+					adds: drafts.filter((d) => !d.id).map(({ id: _id, ...d }) => ({ ...d, groupId })),
+					removeIds: editingSeries.filter((e) => !keptIds.has(e.id)).map((e) => e.id),
+				});
+			} else if (editing) {
+				await updateEvent({ ...drafts[0], id: editing.id, groupId: editing.groupId });
 			} else if (drafts.length === 1) {
 				await addEvent(drafts[0]);
 			} else {
-				await addMany(drafts);
+				// 같은 내용 여러 날짜 등록 — 나중에 한 번에 수정할 수 있도록 묶음 ID 부여.
+				const groupId = crypto.randomUUID();
+				await addMany(drafts.map((d) => ({ ...d, groupId })));
 			}
 			setEditing(null);
 			setAddingDate(null);
@@ -371,6 +388,7 @@ export function ScheduleManager() {
 						<ScheduleEventForm
 							cohortId={activeCohortId}
 							initial={editing}
+							series={editingSeries}
 							defaultDate={addingDate ?? undefined}
 							onSubmit={handleFormSubmit}
 							onCancel={() => {

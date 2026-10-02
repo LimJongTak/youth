@@ -83,3 +83,36 @@ export function getDayEvents<T extends ColorableRange & { startTime?: string }>(
 		.filter((e) => isDateInRange(key, e.startDate, e.endDate))
 		.sort((a, b) => (a.startTime ?? "").localeCompare(b.startTime ?? ""));
 }
+
+// 내용(제목·장소·강사·비고·색상)이 같은지 비교할 때 쓰는 키 — 빈 값과
+// 필드 없음(undefined)은 같은 것으로 취급.
+function seriesContentKey(e: ScheduleEvent): string {
+	return [e.title, e.location ?? "", e.instructor ?? "", e.memo ?? "", e.color || DEFAULT_DOT_COLOR].join("\u0000");
+}
+
+/** 수정하려는 일정과 "같은 내용 여러 날짜"로 묶인 일정 전체(자기 자신
+ * 포함, 날짜순)를 반환. groupId가 있으면 그것으로 묶고, groupId가 생기기
+ * 전에 등록된 일정은 같은 기수의 내용이 똑같은 하루짜리 일정끼리 묶음으로
+ * 추정한다. 묶인 일정이 없으면 자기 자신 하나만 들어있는 배열.
+ */
+export function findEventSeries(target: ScheduleEvent, events: ScheduleEvent[]): ScheduleEvent[] {
+	let series: ScheduleEvent[];
+	if (target.groupId) {
+		series = events.filter((e) => e.groupId === target.groupId);
+	} else if (target.startDate === target.endDate) {
+		const key = seriesContentKey(target);
+		series = events.filter(
+			(e) =>
+				!e.groupId &&
+				e.cohortId === target.cohortId &&
+				e.startDate === e.endDate &&
+				seriesContentKey(e) === key,
+		);
+	} else {
+		series = [target];
+	}
+	if (!series.some((e) => e.id === target.id)) series.push(target);
+	return series.sort(
+		(a, b) => a.startDate.localeCompare(b.startDate) || (a.startTime ?? "").localeCompare(b.startTime ?? ""),
+	);
+}

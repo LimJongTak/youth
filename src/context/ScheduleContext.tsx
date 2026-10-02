@@ -26,6 +26,13 @@ interface ScheduleContextValue {
 	/** 엑셀 업로드로 여러 일정을 한 번에 추가 — 기존 일정을 지우지 않고
 	 * 항상 추가만 한다. */
 	addMany: (events: ScheduleEventDraft[]) => Promise<void>;
+	/** 여러 날짜 묶음 일정을 한 번에 수정 — 기존 문서 수정·새 날짜 추가·
+	 * 빠진 날짜 삭제를 하나의 배치로 처리해 일부만 저장되는 일이 없게 한다. */
+	saveSeries: (changes: {
+		updates: ScheduleEvent[];
+		adds: ScheduleEventDraft[];
+		removeIds: string[];
+	}) => Promise<void>;
 }
 
 const ScheduleContext = createContext<ScheduleContextValue | null>(null);
@@ -84,6 +91,16 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 					}
 					await batch.commit();
 				}
+			},
+			saveSeries: async ({ updates, adds, removeIds }) => {
+				const batch = writeBatch(db);
+				for (const event of updates) batch.set(doc(db, COLLECTION, event.id), stripUndefined(event));
+				for (const draft of adds) {
+					const id = doc(collection(db, COLLECTION)).id;
+					batch.set(doc(db, COLLECTION, id), stripUndefined({ ...draft, id }));
+				}
+				for (const id of removeIds) batch.delete(doc(db, COLLECTION, id));
+				await batch.commit();
 			},
 		}),
 		[events, loading],

@@ -24,6 +24,11 @@ export interface ScheduleEvent {
 	 * 날짜에 걸친 기간을 이어진 막대로 표시). 지정 안 하면 "dot"으로 취급
 	 * (이 필드가 생기기 전에 만들어진 일정 포함). */
 	displayStyle?: "dot" | "bar";
+	/** "같은 내용 여러 날짜"로 함께 등록된 일정들이 공유하는 묶음 ID —
+	 * 나중에 수정할 때 묶음 전체를 한 번에 고칠 수 있게 해준다. 이 필드가
+	 * 생기기 전에 등록된 일정은 내용이 같은 하루짜리 일정끼리 묶음으로
+	 * 추정한다(findEventSeries 참고). */
+	groupId?: string;
 }
 
 export type ScheduleEventDraft = Omit<ScheduleEvent, "id">;

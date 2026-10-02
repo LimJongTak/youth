@@ -11,15 +11,23 @@ interface ScheduleEventFormProps {
 	initial: ScheduleEvent | null;
 	/** 캘린더의 날짜를 클릭해서 추가할 때 그 날짜로 미리 채워줌. */
 	defaultDate?: string;
-	/** 항상 배열로 전달됨 — 수정이거나 하루/기간 일정 추가면 원소 1개,
-	 * 같은 내용을 여러 날짜에 추가하면 여러 개. */
-	onSubmit: (events: ScheduleEventDraft[]) => void;
+	/** 수정 시, initial과 "같은 내용 여러 날짜"로 묶인 일정 전체(initial
+	 * 포함). 2개 이상이면 묶음 전체를 한 번에 수정하는 옵션을 보여준다. */
+	series?: ScheduleEvent[];
+	/** 항상 배열로 전달됨 — 하루/기간 일정이면 원소 1개, 같은 내용 여러
+	 * 날짜면 여러 개. 묶음 수정 시 기존 날짜는 id가 채워져 있고, 새로
+	 * 추가한 날짜는 id가 없다. scope는 수정 범위(이 일정만/묶음 전체). */
+	onSubmit: (events: SubmittedEvent[], scope: "single" | "multi") => void;
 	onCancel: () => void;
 }
+
+export type SubmittedEvent = ScheduleEventDraft & { id?: string };
 
 type CommonFields = Omit<ScheduleEventDraft, "startDate" | "endDate" | "startTime" | "endTime">;
 
 interface MultiRow {
+	/** 묶음 수정 시 기존 일정의 문서 ID — 새로 추가한 날짜는 없음. */
+	id?: string;
 	date: string;
 	startTime: string;
 	endTime: string;
@@ -41,11 +49,13 @@ export function ScheduleEventForm({
 	cohortId,
 	initial,
 	defaultDate,
+	series,
 	onSubmit,
 	onCancel,
 }: ScheduleEventFormProps) {
-	// 수정은 항상 기존 문서 하나만 대상으로 하므로, 새로 "추가"할 때만
-	// 여러 날짜 한 번에 등록 옵션을 보여준다.
+	// 새로 추가할 때는 항상, 수정할 때는 같은 내용으로 묶인 일정이 여러
+	// 개일 때만 "여러 날짜" 모드를 고를 수 있다.
+	const hasSeries = !!initial && !!series && series.length > 1;
 	const [mode, setMode] = useState<"single" | "multi">("single");
 	const [common, setCommon] = useState<CommonFields>(
 		initial
@@ -66,9 +76,11 @@ export function ScheduleEventForm({
 	const [endTime, setEndTime] = useState(initial?.endTime ?? "");
 	// 날짜마다 각자 시간을 가짐 — 수업이 매번 정확히 같은 시간에 반복되는
 	// 경우는 드물어서, 모든 날짜에 시간 하나만 공유하는 걸로는 부족하다.
-	const [multiRows, setMultiRows] = useState<MultiRow[]>([
-		{ date: defaultDate ?? "", startTime: "", endTime: "" },
-	]);
+	const [multiRows, setMultiRows] = useState<MultiRow[]>(() =>
+		hasSeries
+			? series.map((e) => ({ id: e.id, date: e.startDate, startTime: e.startTime ?? "", endTime: e.endTime ?? "" }))
+			: [{ date: defaultDate ?? "", startTime: "", endTime: "" }],
+	);
 
 	function updateMultiRow(index: number, patch: Partial<MultiRow>) {
 		setMultiRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
@@ -91,12 +103,14 @@ export function ScheduleEventForm({
 			onSubmit(
 				validMultiRows.map((row) => ({
 					...common,
+					id: row.id,
 					displayStyle: "dot",
 					startDate: row.date,
 					endDate: row.date,
 					startTime: row.startTime || undefined,
 					endTime: row.endTime || undefined,
 				})),
+				"multi",
 			);
 			return;
 		}
@@ -113,12 +127,12 @@ export function ScheduleEventForm({
 				startTime: startTime || undefined,
 				endTime: endTime || undefined,
 			},
-		]);
+		], "single");
 	}
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>
-			{!initial && (
+			{(!initial || hasSeries) && (
 				<div className={`${styles.field} ${styles.wide}`}>
 					<div className={formStyles.modeToggle} role="tablist">
 						<button
@@ -128,7 +142,7 @@ export function ScheduleEventForm({
 							className={`${formStyles.modeBtn} ${mode === "single" ? formStyles.active : ""}`}
 							onClick={() => setMode("single")}
 						>
-							하루 · 기간
+							{initial ? "이 날짜만 수정" : "하루 · 기간"}
 						</button>
 						<button
 							type="button"
@@ -137,9 +151,14 @@ export function ScheduleEventForm({
 							className={`${formStyles.modeBtn} ${mode === "multi" ? formStyles.active : ""}`}
 							onClick={() => setMode("multi")}
 						>
-							같은 내용 여러 날짜
+							{initial ? `같은 일정 ${series!.length}개 모두 수정` : "같은 내용 여러 날짜"}
 						</button>
 					</div>
+					{initial && mode === "multi" && (
+						<p className={formStyles.seriesHint}>
+							아래 날짜 목록에서 날짜를 추가하거나 빼면, 저장할 때 해당 일정이 함께 추가·삭제돼요.
+						</p>
+					)}
 				</div>
 			)}
 
@@ -257,7 +276,7 @@ export function ScheduleEventForm({
 					</label>
 					<div className={formStyles.dateList}>
 						{multiRows.map((row, index) => (
-							<div className={formStyles.dateRow} key={index}>
+							<div className={formStyles.dateRow} key={row.id ?? index}>
 								<input
 									type="date"
 									required
@@ -341,7 +360,9 @@ export function ScheduleEventForm({
 					disabled={mode === "multi" && validMultiRows.length === 0}
 				>
 					{initial
-						? "저장"
+						? mode === "multi"
+							? `${validMultiRows.length || ""}개 날짜 모두 저장`
+							: "저장"
 						: mode === "multi"
 							? `${validMultiRows.length || ""}개 날짜에 추가`
 							: "일정 추가"}
