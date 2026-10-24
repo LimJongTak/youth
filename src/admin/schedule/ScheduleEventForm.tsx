@@ -6,6 +6,7 @@ import { DEFAULT_DOT_COLOR } from "../../lib/schedule";
 // CSS를 중복 작성하지 않고도 화면들이 통일된 느낌을 유지한다.
 import styles from "../cohorts/CohortForm.module.scss";
 import formStyles from "./ScheduleEventForm.module.scss";
+import { TimeSelect } from "./TimeSelect";
 
 interface ScheduleEventFormProps {
 	cohortId: string;
@@ -32,6 +33,11 @@ interface MultiRow {
 	date: string;
 	startTime: string;
 	endTime: string;
+}
+
+/** 시작시간을 바꿨을 때 종료시간이 그보다 같거나 앞서면 비워서 다시 고르게 한다. */
+function keepEndAfter(start: string, end: string) {
+	return start && end && end <= start ? "" : end;
 }
 
 function emptyCommon(cohortId: string): CommonFields {
@@ -271,22 +277,19 @@ export function ScheduleEventForm({
 
 					<div className={styles.field}>
 						<label htmlFor="ev-start-time">시작시간 (수업이 아니면 생략)</label>
-						<input
+						<TimeSelect
 							id="ev-start-time"
-							type="time"
 							value={startTime}
-							onChange={(e) => setStartTime(e.target.value)}
+							onChange={(next) => {
+								setStartTime(next);
+								setEndTime((prev) => keepEndAfter(next, prev));
+							}}
 						/>
 					</div>
 
 					<div className={styles.field}>
 						<label htmlFor="ev-end-time">종료시간</label>
-						<input
-							id="ev-end-time"
-							type="time"
-							value={endTime}
-							onChange={(e) => setEndTime(e.target.value)}
-						/>
+						<TimeSelect id="ev-end-time" value={endTime} after={startTime} onChange={setEndTime} />
 					</div>
 				</>
 			) : (
@@ -304,20 +307,21 @@ export function ScheduleEventForm({
 									value={row.date}
 									onChange={(e) => updateMultiRow(index, { date: e.target.value })}
 								/>
-								<input
-									type="time"
+								<TimeSelect
 									className={formStyles.timeInput}
-									aria-label="시작시간"
+									ariaLabel="시작시간"
 									value={row.startTime}
-									onChange={(e) => updateMultiRow(index, { startTime: e.target.value })}
+									onChange={(next) =>
+										updateMultiRow(index, { startTime: next, endTime: keepEndAfter(next, row.endTime) })
+									}
 								/>
 								<span className={formStyles.timeSep}>~</span>
-								<input
-									type="time"
+								<TimeSelect
 									className={formStyles.timeInput}
-									aria-label="종료시간"
+									ariaLabel="종료시간"
 									value={row.endTime}
-									onChange={(e) => updateMultiRow(index, { endTime: e.target.value })}
+									after={row.startTime}
+									onChange={(next) => updateMultiRow(index, { endTime: next })}
 								/>
 								{multiRows.length > 1 && (
 									<button

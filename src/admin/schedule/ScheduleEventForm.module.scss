@@ -63,7 +63,8 @@
 	gap: 8px;
 	flex-wrap: wrap;
 
-	input {
+	input,
+	select {
 		flex: 1 1 150px;
 		min-width: 0;
 		border: 1px solid t.$border;
@@ -82,7 +83,26 @@
 }
 
 .dateRow .timeInput {
-	flex: 1 1 108px;
+	flex: 1 1 190px;
+}
+
+// 시/분 드롭다운 두 개를 한 줄로.
+.timeSelect {
+	display: flex;
+	gap: 6px;
+	min-width: 0;
+
+	select {
+		flex: 1 1 0;
+		min-width: 0;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	select:disabled {
+		color: t.$text-faint;
+		background: t.$bg;
+	}
 }
 
 .timeSep {
