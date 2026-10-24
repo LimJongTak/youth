@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
+import { useCohorts } from "../../context/CohortContext";
 import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
 import { DEFAULT_DOT_COLOR } from "../../lib/schedule";
 // 기수 등록 폼의 필드/버튼 스타일을 그대로 재사용 — 관리자 폼마다 같은
@@ -56,6 +57,11 @@ export function ScheduleEventForm({
 	// 새로 추가할 때는 항상, 수정할 때는 같은 내용으로 묶인 일정이 여러
 	// 개일 때만 "여러 날짜" 모드를 고를 수 있다.
 	const hasSeries = !!initial && !!series && series.length > 1;
+	const { cohorts } = useCohorts();
+	const sortedCohorts = useMemo(
+		() => cohorts.slice().sort((a, b) => b.generation - a.generation),
+		[cohorts],
+	);
 	const [mode, setMode] = useState<"single" | "multi">("single");
 	const [common, setCommon] = useState<CommonFields>(
 		initial
@@ -161,6 +167,21 @@ export function ScheduleEventForm({
 					)}
 				</div>
 			)}
+
+			<div className={styles.field}>
+				<label htmlFor="ev-cohort">기수</label>
+				<select
+					id="ev-cohort"
+					value={common.cohortId}
+					onChange={(e) => setCommon((c) => ({ ...c, cohortId: e.target.value }))}
+				>
+					{sortedCohorts.map((c) => (
+						<option key={c.id} value={c.id}>
+							{c.generation}기
+						</option>
+					))}
+				</select>
+			</div>
 
 			<div className={styles.field}>
 				<label htmlFor="ev-title">제목 (강의명 또는 일정명)</label>

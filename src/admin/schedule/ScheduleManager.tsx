@@ -97,7 +97,14 @@ export function ScheduleManager() {
 					removeIds: editingSeries.filter((e) => !keptIds.has(e.id)).map((e) => e.id),
 				});
 			} else if (editing) {
-				await updateEvent({ ...drafts[0], id: editing.id, groupId: editing.groupId });
+				// 다른 기수로 옮긴 일정은 원래 묶음에서 빼서, 남은 묶음을 "모두
+				// 수정"할 때 다시 원래 기수로 끌려오지 않게 한다.
+				const movedCohort = drafts[0].cohortId !== editing.cohortId;
+				await updateEvent({
+					...drafts[0],
+					id: editing.id,
+					groupId: movedCohort ? undefined : editing.groupId,
+				});
 			} else if (drafts.length === 1) {
 				await addEvent(drafts[0]);
 			} else {
@@ -105,6 +112,8 @@ export function ScheduleManager() {
 				const groupId = crypto.randomUUID();
 				await addMany(drafts.map((d) => ({ ...d, groupId })));
 			}
+			// 다른 기수로 저장했다면 그 기수의 캘린더로 이동해 결과를 바로 확인.
+			if (drafts[0] && drafts[0].cohortId !== activeCohortId) setCohortId(drafts[0].cohortId);
 			setEditing(null);
 			setAddingDate(null);
 		} catch (error) {
