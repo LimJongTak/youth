@@ -75,7 +75,7 @@ export const defaultSiteContent: SiteContent = {
 		{
 			id: "adv",
 			tabLabel: "고급",
-			badge: "ADVANCED",
+			badge: "AI Advanced 과정",
 			badgeClass: "lvAdv",
 			title: "머신러닝 + 네이버클라우드",
 			subtitle: "네이버클라우드 연계 몰입형 최상위 트랙",
