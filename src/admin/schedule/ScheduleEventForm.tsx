@@ -1,5 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useCohorts } from "../../context/CohortContext";
+import { cohortName, compareCohortsNewestFirst } from "../../types/cohort";
 import type { ScheduleEvent, ScheduleEventDraft } from "../../types/schedule";
 import { DEFAULT_DOT_COLOR } from "../../lib/schedule";
 // 기수 등록 폼의 필드/버튼 스타일을 그대로 재사용 — 관리자 폼마다 같은
@@ -65,7 +66,7 @@ export function ScheduleEventForm({
 	const hasSeries = !!initial && !!series && series.length > 1;
 	const { cohorts } = useCohorts();
 	const sortedCohorts = useMemo(
-		() => cohorts.slice().sort((a, b) => b.generation - a.generation),
+		() => cohorts.slice().sort(compareCohortsNewestFirst),
 		[cohorts],
 	);
 	const [mode, setMode] = useState<"single" | "multi">("single");
@@ -175,7 +176,7 @@ export function ScheduleEventForm({
 			)}
 
 			<div className={styles.field}>
-				<label htmlFor="ev-cohort">기수</label>
+				<label htmlFor="ev-cohort">과정</label>
 				<select
 					id="ev-cohort"
 					value={common.cohortId}
@@ -183,7 +184,7 @@ export function ScheduleEventForm({
 				>
 					{sortedCohorts.map((c) => (
 						<option key={c.id} value={c.id}>
-							{c.generation}기
+							{cohortName(c)}
 						</option>
 					))}
 				</select>

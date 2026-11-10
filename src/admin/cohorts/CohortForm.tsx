@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from "react";
 import type { Cohort, CohortStatus } from "../../types/cohort";
-import { statusLabel } from "../../types/cohort";
+import { cohortName, statusLabel } from "../../types/cohort";
 import styles from "./CohortForm.module.scss";
 
-// 기수(회차) 추가/수정 폼 — 관리자 "기수 관리" 탭에서 사용.
+// 과정 추가/수정 폼 — 관리자 "과정 관리" 탭에서 사용.
 
 interface CohortFormProps {
 	initial: Cohort | null;
@@ -13,7 +13,7 @@ interface CohortFormProps {
 
 function emptyDraft(): Omit<Cohort, "id"> {
 	return {
-		generation: 1,
+		name: "",
 		status: "upcoming",
 		capacity: "",
 		recruitPeriod: "",
@@ -29,28 +29,26 @@ function emptyDraft(): Omit<Cohort, "id"> {
 
 export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 	const [draft, setDraft] = useState<Omit<Cohort, "id">>(
-		initial ? { ...initial } : emptyDraft(),
+		initial ? { ...initial, name: cohortName(initial) } : emptyDraft(),
 	);
 
 	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
 		const id = initial?.id ?? `gen-${Date.now()}`;
-		onSubmit({ ...draft, id });
+		onSubmit({ ...draft, name: draft.name?.trim() ?? "", id });
 	}
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>
 			<div className={styles.field}>
-				<label htmlFor="generation">기수(회차)</label>
+				<label htmlFor="name">과정명</label>
 				<input
-					id="generation"
-					type="number"
-					min={1}
+					id="name"
+					type="text"
 					required
-					value={draft.generation}
-					onChange={(e) =>
-						setDraft((d) => ({ ...d, generation: Number(e.target.value) }))
-					}
+					placeholder="예: AI Growing 과정"
+					value={draft.name ?? ""}
+					onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
 				/>
 			</div>
 
@@ -158,7 +156,7 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					checked={draft.featured}
 					onChange={(e) => setDraft((d) => ({ ...d, featured: e.target.checked }))}
 				/>
-				공개 사이트의 기본 노출 기수로 설정
+				공개 사이트의 기본 노출 과정으로 설정
 			</label>
 
 			<label className={styles.checkboxRow}>
@@ -167,7 +165,7 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					checked={draft.scheduleDefault ?? false}
 					onChange={(e) => setDraft((d) => ({ ...d, scheduleDefault: e.target.checked }))}
 				/>
-				일정 탭에서 처음에 보여줄 기수로 설정
+				일정 탭에서 처음에 보여줄 과정으로 설정
 			</label>
 
 			<div className={styles.actions}>
@@ -175,7 +173,7 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					취소
 				</button>
 				<button type="submit" className={styles.btnPrimary}>
-					{initial ? "저장" : "기수 추가"}
+					{initial ? "저장" : "과정 추가"}
 				</button>
 			</div>
 		</form>

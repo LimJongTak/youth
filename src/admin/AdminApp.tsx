@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCohorts } from "../context/CohortContext";
-import { statusLabel, type Cohort } from "../types/cohort";
+import { cohortName, compareCohortsNewestFirst, statusLabel, type Cohort } from "../types/cohort";
 import { roleLabel, type AppUser } from "../types/user";
 import { CohortForm } from "./cohorts/CohortForm";
 import { AccountManagement } from "./accounts/AccountManagement";
@@ -34,7 +34,7 @@ interface AdminAppProps {
 type Tab = "cohorts" | "content" | "schedule" | "analytics" | "accounts";
 
 const NAV_ITEMS: { id: Tab; label: string; icon: string; adminOnly?: boolean }[] = [
-	{ id: "cohorts", label: "기수 관리", icon: "fa-users" },
+	{ id: "cohorts", label: "과정 관리", icon: "fa-users" },
 	{ id: "content", label: "콘텐츠 관리", icon: "fa-file-alt" },
 	{ id: "schedule", label: "일정 관리", icon: "fa-calendar-alt" },
 	{ id: "analytics", label: "통계", icon: "fa-chart-bar" },
@@ -47,7 +47,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 	const [editing, setEditing] = useState<Cohort | null>(null);
 	const [creating, setCreating] = useState(false);
 
-	const sorted = cohorts.slice().sort((a, b) => b.generation - a.generation);
+	const sorted = cohorts.slice().sort(compareCohortsNewestFirst);
 	const showForm = creating || editing !== null;
 	const isAdmin = profile.role === "admin";
 
@@ -64,7 +64,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 
 	// 기수 삭제 — 실수 방지를 위해 확인창을 한 번 거친다.
 	function handleDelete(cohort: Cohort) {
-		if (window.confirm(`${cohort.generation}기 정보를 삭제할까요?`)) {
+		if (window.confirm(`${cohortName(cohort)} 정보를 삭제할까요?`)) {
 			removeCohort(cohort.id);
 		}
 	}
@@ -150,7 +150,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 							)}
 
 							<div className={styles.toolbar}>
-								<h2>기수 목록 ({cohorts.length})</h2>
+								<h2>과정 목록 ({cohorts.length})</h2>
 								{!showForm && (
 									<button
 										className={styles.addBtn}
@@ -160,7 +160,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 										}}
 									>
 										<i className="fas fa-plus" />
-										기수 추가
+										과정 추가
 									</button>
 								)}
 							</div>
@@ -179,7 +179,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 									{sorted.map((cohort) => (
 										<div className={styles.row} key={cohort.id}>
 											<div className={styles.rowMain}>
-												<span className={styles.gen}>{cohort.generation}기</span>
+												<span className={styles.gen}>{cohortName(cohort)}</span>
 												<span
 													className={`${styles.badge} ${badgeClass[cohort.status]}`}
 												>
@@ -199,7 +199,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 												{!cohort.featured && (
 													<button
 														className={styles.iconBtn}
-														title="기본 노출 기수로 설정"
+														title="기본 노출 과정으로 설정"
 														onClick={() => setFeatured(cohort.id)}
 													>
 														<i className="fas fa-star" />
@@ -208,7 +208,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 												{!cohort.scheduleDefault && (
 													<button
 														className={styles.iconBtn}
-														title="일정 탭 기본 기수로 설정"
+														title="일정 탭 기본 과정으로 설정"
 														onClick={() => setScheduleDefault(cohort.id)}
 													>
 														<i className="fas fa-calendar-check" />
@@ -235,7 +235,7 @@ export function AdminApp({ profile, onExit, onLogout }: AdminAppProps) {
 										</div>
 									))}
 									{sorted.length === 0 && (
-										<EmptyState message="등록된 기수가 없습니다. 기수를 추가해 주세요." />
+										<EmptyState message="등록된 과정이 없습니다. 과정을 추가해 주세요." />
 									)}
 								</div>
 							)}

@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { useCohorts } from "../../context/CohortContext";
+import { cohortName, compareCohortsNewestFirst } from "../../types/cohort";
 import { useSchedule } from "../../context/ScheduleContext";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
 import { findEventSeries, getDayIndicators } from "../../lib/schedule";
@@ -29,7 +30,7 @@ export function ScheduleManager() {
 	const { cohorts } = useCohorts();
 	const { events, addEvent, updateEvent, removeEvent, addMany, saveSeries } = useSchedule();
 	const sortedCohorts = useMemo(
-		() => cohorts.slice().sort((a, b) => b.generation - a.generation),
+		() => cohorts.slice().sort(compareCohortsNewestFirst),
 		[cohorts],
 	);
 
@@ -152,7 +153,7 @@ export function ScheduleManager() {
 		<div className={styles.wrap}>
 			<div className={styles.toolbar}>
 				<div className={styles.cohortPicker}>
-					<label htmlFor="schedule-cohort">기수</label>
+					<label htmlFor="schedule-cohort">과정</label>
 					<select
 						id="schedule-cohort"
 						value={activeCohortId}
@@ -164,7 +165,7 @@ export function ScheduleManager() {
 					>
 						{sortedCohorts.map((c) => (
 							<option key={c.id} value={c.id}>
-								{c.generation}기
+								{cohortName(c)}
 							</option>
 						))}
 					</select>
@@ -185,7 +186,7 @@ export function ScheduleManager() {
 					<button
 						type="button"
 						className={styles.actionBtn}
-						onClick={() => downloadScheduleTemplate(activeCohort ? `${activeCohort.generation}기` : "일정")}
+						onClick={() => downloadScheduleTemplate(activeCohort ? cohortName(activeCohort) : "일정")}
 					>
 						<i className="fas fa-file-excel" />
 						엑셀 양식 다운로드
@@ -206,7 +207,7 @@ export function ScheduleManager() {
 						className={styles.actionBtn}
 						disabled={cohortEvents.length === 0}
 						onClick={() =>
-							exportScheduleToExcel(cohortEvents, activeCohort ? `${activeCohort.generation}기` : "일정")
+							exportScheduleToExcel(cohortEvents, activeCohort ? cohortName(activeCohort) : "일정")
 						}
 					>
 						<i className="fas fa-file-export" />

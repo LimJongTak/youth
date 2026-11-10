@@ -117,7 +117,7 @@ export function AccountManagement() {
 				<label className={`${styles.field} ${styles.wide}`}>
 					권한
 					<select value={role} onChange={(e) => setRole(e.target.value as Role)}>
-						<option value="manager">매니저 (기수 콘텐츠 관리)</option>
+						<option value="manager">매니저 (과정 콘텐츠 관리)</option>
 						<option value="admin">관리자 (계정 관리 포함 전체 권한)</option>
 					</select>
 				</label>

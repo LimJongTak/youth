@@ -33,7 +33,7 @@ export function AdminLogin({ onExit }: AdminLoginProps) {
 		<div className={styles.page}>
 			<div className={styles.card}>
 				<h2 className={styles.title}>관리자 로그인</h2>
-				<p className={styles.subtitle}>기수 정보를 관리하려면 로그인하세요.</p>
+				<p className={styles.subtitle}>과정 정보를 관리하려면 로그인하세요.</p>
 
 				<div className={styles.roleTabs} role="tablist">
 					<button

@@ -15,7 +15,7 @@ function emptyTrack(): Track {
 	return {
 		id: "basic",
 		tabLabel: "초급",
-		badge: "BASIC",
+		badge: "AI Beginner 과정",
 		badgeClass: "lvBasic",
 		title: "",
 		subtitle: "",
@@ -76,7 +76,7 @@ export function TracksEditor() {
 							onChange={(v) => updateTrack(index, { tabLabel: v })}
 						/>
 						<TextField
-							label="배지 문구 (예: BASIC)"
+							label="배지 문구 (예: AI Beginner 과정)"
 							value={track.badge}
 							onChange={(v) => updateTrack(index, { badge: v })}
 						/>

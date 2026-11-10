@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState, type TouchEvent } from "react";
 import { useCohorts } from "../../context/CohortContext";
+import { cohortName, compareCohortsNewestFirst } from "../../types/cohort";
 import { useSchedule } from "../../context/ScheduleContext";
 import { useNavigation } from "../../context/NavigationContext";
 import {
@@ -24,7 +25,7 @@ export function Schedule() {
 	const { scheduleCohortId, scheduleDate } = useNavigation();
 
 	const sortedCohorts = useMemo(
-		() => cohorts.slice().sort((a, b) => b.generation - a.generation),
+		() => cohorts.slice().sort(compareCohortsNewestFirst),
 		[cohorts],
 	);
 
@@ -109,7 +110,7 @@ export function Schedule() {
 		<section className="section" id="schedule">
 			<SectionHead
 				title="교육 일정"
-				description="기수를 선택하고 날짜를 눌러 그날의 시간표를 확인하세요."
+				description="과정을 선택하고 날짜를 눌러 그날의 시간표를 확인하세요."
 			/>
 
 			{cohorts.length > 0 && (
@@ -125,7 +126,7 @@ export function Schedule() {
 								setSelectedDate(null);
 							}}
 						>
-							{c.generation}기
+							{cohortName(c)}
 						</button>
 					))}
 				</div>
@@ -215,7 +216,7 @@ export function Schedule() {
 				<h4>
 					{selectedDate
 						? `${parseDateKey(selectedDate).getMonth() + 1}월 ${parseDateKey(selectedDate).getDate()}일 ${
-								activeCohort ? `· ${activeCohort.generation}기` : ""
+								activeCohort ? `· ${cohortName(activeCohort)}` : ""
 							}`
 						: "날짜를 선택하세요"}
 				</h4>

@@ -40,7 +40,7 @@ export const defaultSiteContent: SiteContent = {
 		{
 			id: "basic",
 			tabLabel: "초급",
-			badge: "BASIC",
+			badge: "AI Beginner 과정",
 			badgeClass: "lvBasic",
 			title: "AI와 코딩",
 			subtitle: "비전공자도 부담 없이 시작하는 입문 트랙",
@@ -56,7 +56,7 @@ export const defaultSiteContent: SiteContent = {
 		{
 			id: "mid",
 			tabLabel: "중급",
-			badge: "MID",
+			badge: "AI Growing 과정",
 			badgeClass: "lvMid",
 			title: "심층강화학습 + 메가존클라우드",
 			subtitle: "메가존클라우드 연계 몰입형 심화 트랙",

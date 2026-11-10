@@ -28,8 +28,8 @@ npm run dev            # http://localhost:5173
 ```
 src/
   components/     공개 사이트 섹션들 (Hero, Curriculum, Benefits, ...)
-  admin/          관리자 화면 (로그인, 기수/콘텐츠/계정 관리)
-  context/        CohortContext(기수 데이터), SiteContentContext(페이지 문구)
+  admin/          관리자 화면 (로그인, 과정/콘텐츠/계정 관리)
+  context/        CohortContext(과정 데이터), SiteContentContext(페이지 문구)
   hooks/          useAppUser, useElementRect 등 커스텀 훅
   data/           기본값(seed) 데이터 — Firestore가 비어있을 때의 fallback
   types/          Cohort, SiteContent, AppUser 등 타입 정의
@@ -42,16 +42,16 @@ firestore.rules   Firestore 보안 규칙
 
 | 컬렉션 | 설명 | 읽기 | 쓰기 |
 |---|---|---|---|
-| `cohorts/{id}` | 기수(회차)별 모집 정보, 신청 링크 | 누구나 | 로그인한 관리자/매니저 |
+| `cohorts/{id}` | 과정별 모집 정보, 신청 링크 | 누구나 | 로그인한 관리자/매니저 |
 | `siteContent/main` | 페이지 전체 문구 (히어로, 소개, 체크리스트, 커리큘럼, 혜택, 여정, FAQ, 문의처) | 누구나 | 로그인한 관리자/매니저 |
 | `users/{uid}` | 계정 권한 (`admin` \| `manager`) | 로그인한 사용자 | 본인 최초 1회, 이후 관리자만 |
 
-관리자는 페이지의 거의 모든 문구와 기수 정보를 공개 사이트를 벗어나지 않고 실시간으로 수정할 수 있습니다. 변경사항은 저장 즉시 모든 방문자에게 반영됩니다 (Firestore 실시간 구독).
+관리자는 페이지의 거의 모든 문구와 과정 정보를 공개 사이트를 벗어나지 않고 실시간으로 수정할 수 있습니다. 변경사항은 저장 즉시 모든 방문자에게 반영됩니다 (Firestore 실시간 구독).
 
 ## 관리자 계정 / 권한
 
-- **관리자(admin)**: 기수 관리 + 콘텐츠 관리 + 계정 관리(다른 관리자/매니저 계정 생성) 전체 권한
-- **매니저(manager)**: 기수 관리 + 콘텐츠 관리만 가능 (계정 관리 불가)
+- **관리자(admin)**: 과정 관리 + 콘텐츠 관리 + 계정 관리(다른 관리자/매니저 계정 생성) 전체 권한
+- **매니저(manager)**: 과정 관리 + 콘텐츠 관리만 가능 (계정 관리 불가)
 
 로그인은 "아이디"로 하지만, 내부적으로는 Firebase Auth 이메일/비밀번호 로그인을 `아이디@youth-admin.local` 형태로 매핑해서 사용합니다 (`src/lib/authEmail.ts`).
 

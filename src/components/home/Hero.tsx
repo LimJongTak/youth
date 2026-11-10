@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState, type MouseEvent } from "react";
 import { useCohorts } from "../../context/CohortContext";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { useNavigation } from "../../context/NavigationContext";
-import { statusLabel } from "../../types/cohort";
+import { cohortName, statusLabel } from "../../types/cohort";
 import { logEvent } from "../../lib/analytics";
 import { Icon } from "../icons/Icon";
 import styles from "./Hero.module.scss";
@@ -120,7 +120,7 @@ export function Hero() {
 			<p className={styles.lead}>{hero.lead}</p>
 			<a href="#cohort" className={styles.cohortPing}>
 				<Icon name="dot" />
-				교육생 {statusLabel[selected.status]}({selected.generation}기) · {selected.recruitPeriod}
+				교육생 {statusLabel[selected.status]}({cohortName(selected)}) · {selected.recruitPeriod}
 			</a>
 			<div className={styles.ctaRow}>
 				<a
@@ -149,7 +149,7 @@ export function Hero() {
 				</button>
 			</div>
 			{showNoActive && (
-				<p className={styles.noActiveMsg}>현재 운영 중인 기수가 없습니다.</p>
+				<p className={styles.noActiveMsg}>현재 운영 중인 과정이 없습니다.</p>
 			)}
 		</section>
 	);

@@ -10,6 +10,7 @@ import type { Cohort } from "../types/cohort";
 export const seedCohorts: Cohort[] = [
 	{
 		id: "gen-1",
+		name: "AI Advanced 과정",
 		generation: 1,
 		status: "closed",
 		capacity: "미정 (공식 페이지 참고)",
@@ -25,6 +26,7 @@ export const seedCohorts: Cohort[] = [
 	},
 	{
 		id: "gen-2",
+		name: "AI Growing 과정",
 		generation: 2,
 		status: "recruiting",
 		capacity: "총 30명",

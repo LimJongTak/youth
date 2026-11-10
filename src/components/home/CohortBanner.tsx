@@ -3,7 +3,7 @@ import { useCohorts } from "../../context/CohortContext";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { useSchedule } from "../../context/ScheduleContext";
 import { useNavigation } from "../../context/NavigationContext";
-import { statusLabel } from "../../types/cohort";
+import { cohortName, compareCohortsNewestFirst, statusLabel } from "../../types/cohort";
 import { logEvent } from "../../lib/analytics";
 import { getMonthGrid, isDateInRange, parseDateKey, toDateKey, WEEKDAY_LABELS } from "../../lib/calendar";
 import { formatEventTime, getDayIndicators } from "../../lib/schedule";
@@ -73,13 +73,13 @@ export function CohortBanner() {
 
 	return (
 		<section className="section" id="cohort">
-			<SectionHead title="기수 안내 및 신청" />
+			<SectionHead title="과정 안내 및 신청" />
 
 			{/* 기수 선택 칩 — 여러 기수 중 하나를 골라 아래 카드 내용을 전환 */}
 			<div className={styles.chipRow} role="tablist">
 				{cohorts
 					.slice()
-					.sort((a, b) => b.generation - a.generation)
+					.sort(compareCohortsNewestFirst)
 					.map((cohort) => (
 						<button
 							key={cohort.id}
@@ -92,7 +92,7 @@ export function CohortBanner() {
 							}}
 						>
 							<span className={`${styles.dot} ${dotClass[cohort.status]}`} />
-							교육생 {statusLabel[cohort.status]}({cohort.generation}기)
+							교육생 {statusLabel[cohort.status]}({cohortName(cohort)})
 						</button>
 					))}
 			</div>
@@ -122,7 +122,7 @@ export function CohortBanner() {
 				{cardTab === "info" ? (
 					<>
 						<div className={styles.cardHead}>
-							<h4>{selected.generation}기 교육생</h4>
+							<h4>{cohortName(selected)} 교육생</h4>
 							<span className={`${styles.badge} ${badgeClass[selected.status]}`}>
 								{statusLabel[selected.status]}
 							</span>
@@ -290,7 +290,7 @@ export function CohortBanner() {
 			<div className={styles.warningNote}>
 				<Icon name="warning" />
 				<span>
-					{selected.generation}기 모집기간은 <strong>{selected.recruitPeriod}</strong>
+					{cohortName(selected)} 모집기간은 <strong>{selected.recruitPeriod}</strong>
 					이며, 선착순 모집으로 조기 마감될 수 있습니다.
 				</span>
 			</div>
@@ -305,11 +305,11 @@ export function CohortBanner() {
 						onClick={() => logEvent("apply_click", { source: "cohort_banner" })}
 					>
 						<Icon name="paper-plane" />
-						{selected.generation}기 신청하기
+						{cohortName(selected)} 신청하기
 					</a>
 				) : (
 					<p className={styles.mutedNote}>
-						현재 {selected.generation}기는 모집 중이 아니에요. 다른 기수를 선택하거나
+						현재 {cohortName(selected)} 모집 기간이 아니에요. 다른 과정을 선택하거나
 						카카오톡으로 문의해보세요.
 					</p>
 				)}

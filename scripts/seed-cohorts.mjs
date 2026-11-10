@@ -15,6 +15,7 @@ const toAuthEmail = (username) => `${username.trim().toLowerCase()}@${AUTH_EMAIL
 const seedCohorts = [
 	{
 		id: "gen-1",
+		name: "AI Advanced 과정",
 		generation: 1,
 		status: "closed",
 		capacity: "미정 (공식 페이지 참고)",
@@ -30,6 +31,7 @@ const seedCohorts = [
 	},
 	{
 		id: "gen-2",
+		name: "AI Growing 과정",
 		generation: 2,
 		status: "recruiting",
 		capacity: "총 30명",
