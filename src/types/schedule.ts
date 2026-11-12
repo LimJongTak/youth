@@ -17,7 +17,7 @@ export interface ScheduleEvent {
 	location?: string;
 	instructor?: string;
 	memo?: string;
-	/** 캘린더 점 색상용 HEX 값(예: "#14b8a6"). 지정 안 하면 기본 teal 색으로
+	/** 캘린더 점 색상용 HEX 값(예: "#c67c4e"). 지정 안 하면 기본 포인트 색으로
 	 * 표시 — 이 필드가 생기기 전에 만들어진 일정도 그냥 기본색으로 보임. */
 	color?: string;
 	/** 캘린더에 표시할 방식 — "dot"(기본, 매일 점 하나) 또는 "bar"(여러

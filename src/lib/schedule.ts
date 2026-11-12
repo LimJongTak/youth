@@ -13,9 +13,9 @@ export function formatEventTime(event: ScheduleEvent): string {
 	return "종일";
 }
 
-// tokens.scss의 $teal과 동일한 값 — 색상을 지정하지 않은 일정(이 필드가
+// tokens.scss의 $accent와 동일한 값 — 색상을 지정하지 않은 일정(이 필드가
 // 생기기 전에 만든 일정 포함)이 캘린더에서 갖는 기본 점 색상.
-export const DEFAULT_DOT_COLOR = "#14b8a6";
+export const DEFAULT_DOT_COLOR = "#c67c4e";
 
 type ColorableRange = Pick<ScheduleEvent, "startDate" | "endDate" | "color">;
 type DisplayableRange = ColorableRange & Pick<ScheduleEvent, "displayStyle">;

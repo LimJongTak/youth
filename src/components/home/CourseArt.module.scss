@@ -1,0 +1,136 @@
+@use "../../styles/tokens" as t;
+
+.art {
+	position: relative;
+	overflow: hidden;
+	border-radius: t.$radius-sm;
+	color: #fff;
+	background: #3b2b22;
+	isolation: isolate;
+}
+
+// 단계별 톤 — 라떼(입문) → 카라멜(성장) → 에스프레소(심화), 그 외 모카.
+.beginner {
+	background: linear-gradient(150deg, #e9cdb4 0%, #c9946b 100%);
+}
+.growing {
+	background: linear-gradient(150deg, #d99368 0%, #8a4b2a 100%);
+}
+.advanced {
+	background: linear-gradient(150deg, #5a4030 0%, #1e1612 100%);
+}
+.general {
+	background: linear-gradient(150deg, #8c6a55 0%, #3b2b22 100%);
+}
+
+.photo {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+}
+
+// 김이 피어오르는 듯한 장식 원.
+.ring1,
+.ring2 {
+	position: absolute;
+	border-radius: 50%;
+	border: 1.5px solid rgba(255, 255, 255, 0.22);
+	z-index: -1;
+}
+.ring1 {
+	width: 120%;
+	aspect-ratio: 1;
+	right: -60%;
+	top: -55%;
+}
+.ring2 {
+	width: 70%;
+	aspect-ratio: 1;
+	right: -22%;
+	top: -18%;
+	background: rgba(255, 255, 255, 0.07);
+}
+
+.kicker {
+	position: absolute;
+	left: 12px;
+	bottom: 34px;
+	font-size: 0.56rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
+.word {
+	position: absolute;
+	left: 11px;
+	bottom: 10px;
+	font-family: t.$font-head;
+	font-size: 1.32rem;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	line-height: 1;
+}
+
+.icon {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	font-size: 1.05rem;
+	opacity: 0.85;
+}
+
+.card {
+	aspect-ratio: 4 / 3;
+}
+
+// 상세 화면 상단의 큰 대표 이미지.
+.hero {
+	aspect-ratio: 16 / 10;
+	border-radius: t.$radius-md;
+
+	.kicker {
+		left: 20px;
+		bottom: 54px;
+		font-size: 0.7rem;
+	}
+
+	.word {
+		left: 18px;
+		bottom: 18px;
+		font-size: 2.3rem;
+	}
+
+	.icon {
+		right: 18px;
+		bottom: 18px;
+		font-size: 1.6rem;
+	}
+}
+
+// 관리자 화면의 작은 선택 썸네일.
+.thumb {
+	aspect-ratio: 4 / 3;
+
+	.kicker {
+		left: 8px;
+		bottom: 24px;
+		font-size: 0.42rem;
+	}
+
+	.word {
+		left: 7px;
+		bottom: 8px;
+		font-size: 0.92rem;
+	}
+
+	.icon {
+		right: 7px;
+		bottom: 8px;
+		font-size: 0.8rem;
+	}
+}

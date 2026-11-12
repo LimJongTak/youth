@@ -28,7 +28,12 @@ export type IconName =
 	| "calendar"
 	| "home"
 	| "graduation-cap"
-	| "kakao";
+	| "kakao"
+	| "plus"
+	| "clock"
+	| "users"
+	| "map-pin"
+	| "arrow-right";
 
 type IconProps = Omit<SVGProps<SVGSVGElement>, "viewBox" | "children"> & {
 	name: IconName;
@@ -175,6 +180,43 @@ function paths(name: IconName) {
 					<path d="M2 9l10-5 10 5-10 5-10-5z" />
 					<path d="M6 11.5V17c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5" />
 					<path d="M22 9v6" />
+				</>
+			);
+		case "plus":
+			return (
+				<>
+					<line x1="12" y1="5" x2="12" y2="19" />
+					<line x1="5" y1="12" x2="19" y2="12" />
+				</>
+			);
+		case "clock":
+			return (
+				<>
+					<circle cx="12" cy="12" r="9" />
+					<polyline points="12 7 12 12 15 14" />
+				</>
+			);
+		case "users":
+			return (
+				<>
+					<circle cx="9" cy="8" r="3.5" />
+					<path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+					<path d="M16 4.6a3.5 3.5 0 0 1 0 6.8" />
+					<path d="M18 14.4c2.1.7 3.5 2.8 3.5 5.6" />
+				</>
+			);
+		case "map-pin":
+			return (
+				<>
+					<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+					<circle cx="12" cy="9.5" r="2.5" />
+				</>
+			);
+		case "arrow-right":
+			return (
+				<>
+					<line x1="5" y1="12" x2="19" y2="12" />
+					<polyline points="13 6 19 12 13 18" />
 				</>
 			);
 		// 카카오톡 말풍선 모양 — 채워진 도형이라 stroke가 아니라 fill로 그린다.

@@ -12,8 +12,8 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 2px;
-	background: t.$bg;
-	border: 1px solid t.$border;
+	background: t.$surface-2;
+	border: none;
 	padding: 4px;
 	border-radius: t.$radius-md;
 	margin: 14px 20px 0;
@@ -25,9 +25,9 @@
 	left: 4px;
 	width: calc(50% - 6px);
 	height: calc(100% - 8px);
-	background: t.$ink;
+	background: t.$accent;
 	border-radius: calc(t.$radius-md - 3px);
-	box-shadow: 0 6px 16px -6px rgba(25, 31, 40, 0.45);
+	box-shadow: 0 6px 16px -6px rgba(198, 124, 78, 0.6);
 	transition: transform 0.28s cubic-bezier(0.65, 0, 0.35, 1);
 }
 

@@ -1,0 +1,143 @@
+@use "../../styles/tokens" as t;
+
+.wrap {
+	padding: 20px 0 12px;
+}
+
+.block {
+	padding: 8px 24px;
+}
+
+.head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 14px;
+
+	h2 {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 700;
+	}
+
+	span {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: t.$accent;
+	}
+}
+
+// 커피앱 주문 화면 사이의 굵은 옅은 구분선.
+.divider {
+	border: none;
+	height: 4px;
+	background: #f4f4f4;
+	margin: 18px 0 12px;
+}
+
+.list,
+.steps {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.item,
+.step {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.thumb,
+.kakaoIcon {
+	flex: 0 0 auto;
+	width: 46px;
+	height: 46px;
+	border-radius: t.$radius-sm;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.thumb {
+	background: t.$accent-tint;
+	color: t.$accent;
+	font-size: 1.05rem;
+}
+
+// 배경 칸 없이 숫자만 — 굵은 Sora 숫자에 카라멜 그라디언트를 입힌다.
+.stepNum {
+	flex: 0 0 auto;
+	width: 46px;
+	text-align: center;
+	font-family: t.$font-head;
+	font-size: 1.9rem;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.06em;
+	font-variant-numeric: tabular-nums;
+	background: linear-gradient(160deg, t.$accent-light 0%, t.$accent 55%, t.$accent-dark 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.itemText {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+
+	strong {
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: t.$ink;
+	}
+
+	small {
+		font-size: 0.74rem;
+		line-height: 1.45;
+		color: t.$text-mute;
+		white-space: pre-line;
+		word-break: keep-all;
+	}
+}
+
+.kakao {
+	margin-top: 20px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 12px 14px 12px 12px;
+	border-radius: t.$radius-md;
+	border: 1px solid t.$border;
+	background: t.$card;
+	transition: transform 0.15s ease;
+
+	&:active {
+		transform: scale(0.98);
+	}
+}
+
+.kakaoIcon {
+	background: #fee500;
+	color: #391b1b;
+	font-size: 1.3rem;
+}
+
+.chevron {
+	margin-left: auto;
+	color: t.$text-faint;
+}
+
+@media (max-width: 374px) {
+	.block {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+}

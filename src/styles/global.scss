@@ -78,7 +78,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-	outline: 2px solid t.$teal;
+	outline: 2px solid t.$accent;
 	outline-offset: 2px;
 	border-radius: t.$radius-sm;
 }
@@ -104,11 +104,11 @@ body {
 	@include t.btn;
 }
 .btn-primary {
-	background: t.$teal;
+	background: t.$accent;
 	color: #fff;
 }
 .btn-ghost {
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.08);
 	color: #fff;
 }
 .btn-kakao {
@@ -145,5 +145,75 @@ body {
 @media (max-width: 374px) {
 	.section {
 		padding: 24px 16px;
+	}
+}
+
+// 화면에는 숨기고 스크린리더에만 읽히는 텍스트(아이콘 전용 하단 탭 라벨 등).
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+// ── 공통 애니메이션 ─────────────────────────────────────────────
+// .anim-rise: 마운트될 때 아래에서 살짝 떠오르며 나타남. 순차 등장은
+// style={{ "--d": "120ms" }}처럼 지연값을 넘긴다.
+@keyframes riseIn {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+}
+
+.anim-rise {
+	animation: riseIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	animation-delay: var(--d, 0ms);
+}
+
+// .reveal: 스크롤로 화면에 들어올 때(useReveal 훅이 .is-visible을 붙임) 등장.
+.reveal {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: var(--d, 0ms);
+
+	&.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+// 탭 전환 시 화면 전체가 부드럽게 들어옴.
+@keyframes pageIn {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+.page-enter {
+	animation: pageIn 0.35s ease backwards;
+}
+
+// 움직임 줄이기 설정을 켠 방문자에게는 모든 장식 애니메이션을 끈다.
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.reveal {
+		opacity: 1;
+		transform: none;
 	}
 }

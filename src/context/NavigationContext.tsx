@@ -17,6 +17,11 @@ interface NavigationValue {
 	scheduleCohortId: string | null;
 	scheduleDate: string | null;
 	goToSchedule: (cohortId?: string, date?: string) => void;
+	/** 홈 그리드에서 연 과정 상세 화면(커피앱의 상품 상세처럼 탭 위에 겹쳐
+	 * 보이는 페이지). null이면 상세 화면이 닫혀 있는 상태. */
+	detailCohortId: string | null;
+	openCohortDetail: (cohortId: string) => void;
+	closeCohortDetail: () => void;
 }
 
 const NavigationContext = createContext<NavigationValue | null>(null);
@@ -26,27 +31,37 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 	const [programSubTab, setProgramSubTab] = useState<ProgramSubTab>("curriculum");
 	const [scheduleCohortId, setScheduleCohortId] = useState<string | null>(null);
 	const [scheduleDate, setScheduleDate] = useState<string | null>(null);
+	const [detailCohortId, setDetailCohortId] = useState<string | null>(null);
+
+	// 탭을 바꾸면 열려 있던 과정 상세 화면은 항상 닫는다.
+	function changeTab(next: MainTab) {
+		setDetailCohortId(null);
+		setTab(next);
+	}
 
 	const value = useMemo<NavigationValue>(
 		() => ({
 			tab,
-			setTab,
+			setTab: changeTab,
 			programSubTab,
 			setProgramSubTab,
 			goToProgram: (subTab: ProgramSubTab = "curriculum") => {
 				setProgramSubTab(subTab);
-				setTab("program");
+				changeTab("program");
 			},
-			goToContact: () => setTab("contact"),
+			goToContact: () => changeTab("contact"),
 			scheduleCohortId,
 			scheduleDate,
 			goToSchedule: (cohortId?: string, date?: string) => {
 				if (cohortId) setScheduleCohortId(cohortId);
 				setScheduleDate(date ?? null);
-				setTab("schedule");
+				changeTab("schedule");
 			},
+			detailCohortId,
+			openCohortDetail: (cohortId: string) => setDetailCohortId(cohortId),
+			closeCohortDetail: () => setDetailCohortId(null),
 		}),
-		[tab, programSubTab, scheduleCohortId, scheduleDate],
+		[tab, programSubTab, scheduleCohortId, scheduleDate, detailCohortId],
 	);
 
 	return <NavigationContext.Provider value={value}>{children}</NavigationContext.Provider>;

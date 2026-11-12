@@ -1,4 +1,4 @@
-import type { MouseEvent } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { SectionHead } from "../layout/SectionHead";
 import { logEvent } from "../../lib/analytics";
@@ -32,7 +32,7 @@ export function Contact() {
 			<SectionHead title="문의처" description={contact.org} />
 			<div className={styles.list}>
 				<a
-					className={styles.row}
+					className={`${styles.row} anim-rise`} style={{ "--d": "0ms" } as CSSProperties}
 					href={contact.kakaoUrl}
 					onClick={() => logEvent("kakao_click", { source: "contact" })}
 					target="_blank"
@@ -47,7 +47,7 @@ export function Contact() {
 					</span>
 					<Icon name="chevron-right" className={styles.chevron} />
 				</a>
-				<a className={styles.row} href={`mailto:${contact.email}`}>
+				<a className={`${styles.row} anim-rise`} style={{ "--d": "80ms" } as CSSProperties} href={`mailto:${contact.email}`}>
 					<span className={`${styles.icon} ${styles.imgIcon}`}>
 						<img src="/assets/icons/gmail-favicon.ico" alt="" width={26} height={26} />
 					</span>
@@ -57,7 +57,7 @@ export function Contact() {
 					</span>
 				</a>
 				<a
-					className={styles.row}
+					className={`${styles.row} anim-rise`} style={{ "--d": "160ms" } as CSSProperties}
 					href={KAKAO_MAP_WEB_URL}
 					target="_blank"
 					rel="noopener noreferrer"

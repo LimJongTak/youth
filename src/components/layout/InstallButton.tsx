@@ -44,7 +44,7 @@ export function InstallButton() {
 					onClick={handleClick}
 				>
 					<Icon name="download" />
-					설치
+					<span className="sr-only">앱 설치</span>
 				</button>
 			</li>
 

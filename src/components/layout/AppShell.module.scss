@@ -7,7 +7,7 @@
 .shell {
 	width: 100%;
 	min-height: 100vh;
-	background: t.$bg;
+	background: #eeeae7;
 	display: flex;
 	justify-content: center;
 }
@@ -17,7 +17,7 @@
 	width: 100%;
 	max-width: 480px;
 	min-height: 100vh;
-	background: t.$card;
+	background: t.$bg;
 	display: flex;
 	flex-direction: column;
 }

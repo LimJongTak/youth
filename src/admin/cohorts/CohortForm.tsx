@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import type { Cohort, CohortStatus } from "../../types/cohort";
 import { cohortName, statusLabel } from "../../types/cohort";
+import { CoverPicker } from "./CoverPicker";
 import styles from "./CohortForm.module.scss";
 
 // 과정 추가/수정 폼 — 관리자 "과정 관리" 탭에서 사용.
@@ -35,7 +36,15 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
 		const id = initial?.id ?? `gen-${Date.now()}`;
-		onSubmit({ ...draft, name: draft.name?.trim() ?? "", id });
+		// Firestore는 undefined 필드를 저장하지 못하므로 빈 값은 키째 뺀다
+		// (setDoc이 문서를 통째로 덮어써서, 빠진 키는 기존 값도 지워진다).
+		const cohort = { ...draft, name: draft.name?.trim() ?? "", id } as Cohort;
+		for (const key of Object.keys(cohort) as (keyof Cohort)[]) {
+			if (cohort[key] === undefined) delete cohort[key];
+		}
+		if (!cohort.cardImage) delete cohort.cardImage;
+		if (!cohort.detailImage) delete cohort.detailImage;
+		onSubmit(cohort);
 	}
 
 	return (
@@ -147,6 +156,19 @@ export function CohortForm({ initial, onSubmit, onCancel }: CohortFormProps) {
 					placeholder="예: 선착순 모집으로 인해 조기 마감될 수 있습니다."
 					value={draft.note ?? ""}
 					onChange={(e) => setDraft((d) => ({ ...d, note: e.target.value }))}
+				/>
+			</div>
+
+			<div className={`${styles.field} ${styles.wide}`}>
+				<label>과정 이미지</label>
+				<CoverPicker
+					value={{
+						name: draft.name,
+						coverPreset: draft.coverPreset,
+						cardImage: draft.cardImage,
+						detailImage: draft.detailImage,
+					}}
+					onChange={(next) => setDraft((d) => ({ ...d, ...next }))}
 				/>
 			</div>
 

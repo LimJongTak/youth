@@ -1,38 +1,39 @@
 // 디자인 토큰.
 //
-// 방향성: 그라디언트 범벅에 배지가 여기저기 붙고 은은하게 빛나는 방울
-// 같은, 흔히 "AI가 만든 것 같은" 랜딩페이지 느낌 대신 — 절제되고 납작한
-// "프리미엄 한국 핀테크 앱" 스타일(토스/카카오뱅크 영향)을 지향한다.
-// 구체적으로는: 포인트 컬러 하나만 아껴 쓰기(네 개가 아니라), 버튼/아이콘은
-// 그라디언트 대신 단색 채우기, 진한 그림자 대신 실선 테두리, 색이 있는
-// 알약 배지 대신 글자 크기/굵기로 위계를 표현하는 것을 의미한다.
+// 방향성: 커피숍 모바일앱 디자인 무드 — 에스프레소 톤의 어두운 헤더,
+// 카라멜 브라운 포인트 컬러 하나, 크림 톤 틴트, 큰 라운드 모서리와
+// 실선 테두리 대신 부드럽게 퍼지는 그림자. 포인트 컬러는 여전히 아껴 쓴다.
 
-$ink: #191f28; // 거의 검정, 기본 텍스트 색 — 남색 계열 아님
-$ink-2: #232933; // 단색의 어두운 표면(히어로/상단바) — 그라디언트 없음
-$ink-3: #2e3542;
+$ink: #242424; // 에스프레소 블랙, 기본 텍스트 색
+$ink-2: #313131; // 어두운 표면(홈 헤더 그라디언트 밝은 끝)
+$ink-3: #131313; // 홈 헤더 그라디언트 진한 끝
+$ink-field: #2a2a2a; // 어두운 헤더 위 입력창/바 배경
 
-$teal: #14b8a6;
-$teal-dark: #0d9488;
-$teal-light: #5eead4; // 어두운 배경 위의 텍스트/아이콘 전용
-$teal-tint: #e6f7f5; // 흰 배경 위 아이콘/배지용 옅은 포인트 색
+$accent: #c67c4e; // 카라멜 브라운
+$accent-dark: #a9643a;
+$accent-light: #e8b48f; // 어두운 배경 위의 텍스트/아이콘 전용
+$accent-tint: #f9f2ed; // 흰 배경 위 아이콘/배지용 크림 톤
+$accent-line: #e3c3ab; // 크림 틴트 위 선택 테두리
 
-$amber: #f5a623; // 상태 표시 전용 — 장식용으로 쓰지 않음
-$coral: #ef4444; // 상태 표시 전용 — 장식용으로 쓰지 않음
+$amber: #e5a03a; // 상태 표시 전용 — 장식용으로 쓰지 않음
+$coral: #ed5151; // 상태 표시 전용(프로모 태그 등)
 $blue: #3b82f6;
 
-$bg: #f2f4f6;
+$bg: #f9f9f9;
+$surface-2: #f3f3f3; // 비선택 칩, 카드 안 옅은 패널
 $card: #ffffff;
 $text: $ink;
-$text-mute: #6b7684;
-$text-faint: #8b95a1;
-$border: #e5e8eb;
+$text-mute: #8b8580;
+$text-faint: #a2a2a2;
+$border: #ede9e6;
 
-$radius-sm: 8px;
-$radius-md: 12px;
+$radius-sm: 12px;
+$radius-md: 16px;
 $radius-lg: 16px;
 $radius-app: 34px;
 
-$font: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+// 라틴 문자/숫자는 Sora(커피앱 디자인 폰트), 한글은 Pretendard로 폴백.
+$font: "Sora", "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
 	system-ui, Roboto, "Malgun Gothic", sans-serif;
 $font-head: #{$font};
 $font-body: #{$font};
@@ -41,23 +42,23 @@ $font-body: #{$font};
 // 모바일 페이지로 바뀐다(실제 기기가 이미 휴대폰이므로).
 $bp-desktop: 431px;
 
-// 그림자는 아껴 쓰고, 흔한 "AI SaaS" 느낌보다 더 납작하게 사용한다.
-$shadow-xs: 0 1px 2px rgba(16, 20, 30, 0.04);
-$shadow-sm: 0 1px 3px rgba(16, 20, 30, 0.06);
-$shadow-md: 0 8px 20px -10px rgba(16, 20, 30, 0.16);
-$shadow-lg: 0 16px 36px -14px rgba(16, 20, 30, 0.28);
+// 테두리 대신 따뜻한 톤의 부드럽게 퍼지는 그림자.
+$shadow-xs: 0 2px 8px -2px rgba(47, 45, 44, 0.06);
+$shadow-sm: 0 6px 18px -8px rgba(47, 45, 44, 0.12);
+$shadow-md: 0 10px 24px -12px rgba(47, 45, 44, 0.2);
+$shadow-lg: 0 18px 40px -16px rgba(47, 45, 44, 0.32);
 
 @mixin card {
 	background: $card;
-	border: 1px solid $border;
+	border: none;
 	border-radius: $radius-lg;
 	padding: 18px;
-	box-shadow: $shadow-xs;
+	box-shadow: $shadow-sm;
 }
 
 // 담백한 라벨 — 알약 배경도, 점도 없음. 위계는 배지 모양이 아니라
-// 자간/굵기/색상으로 표현한다.
-@mixin eyebrow($fg: $text-mute) {
+// 자간/굵기/색상(카라멜 포인트)으로 표현한다.
+@mixin eyebrow($fg: $accent) {
 	display: block;
 	font-size: 0.72rem;
 	font-weight: 700;

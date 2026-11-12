@@ -17,10 +17,11 @@ export function BottomNav() {
 						<button
 							type="button"
 							className={`${styles.link} ${tab === item.id ? styles.active : ""}`}
+							aria-current={tab === item.id ? "page" : undefined}
 							onClick={() => (item.id === "program" ? goToProgram() : setTab(item.id))}
 						>
 							<Icon name={item.icon} />
-							{item.label}
+							<span className="sr-only">{item.label}</span>
 						</button>
 					</li>
 				))}

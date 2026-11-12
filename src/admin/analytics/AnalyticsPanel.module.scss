@@ -4,7 +4,7 @@
 	display: flex;
 	gap: 10px;
 	align-items: flex-start;
-	background: t.$teal-tint;
+	background: t.$accent-tint;
 	border: 1px solid rgba(20, 184, 166, 0.25);
 	border-radius: t.$radius-md;
 	padding: 12px 14px;
@@ -13,7 +13,7 @@
 	margin-bottom: 20px;
 
 	i {
-		color: t.$teal-dark;
+		color: t.$accent-dark;
 		margin-top: 1px;
 	}
 }
@@ -98,13 +98,13 @@
 	border: none;
 	padding: 0;
 	cursor: pointer;
-	background: t.$teal;
+	background: t.$accent;
 	border-radius: 4px 4px 0 0;
 	transition: background-color 0.15s ease;
 
 	&:hover,
 	&:focus-visible {
-		background: t.$teal-dark;
+		background: t.$accent-dark;
 	}
 }
 

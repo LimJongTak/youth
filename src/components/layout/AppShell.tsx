@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { TopBar } from "./TopBar";
 import { BottomNav } from "./BottomNav";
-import { Hero } from "../home/Hero";
-import { CohortBanner } from "../home/CohortBanner";
+import { HomeHeader } from "../home/HomeHeader";
+import { CourseGrid } from "../home/CourseGrid";
+import { HomeGuide } from "../home/HomeGuide";
+import { CohortDetail } from "../home/CohortDetail";
+import { Onboarding } from "../home/Onboarding";
 import { ProgramTab } from "../program/ProgramTab";
 import { Schedule } from "../schedule/Schedule";
 import { Benefits } from "../benefit/Benefits";
@@ -24,7 +27,8 @@ export function AppShell() {
 }
 
 function Shell() {
-	const { tab } = useNavigation();
+	const { tab, detailCohortId } = useNavigation();
+	const inDetail = detailCohortId !== null;
 
 	// 페이지 첫 진입 시 방문(page_view) 기록.
 	useEffect(() => {
@@ -40,28 +44,38 @@ function Shell() {
 	return (
 		<div className={styles.shell}>
 			<div className={styles.app}>
-				<TopBar />
+				{/* 홈은 자체 어두운 헤더를 쓰고, 나머지 화면과 과정 상세는 공통 상단 바 */}
+				{(tab !== "home" || inDetail) && <TopBar />}
 
-				<main>
-					{tab === "home" && (
+				<main key={inDetail ? `detail-${detailCohortId}` : tab} className="page-enter">
+					{inDetail ? (
+						<CohortDetail cohortId={detailCohortId} />
+					) : (
 						<>
-							<Hero />
-							<CohortBanner />
+							{tab === "home" && (
+								<>
+									<HomeHeader />
+									<CourseGrid />
+									<HomeGuide />
+								</>
+							)}
+							{tab === "program" && <ProgramTab />}
+							{tab === "schedule" && <Schedule />}
+							{tab === "benefit" && (
+								<>
+									<Benefits />
+									<Journey />
+								</>
+							)}
+							{tab === "contact" && <Contact />}
 						</>
 					)}
-					{tab === "program" && <ProgramTab />}
-					{tab === "schedule" && <Schedule />}
-					{tab === "benefit" && (
-						<>
-							<Benefits />
-							<Journey />
-						</>
-					)}
-					{tab === "contact" && <Contact />}
 				</main>
 
-				<BottomNav />
+				{/* 상세 화면에선 커피앱처럼 하단 탭 대신 구매(신청) 바만 보인다 */}
+				{!inDetail && <BottomNav />}
 			</div>
+			<Onboarding />
 		</div>
 	);
 }

@@ -41,8 +41,8 @@
 		width: 12px;
 		height: 12px;
 		border-radius: 50%;
-		background: t.$teal;
-		border: 3px solid #d9f3f0;
+		background: t.$accent;
+		border: 3px solid #f3e3d7;
 		transform: scale(0);
 		transition: transform 0.3s ease;
 	}
@@ -83,7 +83,7 @@
 	padding: 0;
 	font-size: 0.8rem;
 	font-weight: 700;
-	color: t.$teal-dark;
+	color: t.$accent-dark;
 	cursor: pointer;
 
 	svg {
@@ -116,7 +116,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 20px;
-	background: rgba(16, 20, 30, 0.5);
+	background: rgba(47, 45, 44, 0.5);
 	animation: journeyOverlayIn 0.2s ease;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .accordionItem {
-	background: #f6f8fb;
+	background: #f5f2f0;
 	border-radius: 10px;
 	overflow: hidden;
 }

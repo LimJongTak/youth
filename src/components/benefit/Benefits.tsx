@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { SectionHead } from "../layout/SectionHead";
 import { ensureFontAwesomeLoaded } from "../../lib/loadFontAwesome";
@@ -24,8 +24,12 @@ export function Benefits() {
 				description="교육부터 취업까지, 든든하게 지원합니다."
 			/>
 			<div className={styles.grid}>
-				{content.benefits.map((benefit) => (
-					<div className={styles.card} key={benefit.title}>
+				{content.benefits.map((benefit, index) => (
+					<div
+						className={`${styles.card} anim-rise`}
+						style={{ "--d": `${index * 80}ms` } as CSSProperties}
+						key={benefit.title}
+					>
 						<span className={styles.icon}>
 							<i className={`fas ${benefit.icon}`} />
 						</span>

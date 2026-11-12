@@ -27,7 +27,7 @@
 	span {
 		display: block;
 		font-size: 0.72rem;
-		color: t.$teal-light;
+		color: t.$accent-light;
 		font-weight: 600;
 		margin-top: 2px;
 	}
@@ -109,7 +109,7 @@
 	color: #fff;
 
 	i {
-		color: t.$teal-light;
+		color: t.$accent-light;
 	}
 
 	&:hover {
@@ -245,20 +245,20 @@
 	color: #fff;
 }
 .badgeRecruiting {
-	background: t.$teal-dark;
+	background: t.$accent-dark;
 }
 .badgeUpcoming {
 	background: t.$amber;
 }
 .badgeClosed {
-	background: #9aa0b4;
+	background: #aaa29c;
 }
 
 .featuredTag {
 	font-size: 0.68rem;
 	font-weight: 800;
-	color: t.$teal-dark;
-	background: rgba(46, 186, 174, 0.12);
+	color: t.$accent-dark;
+	background: rgba(198, 124, 78, 0.12);
 	padding: 4px 10px;
 	border-radius: 999px;
 }

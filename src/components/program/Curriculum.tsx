@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useSiteContent } from "../../context/SiteContentContext";
-import { defaultSiteContent } from "../../data/defaultSiteContent";
+import { commonSubjects as getCommonSubjects, trackCourses as getTrackCourses } from "../../lib/curriculum";
 import type { Track } from "../../types/siteContent";
 import { SectionHead } from "../layout/SectionHead";
 import { Icon } from "../icons/Icon";
@@ -16,21 +16,9 @@ export function Curriculum() {
 	const [detailOpen, setDetailOpen] = useState(false);
 	const activeTrack = tracks.find((track) => track.id === activeTab) ?? tracks[0];
 
-	// "이수 과목" 필드가 생기기 전에 저장된 Firestore 콘텐츠에는 이 값이
-	// 없을 수 있음 — 관리자가 CMS에서 채워 넣기 전까지는 대응하는 시드
-	// 트랙 값으로 대체해서 상세 카드가 비어 보이지 않게 한다.
-	const trackCourses =
-		activeTrack?.courses && activeTrack.courses.length > 0
-			? activeTrack.courses
-			: defaultSiteContent.tracks.find((t) => t.id === activeTrack?.id)?.courses ?? [];
-
-	// commonCourse.desc는 "과목A · 과목B" 형태로 저장돼 있음 — 상세 카드에서
-	// 트랙 자체 과목들과 함께 공통 과목 2개를 각각 따로 나열할 수 있도록
-	// 다시 분리한다.
-	const commonSubjects = commonCourse.desc
-		.split("·")
-		.map((subject) => subject.trim())
-		.filter(Boolean);
+	// 트랙 과목(CMS에 없으면 시드 값)과 공통과정 과목 목록 — 홈 과정 상세와 공유.
+	const trackCourses = activeTrack ? getTrackCourses(activeTrack) : [];
+	const commonSubjects = getCommonSubjects(content);
 
 	function selectTab(id: Track["id"]) {
 		setActiveTab(id);
@@ -67,7 +55,7 @@ export function Curriculum() {
 			</div>
 
 			{activeTrack && (
-				<div className="card">
+				<div className="card anim-rise" key={activeTrack.id}>
 					<div className={styles.cardHead}>
 						<span className={`${styles.badge} ${styles[activeTrack.badgeClass]}`}>
 							{activeTrack.badge}

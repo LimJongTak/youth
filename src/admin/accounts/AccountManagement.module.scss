@@ -35,7 +35,7 @@
 	background: t.$ink;
 }
 .roleManager {
-	background: t.$teal-dark;
+	background: t.$accent-dark;
 }
 
 .form {
@@ -71,7 +71,7 @@
 		font-weight: 400;
 
 		&:focus {
-			outline: 2px solid t.$teal;
+			outline: 2px solid t.$accent;
 			outline-offset: 1px;
 		}
 	}
@@ -87,7 +87,7 @@
 .success {
 	grid-column: 1 / -1;
 	font-size: 0.78rem;
-	color: t.$teal-dark;
+	color: t.$accent-dark;
 	margin: 0;
 }
 

@@ -1,0 +1,688 @@
+@use "../../styles/tokens" as t;
+
+// 탭 위에 겹쳐 뜨는 상세 페이지 — 하단 구매 바가 화면 아래에 붙는다.
+.detail {
+	min-height: calc(100vh - 58px);
+	display: flex;
+	flex-direction: column;
+	animation: detailIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes detailIn {
+	from {
+		opacity: 0;
+		transform: translateX(16px);
+	}
+}
+
+.body {
+	flex: 1;
+	padding: 4px 24px 24px;
+}
+
+.titleRow {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 18px;
+}
+
+.titleText {
+	min-width: 0;
+
+	h1 {
+		margin: 0 0 4px;
+		font-size: 1.28rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+
+	p {
+		margin: 0;
+		font-size: 0.76rem;
+		color: t.$text-faint;
+	}
+}
+
+// 커피앱의 배달/원두/우유 아이콘 자리 — 과정 특징 아이콘.
+.features {
+	flex: 0 0 auto;
+	display: flex;
+	gap: 10px;
+
+	span {
+		width: 42px;
+		height: 42px;
+		border-radius: t.$radius-sm;
+		background: t.$accent-tint;
+		color: t.$accent;
+		font-size: 1.1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+.ratingRow {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 14px;
+	font-size: 0.78rem;
+	color: t.$text-faint;
+	min-width: 0;
+
+	strong {
+		font-size: 0.92rem;
+		color: t.$ink;
+	}
+
+	span:last-child {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.statusDot {
+	flex: 0 0 auto;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+}
+.recruiting {
+	background: #fbbe21;
+}
+.upcoming {
+	background: #5ab4f0;
+}
+.closed {
+	background: #bdbdbd;
+}
+
+.divider {
+	border: none;
+	height: 1px;
+	background: t.$border;
+	margin: 18px 6px;
+}
+
+.heading {
+	margin: 0 0 10px;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.desc {
+	margin: 0 0 22px;
+	font-size: 0.84rem;
+	line-height: 1.7;
+	color: t.$text-mute;
+	word-break: keep-all;
+}
+
+.descNote {
+	color: t.$accent;
+	font-weight: 600;
+}
+
+// 커피앱 사이즈(S/M/L) 선택 버튼 스타일.
+.sizeRow {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.sizeBtn {
+	height: 44px;
+	border-radius: t.$radius-sm;
+	border: 1px solid #dedede;
+	background: t.$card;
+	color: t.$ink;
+	font-family: inherit;
+	font-size: 0.86rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.sizeActive {
+	background: t.$accent-tint;
+	border-color: t.$accent;
+	color: t.$accent;
+	font-weight: 700;
+}
+
+.infoList {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+	}
+}
+
+.infoThumb {
+	flex: 0 0 auto;
+	width: 44px;
+	height: 44px;
+	border-radius: t.$radius-sm;
+	background: t.$surface-2;
+	color: t.$ink;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.infoText {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+
+	small {
+		font-size: 0.7rem;
+		color: t.$text-faint;
+	}
+
+	strong {
+		font-size: 0.86rem;
+		font-weight: 600;
+		line-height: 1.45;
+		white-space: pre-line;
+		word-break: keep-all;
+	}
+}
+
+.note {
+	margin: 0;
+	font-size: 0.76rem;
+	color: t.$text-mute;
+}
+
+.warningNote {
+	margin-top: 22px;
+	font-size: 0.76rem;
+	line-height: 1.5;
+	color: t.$text-mute;
+	background: t.$accent-tint;
+	border-radius: t.$radius-sm;
+	padding: 12px 14px;
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+
+	svg {
+		flex: 0 0 auto;
+		color: t.$accent;
+		margin-top: 2px;
+	}
+
+	strong {
+		color: t.$ink;
+	}
+}
+
+// 커피앱 상세 화면 하단 구매 바.
+.buyBar {
+	position: sticky;
+	bottom: 0;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 16px 24px calc(env(safe-area-inset-bottom, 0px) + 18px);
+	background: t.$card;
+	border-radius: 24px 24px 0 0;
+	box-shadow: 0 -10px 30px -16px rgba(47, 45, 44, 0.25);
+}
+
+.price {
+	min-width: 0;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	small {
+		font-size: 0.74rem;
+		color: t.$text-faint;
+	}
+
+	strong {
+		font-size: 0.86rem;
+		font-weight: 700;
+		color: t.$accent;
+		line-height: 1.3;
+		word-break: keep-all;
+	}
+}
+
+.buyBtn {
+	flex: 0 0 auto;
+	width: 52%;
+	height: 56px;
+	border-radius: t.$radius-md;
+	background: t.$accent;
+	color: #fff;
+	font-size: 0.95rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	box-shadow: 0 10px 20px -10px rgba(198, 124, 78, 0.8);
+	transition: transform 0.12s ease;
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+.buyBtnKakao {
+	background: #fee500;
+	color: #391b1b;
+	box-shadow: none;
+}
+
+@media (max-width: 374px) {
+	.body {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.buyBar {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.features span {
+		width: 36px;
+		height: 36px;
+	}
+}
+
+.schedulePreview {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.miniHead {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	font-size: 0.86rem;
+	font-weight: 800;
+	color: t.$ink;
+}
+
+.miniNavBtn {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: none;
+	background: t.$surface-2;
+	color: t.$text-mute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.64rem;
+	cursor: pointer;
+
+	&:active {
+		background: t.$border;
+	}
+}
+
+.miniGrid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.miniWeekday {
+	text-align: center;
+	font-size: 0.6rem;
+	font-weight: 800;
+	color: t.$text-faint;
+	padding-bottom: 2px;
+}
+
+.miniDay {
+	position: relative;
+	aspect-ratio: 1;
+	border: none;
+	background: transparent;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	font-size: 0.7rem;
+	color: t.$text;
+	cursor: pointer;
+}
+
+.miniDayOut {
+	color: t.$text-faint;
+	opacity: 0.5;
+}
+
+.miniDayToday {
+	box-shadow: inset 0 0 0 1.5px t.$accent-dark;
+	color: t.$accent-dark;
+	font-weight: 800;
+}
+
+// 그날에 걸쳐 있는 일정마다 점 하나씩(getDayDotColors), 각 일정 고유
+// 색상으로 표시 — 링(ring)을 둘러서 오늘(어두운 배경)이든 일반 칸이든
+// 점이 항상 잘 보이게 한다.
+.miniDots {
+	display: flex;
+	gap: 1px;
+}
+
+.miniDot {
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: t.$accent;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+// "막대"로 표시하기로 고른 기간 일정 — 이어지는 칸들이 하나로 붙어
+// 보이도록, 그 방향의 칸 바깥(그리드 간격)까지 배경을 늘린다.
+.miniBar {
+	position: absolute;
+	left: 2px;
+	right: 2px;
+	height: 3px;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.miniBarLeftConnect {
+	left: -1px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.miniBarRightConnect {
+	right: -1px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.miniDaySelected {
+	box-shadow: inset 0 0 0 2px t.$accent;
+}
+
+// 선택한 날짜의 일정을 홈 탭 카드 안에서 바로 보여줌 — 이건 "미리보기"라
+// 제목과 시간만 보여주고, 전체 상세 내용은 자세히 보기 뒤에 있다.
+.previewPanel {
+	background: t.$surface-2;
+	border-radius: t.$radius-sm;
+	padding: 12px 14px;
+}
+
+.previewHead {
+	display: block;
+	font-size: 0.8rem;
+	margin-bottom: 8px;
+}
+
+.previewList {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.previewRow {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 7px 0;
+	border-bottom: 1px solid t.$border;
+	font-size: 0.8rem;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.previewColorDot {
+	flex: 0 0 auto;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: t.$accent;
+}
+
+.previewTime {
+	flex: 0 0 auto;
+	font-weight: 800;
+	color: t.$accent-dark;
+	font-size: 0.72rem;
+	min-width: 80px;
+}
+
+.previewTitle {
+	flex: 1;
+	min-width: 0;
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.detailBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	border: none;
+	background: t.$accent-tint;
+	color: t.$accent-dark;
+	border-radius: t.$radius-sm;
+	padding: 11px;
+	font-family: inherit;
+	font-weight: 800;
+	font-size: 0.82rem;
+	cursor: pointer;
+
+	svg {
+		font-size: 0.7rem;
+	}
+}
+
+
+// ── 커리큘럼 ────────────────────────────────────────────────────
+.curriculum {
+	margin-bottom: 26px;
+}
+
+.currHead {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+
+	.heading {
+		margin-bottom: 10px;
+	}
+}
+
+.currTotal {
+	font-size: 0.76rem;
+	color: t.$text-mute;
+
+	strong {
+		color: t.$accent;
+		font-size: 0.9rem;
+	}
+}
+
+.trackCard {
+	padding: 16px;
+	border-radius: t.$radius-md;
+	background: linear-gradient(160deg, #fdf8f4 0%, #f5e6d8 100%);
+}
+
+.trackLevel {
+	display: inline-block;
+	padding: 3px 9px;
+	border-radius: 999px;
+	background: t.$accent;
+	color: #fff;
+	font-size: 0.66rem;
+	font-weight: 700;
+}
+
+.trackTitle {
+	display: block;
+	margin-top: 10px;
+	font-size: 1rem;
+	font-weight: 700;
+	color: t.$ink;
+	word-break: keep-all;
+}
+
+.trackSub {
+	margin: 4px 0 14px;
+	font-size: 0.76rem;
+	line-height: 1.5;
+	color: t.$text-mute;
+}
+
+.hourGrid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 6px;
+}
+
+.hourChip {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	padding: 9px 4px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.85);
+	text-align: center;
+
+	strong {
+		font-family: t.$font-head;
+		font-size: 0.9rem;
+		font-weight: 800;
+		color: t.$ink;
+	}
+
+	span {
+		font-size: 0.6rem;
+		line-height: 1.3;
+		color: t.$text-mute;
+		word-break: keep-all;
+	}
+}
+
+.courseGroup {
+	margin-top: 18px;
+}
+
+.groupLabel {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 8px;
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: t.$ink;
+
+	em {
+		font-style: normal;
+		font-size: 0.7rem;
+		font-weight: 600;
+		color: t.$accent;
+	}
+}
+
+.courseList {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-radius: t.$radius-sm;
+	background: t.$card;
+	box-shadow: t.$shadow-xs;
+	overflow: hidden;
+
+	li {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px 14px;
+
+		& + li {
+			border-top: 1px solid t.$border;
+		}
+	}
+}
+
+.courseNum {
+	flex: 0 0 auto;
+	font-family: t.$font-head;
+	font-size: 0.86rem;
+	font-weight: 800;
+	letter-spacing: -0.04em;
+	background: linear-gradient(160deg, t.$accent-light 0%, t.$accent 60%, t.$accent-dark 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.courseName {
+	flex: 1;
+	min-width: 0;
+	font-size: 0.86rem;
+	font-weight: 600;
+	color: t.$ink;
+	word-break: keep-all;
+}
+
+.kind {
+	flex: 0 0 auto;
+	padding: 3px 8px;
+	border-radius: 999px;
+	background: t.$accent-tint;
+	color: t.$accent-dark;
+	font-size: 0.64rem;
+	font-weight: 700;
+}
+
+.kindCommon {
+	background: t.$surface-2;
+	color: t.$text-mute;
+}
+
+.kindImmersive {
+	background: t.$ink-2;
+	color: #fff;
+}
+
+.currNote {
+	margin: 12px 0 0;
+	font-size: 0.72rem;
+	color: t.$text-faint;
+	word-break: keep-all;
+}

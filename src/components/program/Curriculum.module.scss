@@ -4,15 +4,15 @@
 	display: flex;
 	gap: 10px;
 	align-items: center;
-	background: t.$teal-tint;
-	border: 1px solid t.$teal-tint;
+	background: t.$accent-tint;
+	border: 1px solid t.$accent-tint;
 	border-radius: 12px;
 	padding: 12px 14px;
 	margin-top: 14px;
 
 	svg {
 		font-size: 1.2rem;
-		color: t.$teal-dark;
+		color: t.$accent-dark;
 	}
 
 	strong {
@@ -29,7 +29,7 @@
 .tabs {
 	display: flex;
 	gap: 6px;
-	background: #eef1f6;
+	background: #f5f2f0;
 	padding: 5px;
 	border-radius: 999px;
 	margin: 16px 0 14px;
@@ -48,9 +48,9 @@
 	transition: background 0.2s, color 0.2s;
 
 	&.active {
-		background: t.$ink;
+		background: t.$accent;
 		color: #fff;
-		box-shadow: 0 4px 10px rgba(28, 34, 51, 0.25);
+		box-shadow: 0 6px 14px -6px rgba(198, 124, 78, 0.6);
 	}
 }
 
@@ -91,7 +91,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 20px;
-	background: rgba(16, 20, 30, 0.5);
+	background: rgba(47, 45, 44, 0.5);
 }
 
 .detailCard {
@@ -159,7 +159,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		background: #f6f8fb;
+		background: #f5f2f0;
 		border-radius: 10px;
 		padding: 10px 12px;
 		font-size: 0.84rem;
@@ -172,7 +172,7 @@
 	}
 
 	svg {
-		color: t.$teal-dark;
+		color: t.$accent-dark;
 		font-size: 0.9rem;
 	}
 }
@@ -182,7 +182,7 @@
 	font-size: 0.68rem;
 	font-weight: 700;
 	color: t.$text-mute;
-	background: #eef1f6;
+	background: #f5f2f0;
 	border-radius: 999px;
 	padding: 3px 8px;
 }
@@ -197,14 +197,15 @@
 	color: #fff;
 	margin-bottom: 8px;
 }
+// 과정 단계별 톤 — 홈 과정 카드의 라떼/카라멜/에스프레소와 맞춘다.
 .lvBasic {
-	background: t.$blue;
+	background: #c9946b;
 }
 .lvMid {
-	background: t.$amber;
+	background: t.$accent;
 }
 .lvAdv {
-	background: t.$coral;
+	background: #3b2b22;
 }
 
 .trackTitle {
@@ -223,7 +224,7 @@
 }
 
 .hourChip {
-	background: #f6f8fb;
+	background: #f5f2f0;
 	border-radius: 10px;
 	padding: 8px 10px;
 	text-align: center;
@@ -253,11 +254,11 @@
 	strong {
 		font-family: t.$font-head;
 		font-size: 1.1rem;
-		color: t.$teal;
+		color: t.$accent;
 	}
 
 	span {
 		font-size: 0.72rem;
-		color: #c7cbdb;
+		color: #d9d2cd;
 	}
 }

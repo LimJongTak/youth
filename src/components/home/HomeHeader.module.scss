@@ -1,0 +1,414 @@
+@use "../../styles/tokens" as t;
+
+// 아래 프로모 배너가 헤더 경계에 반쯤 걸쳐 올라오도록, 그만큼 헤더 하단에
+// 여백을 두고 배너에는 같은 크기의 음수 마진을 준다.
+$promo-overlap: 76px;
+
+.header {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	// 검정 대신 밝은 크림 → 라떼 톤.
+	background: linear-gradient(170deg, #fdf8f4 0%, #f7e8dc 55%, #efd6c2 100%);
+	color: t.$ink;
+	padding: calc(env(safe-area-inset-top, 0px) + 22px) 24px calc(#{$promo-overlap} + 22px);
+}
+
+// 은은하게 떠다니는 카라멜 빛 방울.
+.blob1,
+.blob2 {
+	position: absolute;
+	border-radius: 50%;
+	z-index: -1;
+	pointer-events: none;
+}
+
+.blob1 {
+	width: 240px;
+	height: 240px;
+	right: -70px;
+	top: -60px;
+	background: radial-gradient(circle, rgba(232, 180, 143, 0.55) 0%, rgba(232, 180, 143, 0) 70%);
+	animation: blobDrift 9s ease-in-out infinite alternate;
+}
+
+.blob2 {
+	width: 180px;
+	height: 180px;
+	left: -60px;
+	bottom: 30px;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 70%);
+	animation: blobDrift 11s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes blobDrift {
+	to {
+		transform: translate(-18px, 14px) scale(1.08);
+	}
+}
+
+.topRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.place {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.placeLabel {
+	font-size: 0.72rem;
+	color: t.$text-mute;
+}
+
+.placeName {
+	font-size: 0.92rem;
+	font-weight: 700;
+	color: t.$ink;
+	letter-spacing: -0.01em;
+}
+
+// 커피앱의 프로필 사진 자리 — 여기서는 문의 바로가기.
+.avatarBtn {
+	flex: 0 0 auto;
+	width: 44px;
+	height: 44px;
+	border-radius: 14px;
+	border: none;
+	background: linear-gradient(150deg, #d99368, #a9643a);
+	color: #fff;
+	font-size: 1.05rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: 0 8px 16px -8px rgba(169, 100, 58, 0.7);
+	transition: transform 0.15s ease;
+
+	&:active {
+		transform: scale(0.94);
+	}
+}
+
+.greetRow {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.greeting {
+	margin: 0;
+	font-size: 1.12rem;
+	font-weight: 700;
+	line-height: 1.45;
+	color: t.$ink;
+	letter-spacing: -0.02em;
+	word-break: keep-all;
+	text-wrap: balance;
+}
+
+.mascotWrap {
+	position: relative;
+	width: 108px;
+	display: flex;
+	justify-content: center;
+}
+
+.mascotGlow {
+	position: absolute;
+	inset: 12% 4% 6%;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+// 온보딩과 같은 등장 + 둥실 떠 있는 애니메이션.
+.mascot {
+	position: relative;
+	width: 100%;
+	height: auto;
+	filter: drop-shadow(0 12px 16px rgba(120, 70, 40, 0.22));
+	animation: mascotIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both,
+		mascotFloat 4s ease-in-out 0.8s infinite;
+}
+
+@keyframes mascotIn {
+	from {
+		opacity: 0;
+		transform: translateY(22px) scale(0.9) rotate(-4deg);
+	}
+}
+
+@keyframes mascotFloat {
+	50% {
+		transform: translateY(-7px) rotate(1.5deg);
+	}
+}
+
+.searchRow {
+	display: flex;
+	gap: 12px;
+	margin-top: 14px;
+}
+
+// 커피앱의 검색창 자리 — 현재 모집 상태를 보여주고, 누르면 그 과정 상세로.
+.searchBar {
+	flex: 1;
+	min-width: 0;
+	height: 52px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto auto;
+	column-gap: 12px;
+	align-content: center;
+	align-items: center;
+	padding: 0 16px;
+	border: none;
+	border-radius: t.$radius-sm;
+	background: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(8px);
+	box-shadow: 0 8px 20px -14px rgba(120, 70, 40, 0.45);
+	color: t.$ink;
+	text-align: left;
+	font-family: inherit;
+	cursor: pointer;
+	transition: transform 0.15s ease;
+
+	&:active {
+		transform: scale(0.98);
+	}
+}
+
+.liveDot {
+	grid-row: 1 / span 2;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: t.$text-faint;
+}
+
+.liveDotOn {
+	background: t.$accent;
+	box-shadow: 0 0 0 4px rgba(198, 124, 78, 0.22);
+	animation: livePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+	50% {
+		box-shadow: 0 0 0 7px rgba(198, 124, 78, 0.05);
+	}
+}
+
+.searchText {
+	font-size: 0.82rem;
+	font-weight: 700;
+	color: t.$ink;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.searchSub {
+	font-size: 0.68rem;
+	color: t.$text-mute;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// 커피앱의 필터 버튼 자리 — 카라멜색 정사각형 신청 버튼.
+.filterBtn {
+	flex: 0 0 auto;
+	width: 52px;
+	height: 52px;
+	border-radius: t.$radius-sm;
+	background: t.$accent;
+	color: #fff;
+	font-size: 1.1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10px 18px -10px rgba(198, 124, 78, 0.9);
+	transition: transform 0.15s ease;
+
+	&:active {
+		transform: scale(0.94);
+	}
+
+	svg {
+		transition: transform 0.2s ease;
+	}
+
+	&:hover svg {
+		transform: translate(2px, -2px);
+	}
+}
+
+.noActiveMsg {
+	margin: 10px 0 0;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: t.$accent-dark;
+}
+
+.promoWrap {
+	padding: 0 24px;
+	margin-top: -$promo-overlap;
+}
+
+// 프로모 배너 — 사진 대신 카라멜→에스프레소 그라디언트와 장식 원으로
+// 그린 배경 위에, 커피앱처럼 검은 띠 하이라이트를 깐 굵은 헤드라인.
+.promo {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	min-height: 150px;
+	padding: 14px 20px 18px;
+	border-radius: t.$radius-md;
+	background: radial-gradient(circle at 85% 20%, #e6a57c 0%, rgba(230, 165, 124, 0) 45%),
+		linear-gradient(135deg, #c67c4e 0%, #7a4426 60%, #3a2216 100%);
+	box-shadow: 0 16px 30px -18px rgba(90, 50, 25, 0.8);
+
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+		border-radius: 50%;
+		z-index: -1;
+	}
+
+	&::before {
+		width: 190px;
+		height: 190px;
+		right: -60px;
+		bottom: -90px;
+		border: 22px solid rgba(255, 255, 255, 0.07);
+	}
+
+	&::after {
+		width: 70px;
+		height: 70px;
+		right: 46px;
+		top: 18px;
+		background: rgba(255, 255, 255, 0.1);
+	}
+}
+
+// 배너 위를 주기적으로 스쳐 지나가는 빛.
+.shine {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.22) 45%, transparent 60%);
+	transform: translateX(-100%);
+	animation: shine 4.5s ease-in-out 1.2s infinite;
+	pointer-events: none;
+}
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%);
+	}
+	40%,
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+.promoTag {
+	display: inline-block;
+	padding: 4px 8px;
+	border-radius: 8px;
+	background: t.$coral;
+	color: #fff;
+	font-size: 0.72rem;
+	font-weight: 700;
+}
+
+.promoTitle {
+	margin: 10px 0 0;
+	max-width: 88%;
+	font-size: 1.5rem;
+	font-weight: 800;
+	line-height: 1.38;
+	color: #fff;
+	letter-spacing: -0.025em;
+	word-break: keep-all;
+	text-wrap: balance;
+}
+
+// 배경 띠 없이 흰 글자 자체로 강조 — 카라멜 배경 위에서도 또렷하게
+// 읽히도록 은은한 그림자만 준다.
+.promoLine {
+	color: #fff;
+	text-shadow: 0 2px 12px rgba(40, 20, 8, 0.35);
+}
+
+.promoLead {
+	margin: 12px 0 0;
+	max-width: 80%;
+	font-size: 0.74rem;
+	line-height: 1.5;
+	color: rgba(255, 255, 255, 0.82);
+	word-break: keep-all;
+}
+
+.stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+	padding: 16px 24px 0;
+}
+
+.stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	padding: 10px 4px;
+	border-radius: t.$radius-sm;
+	background: t.$accent-tint;
+	text-align: center;
+
+	strong {
+		font-size: 0.86rem;
+		color: t.$accent-dark;
+		letter-spacing: -0.01em;
+	}
+
+	span {
+		font-size: 0.66rem;
+		color: t.$text-mute;
+	}
+}
+
+@media (max-width: 374px) {
+	.mascotWrap {
+		width: 88px;
+	}
+
+	.greeting {
+		font-size: 1rem;
+	}
+
+	.header {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.promoWrap,
+	.stats {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.promoTitle {
+		font-size: 1.2rem;
+	}
+}
